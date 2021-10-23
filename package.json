@@ -1,0 +1,41 @@
+{
+  "name": "cadastro_bovinos",
+  "version": "1.0.0",
+  "description": "App desktop com NodeJs e Angular/ElectronJs para cadastro de bovinos",
+  "main": "electron-main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "electron": "electron .",
+    "electron-build": "ng build --prod",
+    "build": "electron-builder"
+  },
+  "build": {
+    "appId": "cadastro-bovinos",
+    "win": {
+      "target": [ "nsis" ],
+      "icon": "icon.ico"
+    },
+    "nsis": {
+      "oneClick": false,
+      "installerIcon": "icon.ico",
+      "uninstallerIcon": "icon.ico",
+      "uninstallDisplayName": "cadastro-bovinos-uninstaller",
+      "license": "license.md",
+      "allowToChangeInstallationDirectory": true
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/danielrodrigues0709/cadastro_bovinos.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/danielrodrigues0709/cadastro_bovinos/issues"
+  },
+  "homepage": "https://github.com/danielrodrigues0709/cadastro_bovinos#readme",
+  "devDependencies": {
+    "electron": "^15.3.0",
+    "electron-builder": "^22.13.1"
+  }
+}
