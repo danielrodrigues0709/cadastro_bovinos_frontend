@@ -1,3 +1,3 @@
 Obrigado por instalar o Cadastro de Bovinos!
 
-Informações importantes:
+Clique em NEXT para prosseguir com a instalacao.
