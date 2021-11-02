@@ -29,7 +29,6 @@ export const dbQuery = (query: string, params?: any[]) => {
     let db = openConnection();
     return new Promise<any[]>((resolve, reject) => {
         db.all(query, params, (err, rows) => {
-            console.log(query, params, err, rows)
             if(err)
                 reject(err);
             else

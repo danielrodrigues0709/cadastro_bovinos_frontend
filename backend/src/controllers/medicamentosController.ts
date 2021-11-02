@@ -1,11 +1,11 @@
 import { Request, Response } from 'express';
-import { MEDICAMENTOS_MSGS, MSGS_GERAIS } from '../messages';
+import { MSGS_GERAIS } from '../messages';
 import { Medicamento, medicamentoModel } from '../models/medicamentosModel';
 
 const listMedicamentos = (req: Request, res: Response) => {
     medicamentoModel.listMedicamentos()
         .then(medicamentos => {
-            res.json(medicamentos);
+            return res.json(medicamentos);
         })
         .catch(err => console.log(err, MSGS_GERAIS.erroServidor));
 }
@@ -18,7 +18,7 @@ const selectMedicamento = (req: Request, res: Response) => {
     }
     medicamentoModel.selectMedicamento(id)
         .then(response => {
-            res.json({response});
+            return res.json({response});
         })
         .catch(err => console.log(err, MSGS_GERAIS.erroServidor));
 }
@@ -33,7 +33,7 @@ const insertMedicamento = (req: Request, res: Response) => {
     }
     medicamentoModel.insertMedicamento(medicamento)
         .then(response => {
-            res.json({response});
+            return res.json({response});
         })
         .catch(err => console.log(err, MSGS_GERAIS.erroServidor));
 }
