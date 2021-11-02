@@ -1,4 +1,5 @@
-import { dbQuery } from "../db"
+import { dbQuery, dbQueryFirst } from "../db"
+import { MEDICAMENTOS_MSGS, MSGS_GERAIS } from "../messages";
 
 export type Medicamento = {
     id: number,
@@ -10,12 +11,30 @@ const listMedicamentos = async () => {
     return retorno as Medicamento[];
 }
 
+const selectMedicamento = async (id: number) => {
+    const retorno = await dbQueryFirst('SELECT * FROM medicamentos WHERE id = ?', [id]);
+    return retorno as Medicamento;
+}
+
 const insertMedicamento = async (medicamento: Medicamento) => {
     await dbQuery('INSERT INTO medicamentos (medicamento) VALUES(?)', [medicamento.medicamento]);
-    return ('Medicamento criado');
+    let retorno = await dbQuery('SELECT seq AS id FROM sqlite_sequence WHERE name = "medicamentos"')
+    return MSGS_GERAIS.registroCriado + retorno[0].id;
+}
+
+const deleteMedicamento = async (id: number) => {
+    await dbQueryFirst('DELETE FROM medicamentos WHERE id = ?', [id]);
+}
+
+const updateMedicamento = async (medicamento: Medicamento) => {
+    await dbQuery('UPDATE medicamentos SET medicamento = ?', [medicamento.medicamento]);
+    return selectMedicamento(medicamento.id);
 }
 
 export const medicamentoModel = {
     insertMedicamento,
-    listMedicamentos
+    listMedicamentos,
+    selectMedicamento,
+    deleteMedicamento,
+    updateMedicamento
 }
