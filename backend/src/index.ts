@@ -3,10 +3,12 @@ import bodyParser from 'body-parser';
 import { useRoutes } from './routes/routes';
 import { tables } from './models/tables';
 import { MSGS_GERAIS } from './messages';
+import cors from 'cors';
 
 const PORT = process.env.PORT || 3333;
 const app = express();
 app.use(bodyParser.json());
+app.use(cors);
 
 app.listen(PORT, () => console.log(MSGS_GERAIS.servidor+PORT));
 
