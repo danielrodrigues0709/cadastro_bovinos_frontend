@@ -1,5 +1,5 @@
 import { dbQuery, dbQueryFirst } from "../db"
-import { MEDICAMENTOS_MSGS, MSGS_GERAIS } from "../messages";
+import { MSGS_GERAIS } from "../messages";
 
 export type Medicamento = {
     id: number,
