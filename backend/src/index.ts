@@ -1,14 +1,26 @@
 import express from 'express';
 import bodyParser from 'body-parser';
+import cors from 'cors';
+
 import { useRoutes } from './routes/routes';
 import { tables } from './models/tables';
 import { MSGS_GERAIS } from './messages';
-import cors from 'cors';
 
 const PORT = process.env.PORT || 3333;
+const FRONT_PORT = 4200;
 const app = express();
+
+// Config CORS
+const allowedOrigins = [`http://localhost:${FRONT_PORT}`];
+const options: cors.CorsOptions = {
+  origin: allowedOrigins
+};
+
+app.use(cors(options));
+
+app.use(express.json());
+
 app.use(bodyParser.json());
-app.use(cors);
 
 app.listen(PORT, () => console.log(MSGS_GERAIS.servidor+PORT));
 
