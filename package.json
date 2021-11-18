@@ -12,7 +12,9 @@
   "build": {
     "appId": "cadastro-bovinos",
     "win": {
-      "target": [ "nsis" ],
+      "target": [
+        "nsis"
+      ],
       "icon": "icon.ico"
     },
     "nsis": {

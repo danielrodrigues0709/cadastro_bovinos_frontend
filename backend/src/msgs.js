@@ -1,6 +1,7 @@
-export const MSGS_GERAIS = {
+module.exports.MSGS = {
     // Servidor
-    servidor: 'Servidor rodando na porta ',
+    servidor: 'Servidor rodando na porta',
+    servidorDesligado: 'Servidor desligado',
     erroServidor: 'Erro de servidor',
     // BD
     sucessoConexao: 'Conectado a base cadastro_bovinos.db',
@@ -10,12 +11,10 @@ export const MSGS_GERAIS = {
     // Responses
     erroRequisicao: 'Erro ao efetuar requisição',
     faltaParametros: 'Parametros não informados',
-    registroCriado: 'Registro criado, id ',
-    registroAtualizado: 'Registro atualizado, id ',
-    registroDeletado: 'Registro deletado, id ',
-    registroNaoEncontrado: 'Registro não encontrado'
-}
-
-export const MEDICAMENTOS_MSGS = {
+    registroCriado: 'Registro criado, id',
+    registroAtualizado: 'Registro atualizado, id',
+    registroDeletado: 'Registro deletado, id',
+    registroNaoEncontrado: 'Registro não encontrado',
+    // Tabelas
     tabelaCriada: 'Tabela medicamentos criada ou já existente'
 }
