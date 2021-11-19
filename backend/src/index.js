@@ -1,17 +1,15 @@
 const express = require('express');
 const http = require('http');
-const body_parser = require('body-parser');
-// const cors = require('cors');
 
 const { Tabelas } = require('./models/tables');
 const { MSGS } = require('./msgs');
-const { useRoutes } = require('./routes/routes');
+
+const router = require('./routes/routes');
+const medicamentosRouter = require('./routes/medicamentosRoutes');
 
 const PORT = process.env.PORT || 3333;
 
 const app = express();
-module.exports.app = app;
-
 const httpServer = http.createServer(app);
 
 // Inicia servidor
@@ -28,14 +26,9 @@ module.exports.shutDownServer = () => {
   });
 }
 
-// Rota de teste
-app.get('/', (req, res) => {
-    res.json({msg: "Ok"});
-})
-
 // Para uso de rotas
-app.use(body_parser.json());
-useRoutes(app);
+app.use('/api', router);
+app.use('/medicamentos', medicamentosRouter);
 
 //Cria tabelas
 Tabelas.createMedicamentosTable();

@@ -1,12 +1,9 @@
-const { Router } = require("express");
+const express = require('express');
 
-const { medicamentoRouter } = require("./medicamentosRoutes");
+const router = express.Router();
 
+router.get('/', (req, res) => {
+    res.json({msg: "Ok"});
+})
 
-module.exports.useRoutes = (app) => {
-    const apiRouter = Router();
-
-    apiRouter.use('/medicamentos', medicamentoRouter);
-
-    app.use('/api', apiRouter);
-}
+module.exports = router;

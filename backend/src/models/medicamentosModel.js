@@ -7,7 +7,7 @@ module.exports.listMedicamentos = async () => {
 }
 
 module.exports.insertMedicamento = async (medicamento) => {
-    await db.run(`INSERT INTO medicamentos(medicamento) VALUES('${medicamento}')`);
+    await DB.dbQuery(`INSERT INTO medicamentos(medicamento) VALUES('${medicamento}')`);
     const retorno = await DB.dbQuery('SELECT seq AS id FROM sqlite_sequence WHERE name = "medicamentos"')
     return `${MSGS.registroCriado} ${retorno[0].id}`;
 }

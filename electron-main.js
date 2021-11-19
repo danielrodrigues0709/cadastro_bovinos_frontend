@@ -1,5 +1,5 @@
 const { app, BrowserWindow } = require('electron')
-const { startServer, shutDownServer } = require('./backend/src/index')
+const { startServer, shutDownServer } = require('./backend/src/index.js')
 
 const createWindow = () => {
     const win = new BrowserWindow({

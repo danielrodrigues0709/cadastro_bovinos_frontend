@@ -1,12 +1,18 @@
-const Router = require('express');
+const express = require('express');
+const medicamentosRouter = express.Router();
+
+const body_parser = require('body-parser');
+// const cors = require('cors');
+
 const { listMedicamentos, insertMedicamento, selectMedicamento, deleteMedicamento, updateMedicamento } = require('../controllers/medicamentosController');
 
-const medicamentoRouter = Router();
+medicamentosRouter.use(body_parser.json());
+// medicamentosRouter.use(cors);
 
-medicamentoRouter.get('/', listMedicamentos);
-medicamentoRouter.get('/:id', selectMedicamento);
-medicamentoRouter.post('/', insertMedicamento);
-medicamentoRouter.delete('/:id', deleteMedicamento);
-medicamentoRouter.patch('/:id', updateMedicamento);
+medicamentosRouter.get('/', listMedicamentos);
+medicamentosRouter.get('/:id', selectMedicamento);
+medicamentosRouter.post('/', insertMedicamento);
+medicamentosRouter.delete('/:id', deleteMedicamento);
+medicamentosRouter.patch('/:id', updateMedicamento);
 
-module.exports = {medicamentoRouter};
+module.exports = medicamentosRouter;

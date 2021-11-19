@@ -11,7 +11,6 @@ module.exports.listMedicamentos = (req, res) => {
 
 module.exports.insertMedicamento = (req, res) => {
     const body = req.body;
-    console.log(body)
     insertMedicamento(body.medicamento)
         .then(response => {
             return res.json({response});
