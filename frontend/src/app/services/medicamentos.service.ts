@@ -10,6 +10,11 @@ export class MedicamentosService {
 
   constructor(private http: HttpClient) { }
 
+  teste(): Observable<any> {
+    const href = `${environment.api}api/`;
+    return this.http.get(href);
+  }
+
   listMedicamentos(): Observable<any> {
     const href = `${environment.api}medicamentos/`;
     return this.http.get(href);

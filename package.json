@@ -24,7 +24,10 @@
       "uninstallDisplayName": "cadastro-bovinos-uninstaller",
       "license": "license.md",
       "allowToChangeInstallationDirectory": true
-    }
+    },
+    "extraFiles": [
+      "db/cadastro_bovinos.db"
+    ]
   },
   "repository": {
     "type": "git",

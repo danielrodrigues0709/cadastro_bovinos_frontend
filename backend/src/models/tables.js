@@ -1,7 +1,7 @@
-const { DB } = require("../db");
+const { openConnection } = require("../db");
 const { MSGS } = require("../msgs");
 
-const db =  DB.openConnection();
+const db =  openConnection();
 
 class Tabelas {
     createMedicamentosTable() {

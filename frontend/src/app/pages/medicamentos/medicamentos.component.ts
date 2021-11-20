@@ -13,6 +13,12 @@ export class MedicamentosComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  teste(): void {
+    this.medicamentosService.teste().subscribe(res => {
+      console.log('Teste', res); // TODO Implementar lógica
+    });
+  }
+
   listaMedicamentos(): void {
     this.medicamentosService.listMedicamentos().subscribe(res => {
       console.log('Teste', res); // TODO Implementar lógica
