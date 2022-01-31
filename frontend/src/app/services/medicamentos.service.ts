@@ -10,14 +10,16 @@ export class MedicamentosService {
 
   constructor(private http: HttpClient) { }
 
-  teste(): Observable<any> {
-    const href = `${environment.api}api/`;
-    return this.http.get(href);
-  }
-
-  listMedicamentos(): Observable<any> {
+  listaMedicamentos(): Observable<any> {
     const href = `${environment.api}medicamentos/`;
     return this.http.get(href);
+  }
+  
+  salvaMedicamento(): Observable<any> {
+    let medicamento = { medicamento: 'Medicamento de teste'};
+
+    const href = `${environment.api}medicamentos/`;
+    return this.http.post(href, medicamento);
   }
 
   // TODO Implementar CRUD

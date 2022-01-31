@@ -1,19 +1,18 @@
 # Cadastro Bovinos
-App desktop construído com NodeJs, SQLite3, Angular e ElectronJs para cadastro de bovinos.
+App desktop em Angular e ElectronJs para cadastro de bovinos.
 
 ## Desenvolvimento
 
 ### Backend
-1. Para desenvolvimento do backend, acessar diretório backend e executar `npm install`.
-2. Para rodar o servidor executar `npm start`. As tabelas necessárias já serão criadas no banco de dados.
+1. API utilizada nesse projeto: `https://cadastro-bovinos.herokuapp.com/`.
+2. Projeto da API no Heroku: `https://dashboard.heroku.com/pipelines/eef5699c-dbcf-4c9c-8880-8c1857ec2c5d`.
+3. Projeto da API no Github: `https://github.com/danielrodrigues0709/cadastro_bovinos_api`.
 
 ### Frontend
-1. Para desenvolvimento do frontend, acessar diretório frontend e executar `npm install`.
-2. Para rodar o servidor de frontend executar `ng serve`.
+1. Acessar diretório frontend e executar comando `npm install`.
+2. Executar comando `npm install` no diretório raiz.
 
 ## Build
-
 1. Executar comando `ng build` no diretório frontend.
 2. Executar comando `npm run build` no diretório raiz.
 3. Será gerada uma pasta `dist` que contém executável para compartilhamento.
-    ### ATENÇÂO: Informar usuário sobre questões de segurança.

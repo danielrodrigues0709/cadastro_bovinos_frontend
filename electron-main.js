@@ -1,5 +1,4 @@
 const { app, BrowserWindow } = require('electron')
-const { startServer, shutDownServer } = require('./backend/src/index.js')
 
 const createWindow = () => {
     const win = new BrowserWindow({
@@ -12,7 +11,6 @@ const createWindow = () => {
 
 app.whenReady().then(() => {
     createWindow();
-    startServer();
 })
 
 app.on('activate', () => {
@@ -21,5 +19,4 @@ app.on('activate', () => {
 
 app.on('window-all-closed', () => {
     if (process.platform !== 'darwin') app.quit();
-    shutDownServer();
 })

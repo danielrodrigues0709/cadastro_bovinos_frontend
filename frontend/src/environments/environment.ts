@@ -1,6 +1,6 @@
 const PORT = 3333;
 
 export const environment = {
-    api: `http://localhost:${PORT}/`,
+    api: `https://cadastro-bovinos.herokuapp.com/`,
     production: false
 };

@@ -1,7 +1,7 @@
 {
   "name": "cadastro_bovinos",
   "version": "1.0.0",
-  "description": "App desktop com NodeJs e Angular/ElectronJs para cadastro de bovinos",
+  "description": "App desktop com Angular/ElectronJs para cadastro de bovinos",
   "main": "electron-main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -24,10 +24,7 @@
       "uninstallDisplayName": "cadastro-bovinos-uninstaller",
       "license": "license.md",
       "allowToChangeInstallationDirectory": true
-    },
-    "extraFiles": [
-      "db/cadastro_bovinos.db"
-    ]
+    }
   },
   "repository": {
     "type": "git",
@@ -42,11 +39,5 @@
   "devDependencies": {
     "electron": "^15.3.0",
     "electron-builder": "^22.13.1"
-  },
-  "dependencies": {
-    "body-parser": "^1.19.0",
-    "cors": "^2.8.5",
-    "express": "^4.17.1",
-    "sqlite3": "^5.0.2"
   }
 }

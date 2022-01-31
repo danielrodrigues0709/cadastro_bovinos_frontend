@@ -13,15 +13,15 @@ export class MedicamentosComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  teste(): void {
-    this.medicamentosService.teste().subscribe(res => {
-      console.log('Teste', res); // TODO Implementar lógica
+  salvaMedicamento(): void {
+    this.medicamentosService.salvaMedicamento().subscribe(res => {
+      console.log(res); // TODO Implementar lógica
     });
   }
 
   listaMedicamentos(): void {
-    this.medicamentosService.listMedicamentos().subscribe(res => {
-      console.log('Teste', res); // TODO Implementar lógica
+    this.medicamentosService.listaMedicamentos().subscribe(res => {
+      console.log(res); // TODO Implementar lógica
     });
   }
 
