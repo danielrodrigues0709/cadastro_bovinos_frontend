@@ -1,0 +1,19 @@
+$height: 100vh;
+$menu-width: 150px;
+$pages-width: calc(100vw - $menu-width);
+$margin: 10px;
+
+.content {
+    display: flex;
+}
+
+::ng-deep .p-menu {
+    height: calc($height - 2 * $margin);
+    width: calc($menu-width - 2 * $margin);
+    margin: $margin;
+}
+::ng-deep .p-card {
+    height: calc($height - 2 * $margin);
+    width: calc($pages-width - 2 * $margin);
+    margin: $margin;
+}

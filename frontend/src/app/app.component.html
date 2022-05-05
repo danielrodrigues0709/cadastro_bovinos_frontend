@@ -1,1 +1,11 @@
-<router-outlet></router-outlet>
+<div class="content">
+    <div class="col-2 menu">
+        <p-menu [model]="items"></p-menu>
+    </div>
+    
+    <div class="col-9 pages">
+        <p-card>
+            <router-outlet></router-outlet>
+        </p-card>
+    </div>
+</div>
