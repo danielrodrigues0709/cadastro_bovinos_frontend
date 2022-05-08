@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { MenuItem } from 'primeng/api';
+import { MegaMenuItem,MenuItem } from 'primeng/api';
 
 @Component({
   selector: 'app-root',
@@ -8,13 +8,17 @@ import { MenuItem } from 'primeng/api';
 })
 export class AppComponent {
   title = 'frontend';
-  items: MenuItem[] = [];
+  items: MegaMenuItem[] = [];
 
   ngOnInit() {
     this.items = [
-      {label: 'New', icon: 'pi pi-fw pi-plus'},
-      {label: 'Open', icon: 'pi pi-fw pi-download'},
-      {label: 'Undo', icon: 'pi pi-fw pi-refresh'}
+      {label: 'Plantel', icon: 'pi pi-fw pi-plus', routerLink: 'plantel'},
+      {label: 'Animais', icon: 'pi pi-fw pi-download', routerLink: 'animais'},
+      {label: 'Medicamentos', icon: 'pi pi-fw pi-download', routerLink: 'medicamentos'},
+      {label: 'Vacinas/Vermífugos', icon: 'pi pi-fw pi-download', routerLink: 'vacinas'},
+      {label: 'Partos', icon: 'pi pi-fw pi-download', routerLink: 'partos'},
+      {label: 'Inseminações', icon: 'pi pi-fw pi-download', routerLink: 'inseminacoes'},
+      {label: 'Ocorrências', icon: 'pi pi-fw pi-download', routerLink: 'ocorrencias'},
     ];
   }
 }

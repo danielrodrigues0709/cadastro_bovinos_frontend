@@ -1,19 +1,37 @@
-$height: 100vh;
-$menu-width: 150px;
-$pages-width: calc(100vw - $menu-width);
-$margin: 10px;
+@import '../styles.scss';
 
 .content {
     display: flex;
 }
+.menu {
+    background-color: $dark-green;
+}
+.image {
+    margin: 0;
+    width: $menu-width;
+    height: calc($menu-width - 4px);
+}
 
-::ng-deep .p-menu {
-    height: calc($height - 2 * $margin);
-    width: calc($menu-width - 2 * $margin);
-    margin: $margin;
+::ng-deep .p-megamenu {
+    width: $menu-width;
+    height: calc($height - $menu-width);
+    margin: 0;
+    background-color: $dark-green;
+    border: none;
+}
+:host ::ng-deep .p-menuitem {
+    width: $menu-width;
+}
+:host ::ng-deep .p-menuitem-icon, :host ::ng-deep .p-menuitem-text {
+    color: white !important;
 }
 ::ng-deep .p-card {
     height: calc($height - 2 * $margin);
     width: calc($pages-width - 2 * $margin);
     margin: $margin;
+
+    .p-menuitem.p-card-content {
+        padding: 0;
+    }
 }
+

@@ -1,4 +1,30 @@
 /* You can add global styles to this file, and also import other style files */
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+// Spacing
+$height: 100vh;
+$menu-width: 220px;
+$pages-width: calc(100vw - $menu-width);
+$margin: 10px;
+
+// Colors
+$dark-green: darkgreen;
+$light-green: rgb(254, 255, 254);
+
+html, body {
+    height: 100%;
+}
+body {
+    margin: 0;
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+// Components
+.header {
+    margin-top: 0;
+    padding-top: 0;
+    text-align: center;
+}
+
+.footer-buttons-bar {
+
+}
