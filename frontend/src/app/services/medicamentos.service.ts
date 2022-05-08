@@ -12,21 +12,31 @@ export class MedicamentosService {
 
   constructor(private http: HttpClient) { }
 
-  listaMedicamentos(): Observable<any> {
+  getMedicamentos(): Observable<any> {
     const href = `${environment.api}medicamentos/`;
     return this.http.get(href, {
       headers: this.headers
     });
   }
   
-  salvaMedicamento(): Observable<any> {
-    let medicamento = { medicamento: 'Medicamento de teste'};
-
+  saveMedicamento(medicamento: any): Observable<any> {
     const href = `${environment.api}medicamentos/`;
     return this.http.post(href, medicamento, {
       headers: this.headers
     });
   }
-
-  // TODO Implementar CRUD
+  
+  updateMedicamento(id: number, medicamento: any): Observable<any> {
+    const href = `${environment.api}medicamentos/${id}`;
+    return this.http.patch(href, medicamento, {
+      headers: this.headers
+    });
+  }
+  
+  deleteMedicamento(id: number): Observable<any> {
+    const href = `${environment.api}medicamentos/${id}`;
+    return this.http.delete(href, {
+      headers: this.headers
+    });
+  }
 }

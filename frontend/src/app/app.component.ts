@@ -12,7 +12,7 @@ export class AppComponent {
 
   ngOnInit() {
     this.items = [
-      {label: 'Plantel', icon: 'pi pi-fw pi-angle-right', routerLink: 'plantel'},
+      {label: 'Plantel', icon: 'pi pi-fw pi-angle-right', routerLink: 'animais'},
       {label: 'Medicamentos', icon: 'pi pi-fw pi-angle-right', routerLink: 'medicamentos'},
       {label: 'Vacinas/Vermífugos', icon: 'pi pi-fw pi-angle-right', routerLink: 'vacinas'},
       {label: 'Ocorrências', icon: 'pi pi-fw pi-angle-right', routerLink: 'ocorrencias'},

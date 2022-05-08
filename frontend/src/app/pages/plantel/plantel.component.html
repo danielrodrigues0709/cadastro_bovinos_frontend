@@ -1,5 +1,26 @@
 <h2 class="header">Plantel</h2>
 
 <div>
-    
+    <p-table [value]="animais">
+        <ng-template pTemplate="header">
+            <tr>
+                <th>Nº Controle</th>
+                <th>Animal</th>
+                <th>Mãe</th>
+                <th>Pai</th>
+                <th>Data Nascimento</th>
+                <th>Detalhes</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-element>
+            <tr>
+                <td>{{element.numControle}}</td>
+                <td>{{element.nomeAnimal}}</td>
+                <td>{{element.mae.nomeAnimal}}</td>
+                <td>{{element.pai.nomeAnimal}}</td>
+                <td>{{element.dataNascimento}}</td>
+                <td></td>
+            </tr>
+        </ng-template>
+    </p-table>
 </div>

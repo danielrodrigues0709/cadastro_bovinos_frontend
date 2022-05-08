@@ -26,5 +26,7 @@ body {
 }
 
 .footer-buttons-bar {
-
+    display: flex;
+    justify-content: flex-end;
+    padding: 2 * $margin;
 }

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Medicamento } from 'src/app/interfaces/Medicamento';
 import { MedicamentosService } from 'src/app/services/medicamentos.service';
 
 @Component({
@@ -8,21 +9,26 @@ import { MedicamentosService } from 'src/app/services/medicamentos.service';
 })
 export class MedicamentosComponent implements OnInit {
 
+  medicamentos: Medicamento[] = [];
+
   constructor(private medicamentosService: MedicamentosService) { }
 
-  ngOnInit(): void {
+  ngOnInit() {
+      this.medicamentosService.getMedicamentos().pipe().subscribe(res => {
+        this.medicamentos = res.rows;
+      });
   }
 
-  salvaMedicamento(): void {
-    this.medicamentosService.salvaMedicamento().subscribe(res => {
-      console.log(res); // TODO Implementar lógica
-    });
+  edit(element: any): void {
+    console.log(element)
   }
 
-  listaMedicamentos(): void {
-    this.medicamentosService.listaMedicamentos().subscribe(res => {
-      console.log(res); // TODO Implementar lógica
-    });
+  delete(id: number): void {
+    console.log(id)
+  }
+
+  include(): void {
+    console.log("Novo")
   }
 
 }
