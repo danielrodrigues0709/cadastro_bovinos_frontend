@@ -12,13 +12,10 @@ export class AppComponent {
 
   ngOnInit() {
     this.items = [
-      {label: 'Plantel', icon: 'pi pi-fw pi-plus', routerLink: 'plantel'},
-      {label: 'Animais', icon: 'pi pi-fw pi-download', routerLink: 'animais'},
-      {label: 'Medicamentos', icon: 'pi pi-fw pi-download', routerLink: 'medicamentos'},
-      {label: 'Vacinas/Vermífugos', icon: 'pi pi-fw pi-download', routerLink: 'vacinas'},
-      {label: 'Partos', icon: 'pi pi-fw pi-download', routerLink: 'partos'},
-      {label: 'Inseminações', icon: 'pi pi-fw pi-download', routerLink: 'inseminacoes'},
-      {label: 'Ocorrências', icon: 'pi pi-fw pi-download', routerLink: 'ocorrencias'},
+      {label: 'Plantel', icon: 'pi pi-fw pi-angle-right', routerLink: 'plantel'},
+      {label: 'Medicamentos', icon: 'pi pi-fw pi-angle-right', routerLink: 'medicamentos'},
+      {label: 'Vacinas/Vermífugos', icon: 'pi pi-fw pi-angle-right', routerLink: 'vacinas'},
+      {label: 'Ocorrências', icon: 'pi pi-fw pi-angle-right', routerLink: 'ocorrencias'},
     ];
   }
 }
