@@ -6,21 +6,23 @@ import { AppComponent } from './app.component';
 import { MedicamentosComponent } from './pages/medicamentos/medicamentos.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
-import {MenuModule} from 'primeng/menu';
+import {MegaMenuModule} from 'primeng/megamenu';
 import {ButtonModule} from 'primeng/button';
 import {CardModule} from 'primeng/card';
+import { PlantelComponent } from './pages/plantel/plantel.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    MedicamentosComponent
+    MedicamentosComponent,
+    PlantelComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     HttpClientModule,
-    MenuModule,
+    MegaMenuModule,
     ButtonModule,
     CardModule
   ],
