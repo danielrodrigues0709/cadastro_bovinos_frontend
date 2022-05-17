@@ -16,8 +16,9 @@ export class AnimaisService {
     let nomeAnimal = params.nomeAnimal != undefined ? params.nomeAnimal : '';
     let sexo = params.sexo != undefined ? params.sexo : '';
     let producao = params.producao != undefined ? params.producao : '';
+    let rebanho = params.rebanho != undefined ? params.rebanho : '';
     
-    let routeParams = `nome_animal=${nomeAnimal}&sexo=${sexo}&producao=${producao}`;
+    let routeParams = `nome_animal=${nomeAnimal}&sexo=${sexo}&producao=${producao}&rebanho=${rebanho}`;
     const href = `${environment.api}animais?${routeParams}`;
     return this.http.get(href, {
       headers: this.headers

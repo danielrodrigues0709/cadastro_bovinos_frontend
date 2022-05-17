@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DialogService } from 'primeng/dynamicdialog';
-import { producao, sexo } from 'src/app/utils/enums';
+import { producao, rebanho, sexo } from 'src/app/utils/enums';
 import { AnimaisService } from 'src/app/services/animais.service';
 import { Animal } from '../../interfaces/animal';
 import { CadastroOcorrenciaComponent } from '../cadastro-ocorrencia/cadastro-ocorrencia.component';
@@ -38,7 +38,8 @@ export class PlantelComponent implements OnInit {
   getMatrizProducao():void {
     let params = {
       sexo: sexo.FEMEA,
-      producao: producao.SIM
+      producao: producao.SIM,
+      rebanho: rebanho.SIM,
     }
     this._animaisService.getAnimais(params).pipe().subscribe(res => {
       this.matrizProducao = res.rows;
@@ -49,6 +50,7 @@ export class PlantelComponent implements OnInit {
     let params = {
       sexo: sexo.FEMEA,
       producao: producao.NAO,
+      rebanho: rebanho.SIM,
     }
     this._animaisService.getAnimais(params).pipe().subscribe(res => {
       this.matrizDescanso = res.rows;
