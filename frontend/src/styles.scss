@@ -8,6 +8,7 @@ $margin: 10px;
 
 // Colors
 $dark-green: darkgreen;
+$medium-green: rgb(76, 175, 80);
 $light-green: rgb(254, 255, 254);
 
 html, body {
@@ -16,6 +17,8 @@ html, body {
 body {
     margin: 0;
     font-family: Roboto, "Helvetica Neue", sans-serif;
+    display: flex;
+    flex-direction: column;
 }
 
 // Components
@@ -24,9 +27,18 @@ body {
     padding-top: 0;
     text-align: center;
 }
-
 .footer-buttons-bar {
-    display: flex;
-    justify-content: flex-end;
-    padding: 2 * $margin;
+    position: fixed;
+    bottom: $margin;
+    right: $margin;
+    width: calc($pages-width - 2 * $margin);
+    .buttons {
+        display: flex;
+        justify-content: flex-end;
+        padding: $margin;
+    }
+}
+.grid .field {
+    display: grid;
+    align-self: flex-end !important;
 }

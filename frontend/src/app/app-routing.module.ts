@@ -20,65 +20,59 @@ const routes: Routes = [
   {
     path: 'animais',
     component: PlantelComponent,
-    children: [
-      {
-        path: 'cadastro',
-        component: CadastroAnimalComponent,
-      },
-      {
-        path: 'inseminacao',
-        component: CadastroInseminacaoComponent,
-      },
-      {
-        path: 'vacinacao',
-        component: CadastroVacinacaoComponent,
-      },
-      {
-        path: 'parto',
-        component: CadastroPartoComponent,
-      }
-    ]
+  },
+  {
+    path: 'animais/cadastro',
+    component: CadastroAnimalComponent,
+  },
+  {
+    path: 'animais/inseminacao',
+    component: CadastroInseminacaoComponent,
+  },
+  {
+    path: 'animais/vacinacao',
+    component: CadastroVacinacaoComponent,
+  },
+  {
+    path: 'animais/parto',
+    component: CadastroPartoComponent,
   },
   {
     path: 'medicamentos',
     component: MedicamentosComponent,
-    children: [
-      {
-        path: 'cadastro',
-        component: CadastroMedicamentoComponent,
-      }
-    ]
+    children: []
+  },
+  {
+    path: 'medicamentos/cadastro',
+    component: CadastroMedicamentoComponent,
   },
   {
     path: 'vacinas',
     component: VacinasComponent,
-    children: [
-      {
-        path: 'cadastro',
-        component: CadastroVacinaComponent,
-      }
-    ]
+    children: []
+  },
+  {
+    path: 'vacinas/cadastro',
+    component: CadastroVacinaComponent,
   },
   {
     path: 'ocorrencias',
     component: OcorrenciasComponent,
-    children: [
-      {
-        path: 'cadastro',
-        component: CadastroOcorrenciaComponent,
-      }
-    ]
+    children: []
+  },
+  {
+    path: 'ocorrencias/cadastro',
+    component: CadastroOcorrenciaComponent,
   },
   {
     path: 'login',
     component: LoginComponent,
-    children: [
-      {
-        path: 'cadastro',
-        component: CadastroUsuarioComponent,
-      }
-    ]
-  }
+    children: []
+  },
+  {
+    path: 'login/cadastro',
+    component: CadastroUsuarioComponent,
+  },
 ];
 
 @NgModule({

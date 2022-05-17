@@ -12,8 +12,13 @@ export class AnimaisService {
 
   constructor(private http: HttpClient) { }
 
-  getAnimais(): Observable<any> {
-    const href = `${environment.api}animais/`;
+  getAnimais(params: any): Observable<any> {
+    let nomeAnimal = params.nomeAnimal != undefined ? params.nomeAnimal : '';
+    let sexo = params.sexo != undefined ? params.sexo : '';
+    let producao = params.producao != undefined ? params.producao : '';
+    
+    let routeParams = `nome_animal=${nomeAnimal}&sexo=${sexo}&producao=${producao}`;
+    const href = `${environment.api}animais?${routeParams}`;
     return this.http.get(href, {
       headers: this.headers
     });

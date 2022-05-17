@@ -1,1 +1,68 @@
-<p>cadastro-animal works!</p>
+<h2 class="header">{{title}} Animal</h2>
+
+<form [formGroup]="form" (ngSubmit)="submit()">
+    <div class="p-fluid grid formgrid">
+        <div class="p-float-label field col-3">
+            <input id="nro_controle" type="number" pInputText formControlName="nro_controle"> 
+            <label for="nro_controle">Nº Controle</label>
+        </div>
+
+        <div class="p-float-label field col-3">
+            <input id="matriz" type="number" pInputText formControlName="matriz"> 
+            <label for="matriz">Nº Matriz</label>
+        </div>
+        
+        <div class="field col-3">
+            <div class="spanLabel">
+                <label for="sexo">Sexo?</label>
+            </div>
+            <p-selectButton id="sexo" [options]="sexo" formControlName="sexo" optionLabel="label" optionValue="value"></p-selectButton>
+        </div>
+        
+        <div class="field col-3">
+            <div class="spanLabel">
+                <label for="rebanho">Pertence ao rebanho?</label>
+            </div>
+            <p-inputSwitch id="rebanho" formControlName="rebanho"></p-inputSwitch>
+        </div>
+        
+        <div class="p-float-label field col-6">
+            <input id="nome_animal" type="text" pInputText formControlName="nome_animal"> 
+            <label for="nome_animal">Nome do Animal</label>
+        </div>
+        
+        <div class="p-float-label field col-3">
+            <p-calendar inputId="data_nascimento" formControlName="data_nascimento" [showIcon]="true" dateFormat="dd-mm-yy"></p-calendar>
+            <label for="data_nascimento">Data Nascimento</label>
+        </div>
+        
+        <div class="field col-3">
+            <div class="spanLabel">
+                <label for="producao">Em Produção?</label>
+            </div>
+            <p-inputSwitch id="producao" formControlName="producao" [disabled]="disableInput()"></p-inputSwitch>
+        </div>
+        
+        <div class="p-float-label">
+            <input id="mae" type="text" pInputText formControlName="id_mae"> 
+            <label for="mae">Mãe</label>
+        </div>
+        
+        <div class="p-float-label">
+            <input id="pai" type="text" pInputText formControlName="id_pai"> 
+            <label for="pai">Pai</label>
+        </div>
+    </div>
+
+    <p-toast></p-toast>
+
+    <div class="footer-buttons-bar">
+        <div class="buttons">
+            <button *ngIf="editMode" pButton type="submit" label="Salvar" class="p-button-raised"></button>
+            <button *ngIf="!editMode" pButton type="button" (click)="edit()" label="Editar" class="p-button-raised"></button>
+
+            <button *ngIf="editMode" pButton type="button" (click)="cancel(!state.element)" label="Cancelar" class="p-button-outlined"></button>
+            <button *ngIf="!editMode" pButton type="button" (click)="cancel(true)" label="Voltar" class="p-button-outlined"></button>
+        </div>
+    </div>
+</form>

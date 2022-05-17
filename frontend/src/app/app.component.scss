@@ -1,9 +1,9 @@
 @import '../styles.scss';
-
 .content {
     display: flex;
 }
 .menu {
+    width: $menu-width;
     background-color: $dark-green;
 }
 .image {
@@ -11,7 +11,6 @@
     width: $menu-width;
     height: calc($menu-width - 4px);
 }
-
 ::ng-deep .p-megamenu {
     width: $menu-width;
     height: calc($height - $menu-width);
@@ -25,13 +24,59 @@
 :host ::ng-deep .p-menuitem-icon, :host ::ng-deep .p-menuitem-text {
     color: white !important;
 }
+:host ::ng-deep .p-button{
+    margin: $margin / 2;
+}
 ::ng-deep .p-card {
     height: calc($height - 2 * $margin);
     width: calc($pages-width - 2 * $margin);
     margin: $margin;
-
     .p-menuitem.p-card-content {
         padding: 0;
     }
 }
-
+:host ::ng-deep .p-tabview-panels {
+    padding: 0;
+}
+:host ::ng-deep .p-tabview-nav {
+    & li.p-highlight a {
+        color: white !important;
+        background-color: $dark-green !important;
+        box-shadow: none !important;
+    }
+}
+:host ::ng-deep .p-datatable {
+    th {
+        background-color: $medium-green !important;
+        color: white !important;
+    }
+    td {
+        padding: 0 !important;
+    }
+    th, td {
+        &.alignRight {
+            text-align: right !important;
+        }
+        &.alignCenter {
+            text-align: center !important;
+        }
+        &.alignLeft {
+            text-align: left !important;
+        }
+    }
+}
+:host  ::ng-deep label {
+    left: 0.75rem !important;
+}
+:host ::ng-deep .p-float-label {
+    margin-top: 1rem;
+}
+:host ::ng-deep .p-inputtext {
+    padding-left: 10px;
+}
+:host ::ng-deep .p-inputswitch {
+    margin: 0.25rem !important;
+}
+:host ::ng-deep .p-datepicker-trigger {
+    margin: 0;
+}

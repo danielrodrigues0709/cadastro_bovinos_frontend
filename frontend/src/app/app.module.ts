@@ -2,11 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
-
-import {MegaMenuModule} from 'primeng/megamenu';
-import {ButtonModule} from 'primeng/button';
-import {CardModule} from 'primeng/card';
-import {TableModule} from 'primeng/table';
+import { ReactiveFormsModule } from '@angular/forms';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -23,6 +19,19 @@ import { CadastroVacinacaoComponent } from './pages/cadastro-vacinacao/cadastro-
 import { CadastroPartoComponent } from './pages/cadastro-parto/cadastro-parto.component';
 import { CadastroUsuarioComponent } from './pages/cadastro-usuario/cadastro-usuario.component';
 import { LoginComponent } from './pages/login/login.component';
+
+import {MegaMenuModule} from 'primeng/megamenu';
+import {ButtonModule} from 'primeng/button';
+import {CardModule} from 'primeng/card';
+import {TableModule} from 'primeng/table';
+import {TabViewModule} from 'primeng/tabview';
+import {DynamicDialogModule} from 'primeng/dynamicdialog';
+import {InputSwitchModule} from 'primeng/inputswitch';
+import { CalendarModule } from 'primeng/calendar';
+import { InputTextModule } from 'primeng/inputtext';
+import { SelectButtonModule } from 'primeng/selectbutton';
+import {ConfirmDialogModule} from 'primeng/confirmdialog';
+import {ToastModule} from 'primeng/toast';
 
 @NgModule({
   declarations: [
@@ -45,11 +54,20 @@ import { LoginComponent } from './pages/login/login.component';
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
+    ReactiveFormsModule,
     HttpClientModule,
     MegaMenuModule,
     ButtonModule,
     CardModule,
-    TableModule
+    TableModule,
+    TabViewModule,
+    DynamicDialogModule,
+    InputTextModule,
+    SelectButtonModule,
+    InputSwitchModule,
+    CalendarModule,
+    ConfirmDialogModule,
+    ToastModule
   ],
   providers: [],
   bootstrap: [AppComponent]
