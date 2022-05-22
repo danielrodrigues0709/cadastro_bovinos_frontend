@@ -10,21 +10,23 @@ export class UsuariosService {
 
   constructor(private http: HttpClient) { }
 
-  listaUsuarios(): Observable<any> {
+  getUsuarios(): Observable<any> {
     const href = `${environment.api}usuarios/`;
     return this.http.get(href);
   }
   
-  salvaUsuario(): Observable<any> {
-    let usuario = {
-      usuario: "Daniel Rodrigues",
-      email: "danielrodrigues0709@gmail.com",
-      senha: "123456"
-    };
-
+  saveUsuario(usuario: any): Observable<any> {
     const href = `${environment.api}usuarios/`;
     return this.http.post(href, usuario);
   }
-
-  // TODO Implementar CRUD
+  
+  updateUsuario(id: number, usuario: any): Observable<any> {
+    const href = `${environment.api}usuarios/${id}`;
+    return this.http.patch(href, usuario);
+  }
+  
+  deleteUsuario(id: number): Observable<any> {
+    const href = `${environment.api}usuarios/${id}`;
+    return this.http.delete(href);
+  }
 }
