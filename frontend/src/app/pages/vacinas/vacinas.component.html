@@ -1,1 +1,58 @@
-<p>vacinas works!</p>
+<h2 class="header">Vacinas e Vermífugos</h2>
+
+<div>
+    <p-tabView>
+        <p-tabPanel class="tabHeader" header="Vacinas">
+            <p-table [value]="vacinas" styleClass="p-datatable-sm">
+                <ng-template pTemplate="header">
+                    <tr class="tableHeader">
+                        <th class="alignCenter">Nome Vacina</th>
+                        <th class="alignCenter">Doses</th>
+                        <th class="alignCenter">Detalhes</th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-element>
+                    <tr>
+                        <td class="alignCenter">{{element.vacina_vermifugo}}</td>
+                        <td class="alignLeft">{{element.doses}}</td>
+                        <td class="alignCenter">
+                            <button pButton (click)="edit(element)" class="p-button-rounded" icon="pi pi-pencil"></button>
+                            <button pButton (click)="delete(element.id)" class="p-button-rounded p-button-danger" icon="pi pi-trash"></button>
+                        </td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </p-tabPanel>
+
+        <p-tabPanel header="Vermífugos">
+            <p-table [value]="vermifugos" styleClass="p-datatable-sm">
+                <ng-template pTemplate="header">
+                    <tr class="tableHeader">
+                        <th class="alignCenter">Nome Vermífugo</th>
+                        <th class="alignCenter">Doses</th>
+                        <th class="alignCenter">Detalhes</th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-element>
+                    <tr>
+                        <td class="alignCenter">{{element.vacina_vermifugo}}</td>
+                        <td class="alignLeft">{{element.doses}}</td>
+                        <td class="alignCenter">
+                            <button pButton (click)="edit(element)" class="p-button-rounded" icon="pi pi-pencil"></button>
+                            <button pButton (click)="delete(element.id)" class="p-button-rounded p-button-danger" icon="pi pi-trash"></button>
+                        </td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </p-tabPanel>
+    </p-tabView>
+
+    <p-confirmDialog header="Atenção!" icon="pi pi-exclamation-triangle"></p-confirmDialog>
+    <p-toast></p-toast>
+
+    <div class="footer-buttons-bar">
+        <div class="buttons">
+            <button pButton (click)="include()" label="Nova Vacina/Vermífugo" class="p-button-raised"></button>
+        </div>
+    </div>
+</div>

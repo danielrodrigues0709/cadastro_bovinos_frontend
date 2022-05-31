@@ -1,26 +1,31 @@
 <h2 class="header">Medicamentos</h2>
 
 <div>
-    <p-table [value]="medicamentos">
+    <p-table [value]="medicamentos" styleClass="p-datatable-sm">
         <ng-template pTemplate="header">
             <tr>
-                <th>Medicamento</th>
-                <th>Detalhes</th>
+                <th class="alignCenter">Medicamento</th>
+                <th class="alignCenter">Detalhes</th>
             </tr>
         </ng-template>
         <ng-template pTemplate="body" let-element>
             <tr>
-                <td>{{element.medicamento}}</td>
-                <td>
-                    <button pButton (click)="edit(element)">Editar</button>
-                    <button pButton class="p-button-danger" (click)="delete(element.id)">Excluir</button>
+                <td class="alignLeft">{{element.medicamento}}</td>
+                <td class="alignCenter">
+                    <button pButton (click)="edit(element)" class="p-button-rounded" icon="pi pi-pencil"></button>
+                    <button pButton (click)="delete(element.id)" class="p-button-rounded p-button-danger" icon="pi pi-trash"></button>
                 </td>
             </tr>
         </ng-template>
     </p-table>
 
+    <p-confirmDialog header="Atenção!" icon="pi pi-exclamation-triangle"></p-confirmDialog>
+    <p-toast></p-toast>
+
     <div class="footer-buttons-bar">
-        <button pButton (click)="include()">Incluir</button>
+        <div class="buttons">
+            <button pButton (click)="include()" label="Novo Medicamento" class="p-button-raised"></button>
+        </div>
     </div>
 </div>
 

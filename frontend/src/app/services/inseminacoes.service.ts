@@ -12,8 +12,11 @@ export class InseminacoesService {
 
   constructor(private http: HttpClient) { }
 
-  getInseminacoes(): Observable<any> {
-    const href = `${environment.api}inseminacoes/`;
+  getInseminacoes(params?: any): Observable<any> {
+    let id_animal = params.id_animal != undefined ? params.id_animal : '';
+    let id_reprodutor = params.id_reprodutor != undefined ? params.id_reprodutor : '';
+
+    const href = `${environment.api}inseminacoes?id_animal=${id_animal}&id_reprodutor=${id_reprodutor}`;
     return this.http.get(href, {
       headers: this.headers
     });

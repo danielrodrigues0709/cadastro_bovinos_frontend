@@ -12,8 +12,11 @@ export class OcorrenciasService {
 
   constructor(private http: HttpClient) { }
 
-  getOcorrencias(): Observable<any> {
-    const href = `${environment.api}ocorrencias/`;
+  getOcorrencias(params?: any): Observable<any> {
+    let id_animal = params.id_animal != undefined ? params.id_animal : '';
+    let id_medicamento = params.id_medicamento != undefined ? params.id_medicamento : '';
+
+    const href = `${environment.api}ocorrencias?id_animal=${id_animal}&id_medicamento=${id_medicamento}`;
     return this.http.get(href, {
       headers: this.headers
     });

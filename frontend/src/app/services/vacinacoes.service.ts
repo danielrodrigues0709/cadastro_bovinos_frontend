@@ -12,8 +12,12 @@ export class VacinacoesService {
 
   constructor(private http: HttpClient) { }
 
-  getVacinacoes(): Observable<any> {
-    const href = `${environment.api}vacinacoes/`;
+  getVacinacoes(params?: any): Observable<any> {
+    let id_vacina = params.id_vacina != undefined ? params.id_vacina : '';
+    let id_animal = params.id_animal != undefined ? params.id_animal : '';
+    let tipo = params.tipo != undefined ? params.tipo : '';
+
+    const href = `${environment.api}vacinacoes?id_animal=${id_vacina}&id_vacina=${id_animal}&tipo=${tipo}`;
     return this.http.get(href, {
       headers: this.headers
     });

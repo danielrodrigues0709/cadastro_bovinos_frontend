@@ -1,1 +1,41 @@
-<p>ocorrencias works!</p>
+<h2 class="header">Ocorrências</h2>
+
+<div>
+    <p-table [value]="ocorrencias" styleClass="p-datatable-sm">
+        <ng-template pTemplate="header">
+            <tr>
+                <th class="alignCenter">Data Ocorrência</th>
+                <th class="alignCenter">Descrição</th>
+                <th class="alignCenter">Nome Animal</th>
+                <th class="alignCenter">Nº Registro Animal</th>
+                <th class="alignCenter">Matriz Animal</th>
+                <th class="alignCenter">Medicamento</th>
+                <th class="alignCenter">Detalhes</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-element>
+            <tr>
+                <td class="alignLeft">{{element.data_ocorrencia}}</td>
+                <td class="alignLeft">{{element.descricao}}</td>
+                <td class="alignLeft">{{element.id_animal.nome_animal}}</td>
+                <td class="alignLeft">{{element.id_animal.registro}}</td>
+                <td class="alignLeft">{{element.id_animal.matriz}}</td>
+                <td class="alignLeft">{{element.id_medicamento.medicamento}}</td>
+                <td class="alignCenter">
+                    <button pButton (click)="edit(element)" class="p-button-rounded" icon="pi pi-pencil"></button>
+                    <button pButton (click)="delete(element.id)" class="p-button-rounded p-button-danger" icon="pi pi-trash"></button>
+                </td>
+            </tr>
+        </ng-template>
+    </p-table>
+
+    <p-confirmDialog header="Atenção!" icon="pi pi-exclamation-triangle"></p-confirmDialog>
+    <p-toast></p-toast>
+
+    <div class="footer-buttons-bar">
+        <div class="buttons">
+            <button pButton (click)="include()" label="Nova Ocorrência" class="p-button-raised"></button>
+        </div>
+    </div>
+</div>
+

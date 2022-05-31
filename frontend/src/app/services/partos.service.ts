@@ -12,8 +12,15 @@ export class PartosService {
 
   constructor(private http: HttpClient) { }
 
-  getPartos(): Observable<any> {
-    const href = `${environment.api}partos/`;
+  getPartos(params?: any): Observable<any> {
+    let nro_controle_cria = params.nro_controle_cria != undefined ? params.nro_controle_cria : '';
+    let nome_cria = params.nome_cria != undefined ? params.nome_cria : '';
+    let id_cria = params.id_cria != undefined ? params.id_cria : '';
+    let id_reprodutor = params.id_reprodutor != undefined ? params.id_reprodutor : '';
+    let id_mae = params.id_mae != undefined ? params.id_mae : '';
+    let sexo = params.sexo != undefined ? params.sexo : '';
+
+    const href = `${environment.api}partos?nro_controle_cria=${nro_controle_cria}&nome_cria=${nome_cria}&id_cria=${id_cria}&id_reprodutor=${id_reprodutor}&id_mae=${id_mae}&sexo=${sexo}`;
     return this.http.get(href, {
       headers: this.headers
     });

@@ -12,8 +12,11 @@ export class VacinasService {
 
   constructor(private http: HttpClient) { }
 
-  getVacinas(): Observable<any> {
-    const href = `${environment.api}vacinas/`;
+  getVacinas(params?: any): Observable<any> {
+    let vacina_vermifugo = params.vacina_vermifugo != undefined ? params.vacina_vermifugo : '';
+    let tipo = params.tipo != undefined ? params.tipo : '';
+
+    const href = `${environment.api}vacinas?vacina_vermifugo=${vacina_vermifugo}&tipo=${tipo}`;
     return this.http.get(href, {
       headers: this.headers
     });
