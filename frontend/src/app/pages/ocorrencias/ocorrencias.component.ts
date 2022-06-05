@@ -30,9 +30,15 @@ export class OcorrenciasComponent implements OnInit {
   }
 
   getOcorrencias():void {
-    this._ocorrenciasService.getOcorrencias().pipe().subscribe(res => {
+    let params = {
+      id_animal: null,
+      id_medicamento: null
+    }
+    this._ocorrenciasService.getOcorrencias(params).pipe().subscribe(res => {
       this.ocorrencias = res.rows;
-    });
+
+      console.log(this.ocorrencias.length)
+    })
   }
 
   edit(element: any): void {
