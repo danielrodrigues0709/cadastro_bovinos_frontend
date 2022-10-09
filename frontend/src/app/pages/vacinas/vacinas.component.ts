@@ -55,6 +55,10 @@ export class VacinasComponent implements OnInit {
       data: element,
       header: `Editar Vacina/Vermífugo`,
       width: '90%'
+    })
+    .onClose.subscribe(() => {
+      this.getVacinas();
+      this.getVermifugos();
     });
   }
 
@@ -80,6 +84,10 @@ export class VacinasComponent implements OnInit {
       data: { },
       header: `Nova Vacina/Vermífugo`,
       width: '90%'
+    })
+    .onClose.subscribe(() => {
+      this.getVacinas();
+      this.getVermifugos();
     });
   }
 

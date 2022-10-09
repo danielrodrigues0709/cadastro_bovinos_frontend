@@ -1,1 +1,30 @@
-<p>cadastro-vacina works!</p>
+<form [formGroup]="form" (ngSubmit)="submit()">
+    <div class="p-fluid grid formgrid">
+        <div class="field col-3">
+            <div class="spanLabel">
+                <label for="tipo">Tipo</label>
+            </div>
+            <p-selectButton id="tipo" [options]="tipo" formControlName="tipo" optionLabel="label" optionValue="value"></p-selectButton>
+        </div>
+        
+        <div class="p-float-label field col-9">
+            <input id="vacina_vermifugo" type="text" pInputText formControlName="vacina_vermifugo"> 
+            <label for="vacina_vermifugo">Nome Vacina/Vermífugo</label>
+        </div>
+        
+        <div class="p-float-label field col-3">
+            <input id="doses" type="number" pInputText formControlName="doses"> 
+            <label for="doses">Qtd. Doses</label>
+        </div>
+    </div>
+
+    <div class="footer-buttons-bar">
+        <div class="buttons">
+            <button *ngIf="editMode" pButton type="submit" label="Salvar" class="p-button-raised"></button>
+            <button *ngIf="!editMode" pButton type="button" (click)="edit()" label="Editar" class="p-button-raised"></button>
+
+            <button *ngIf="editMode" pButton type="button" (click)="cancel(!vacina_vermifugo.id)" label="Cancelar" class="p-button-outlined"></button>
+            <button *ngIf="!editMode" pButton type="button" (click)="cancel(true)" label="Voltar" class="p-button-outlined"></button>
+        </div>
+    </div>
+</form>
