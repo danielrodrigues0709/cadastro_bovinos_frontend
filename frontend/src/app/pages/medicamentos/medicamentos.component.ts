@@ -40,6 +40,9 @@ export class MedicamentosComponent implements OnInit {
       data: element,
       header: `Editar Medicamento`,
       width: '90%'
+    })
+    .onClose.subscribe(() => {
+      this.getMedicamentos();
     });
   }
 
@@ -64,6 +67,9 @@ export class MedicamentosComponent implements OnInit {
       data: { },
       header: `Novo Medicamento`,
       width: '90%'
+    })
+    .onClose.subscribe(() => {
+      this.getMedicamentos();
     });
   }
 
