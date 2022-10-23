@@ -65,18 +65,6 @@
         }
     }
 }
-:host  ::ng-deep label {
-    left: 0.75rem !important;
-}
-:host ::ng-deep .p-float-label {
-    margin-top: 1rem;
-}
-:host ::ng-deep .p-inputtext {
-    padding-left: 10px;
-}
-:host ::ng-deep .p-inputswitch {
-    margin: 0.25rem !important;
-}
 :host ::ng-deep .p-datepicker-trigger {
     margin: 0;
 }

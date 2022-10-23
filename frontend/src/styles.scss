@@ -33,14 +33,33 @@ body {
     right: $margin;
     width: calc($pages-width - 2 * $margin);
     .buttons {
-        display: flex;
-        justify-content: flex-end;
         padding: $margin;
     }
 }
+.modal-buttons-bar {
+    display: flex;
+    justify-content: flex-end;
+}
+.buttons {
+    display: flex;
+    justify-content: flex-end;
+    button {
+        margin: $margin / 2;
+    }
+}
+// Formulários
 .grid .field {
     display: grid;
     align-self: flex-end !important;
+}
+label {
+    left: 0.75rem !important;
+}
+.p-float-label {
+    margin-top: 1rem;
+}
+.p-datepicker-trigger {
+    margin: 0;
 }
 
 .noData{
