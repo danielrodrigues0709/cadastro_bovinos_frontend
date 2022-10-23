@@ -54,6 +54,15 @@
         </div>
     </div>
 
+    <div *ngIf="animal?.id" class="action-buttons">
+        <button pButton type="button" label="Nova Inseminação" class="p-button-raised"></button>
+        <button pButton type="button" label="Novo Parto" class="p-button-raised"></button>
+        <button pButton type="button" label="Nova Vacinação/Vermifugação" class="p-button-raised"></button>
+        <button pButton type="button" label="Nova Ocorrência/Medicação" class="p-button-raised"></button>
+    </div>
+
+    <app-historico-animal *ngIf="animal?.id"></app-historico-animal>
+
     <p-toast></p-toast>
 
     <div class="footer-buttons-bar">

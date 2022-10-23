@@ -32,6 +32,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { SelectButtonModule } from 'primeng/selectbutton';
 import {ConfirmDialogModule} from 'primeng/confirmdialog';
 import {ToastModule} from 'primeng/toast';
+import { HistoricoAnimalComponent } from './pages/historico-animal/historico-animal.component';
 
 @NgModule({
   declarations: [
@@ -48,7 +49,8 @@ import {ToastModule} from 'primeng/toast';
     CadastroVacinacaoComponent,
     CadastroPartoComponent,
     CadastroUsuarioComponent,
-    LoginComponent
+    LoginComponent,
+    HistoricoAnimalComponent
   ],
   imports: [
     BrowserModule,
