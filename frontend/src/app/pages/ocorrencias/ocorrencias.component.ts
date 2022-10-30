@@ -36,8 +36,6 @@ export class OcorrenciasComponent implements OnInit {
     }
     this._ocorrenciasService.getOcorrencias(params).pipe().subscribe(res => {
       this.ocorrencias = res.rows;
-
-      console.log(this.ocorrencias.length)
     })
   }
 

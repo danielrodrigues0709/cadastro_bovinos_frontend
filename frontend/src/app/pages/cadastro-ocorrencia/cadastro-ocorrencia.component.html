@@ -1,1 +1,43 @@
-<p>cadastro-ocorrencia works!</p>
+<form [formGroup]="form" (ngSubmit)="submit()">
+    <div class="p-fluid grid formgrid">
+        <div class="p-float-label field col-4">
+            <input id="numControle" type="number" pInputText formControlName="numControle"> 
+            <label for="numControle">Número de Controle</label>
+        </div>
+
+        <div class="p-float-label field col-8">
+            <p-autoComplete id="animal" formControlName="animal" [suggestions]="animaisOptions" field="nome_animal" (completeMethod)="autocompleteAnimal($event)" (onSelect)="onSelectAnimal($event)"></p-autoComplete>
+            <label for="animal">Nome animal</label>
+        </div>
+        
+        <div class="p-float-label field col-3">
+            <p-calendar id="data_ocorrencia" [showIcon]="true"  formControlName="data_ocorrencia" appendTo = 'body'></p-calendar>
+            <label for="data_ocorrencia">Data Ocorrência</label>
+        </div>
+        
+        <div class="p-float-label field col-3">
+            <input id="morte" type="text" pInputText formControlName="morte"> 
+            <label for="morte">Morte</label>
+        </div>
+
+        <div class="p-float-label field col-6">
+            <p-autoComplete id="medicamento" formControlName="medicamento" [suggestions]="medicamentosOptions" field="medicamento" (completeMethod)="autocompleteMedicamento($event)"></p-autoComplete>
+            <label for="medicamento">Medicamento</label>
+        </div>
+        
+        <div class="p-float-label field col-12">
+            <textarea  id="descricao" pInputTextarea  formControlName="descricao"></textarea>
+            <label for="descricao">Descrição Ocorrência</label>
+        </div>
+    </div>
+
+    <div class="modal-buttons-bar">
+        <div class="buttons">
+            <button *ngIf="editMode" pButton type="submit" label="Salvar" class="p-button-raised"></button>
+            <button *ngIf="!editMode" pButton type="button" (click)="edit()" label="Editar" class="p-button-raised"></button>
+
+            <button *ngIf="editMode" pButton type="button" (click)="cancel(!ocorrencia.id)" label="Cancelar" class="p-button-outlined"></button>
+            <button *ngIf="!editMode" pButton type="button" (click)="cancel(true)" label="Voltar" class="p-button-outlined"></button>
+        </div>
+    </div>
+</form>

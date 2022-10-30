@@ -20,19 +20,21 @@ import { CadastroPartoComponent } from './pages/cadastro-parto/cadastro-parto.co
 import { CadastroUsuarioComponent } from './pages/cadastro-usuario/cadastro-usuario.component';
 import { LoginComponent } from './pages/login/login.component';
 
-import {MegaMenuModule} from 'primeng/megamenu';
-import {ButtonModule} from 'primeng/button';
-import {CardModule} from 'primeng/card';
-import {TableModule} from 'primeng/table';
-import {TabViewModule} from 'primeng/tabview';
-import {DynamicDialogModule} from 'primeng/dynamicdialog';
-import {InputSwitchModule} from 'primeng/inputswitch';
+import { MegaMenuModule } from 'primeng/megamenu';
+import { ButtonModule } from 'primeng/button';
+import { CardModule } from 'primeng/card';
+import { TableModule } from 'primeng/table';
+import { TabViewModule } from 'primeng/tabview';
+import { DynamicDialogModule } from 'primeng/dynamicdialog';
+import { InputSwitchModule } from 'primeng/inputswitch';
 import { CalendarModule } from 'primeng/calendar';
 import { InputTextModule } from 'primeng/inputtext';
 import { SelectButtonModule } from 'primeng/selectbutton';
-import {ConfirmDialogModule} from 'primeng/confirmdialog';
-import {ToastModule} from 'primeng/toast';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { ToastModule } from 'primeng/toast';
 import { HistoricoAnimalComponent } from './pages/historico-animal/historico-animal.component';
+import { AutoCompleteModule } from 'primeng/autocomplete';
+import { InputTextareaModule } from 'primeng/inputtextarea';
 
 @NgModule({
   declarations: [
@@ -69,7 +71,9 @@ import { HistoricoAnimalComponent } from './pages/historico-animal/historico-ani
     InputSwitchModule,
     CalendarModule,
     ConfirmDialogModule,
-    ToastModule
+    ToastModule,
+    AutoCompleteModule,
+    InputTextareaModule
   ],
   providers: [],
   bootstrap: [AppComponent]
