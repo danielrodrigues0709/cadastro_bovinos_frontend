@@ -15,8 +15,9 @@ export class OcorrenciasService {
   getOcorrencias(params?: any): Observable<any> {
     let id_animal = params.id_animal != undefined ? params.id_animal : '';
     let id_medicamento = params.id_medicamento != undefined ? params.id_medicamento : '';
+    let morte = params.morte != undefined ? params.morte : '';
 
-    const href = `${environment.api}ocorrencias?id_animal=${id_animal}&id_medicamento=${id_medicamento}`;
+    const href = `${environment.api}ocorrencias?id_animal=${id_animal}&id_medicamento=${id_medicamento}&morte=${morte}`;
     return this.http.get(href, {
       headers: this.headers
     });

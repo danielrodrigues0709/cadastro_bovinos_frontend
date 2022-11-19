@@ -32,7 +32,8 @@ export class OcorrenciasComponent implements OnInit {
   getOcorrencias():void {
     let params = {
       id_animal: null,
-      id_medicamento: null
+      id_medicamento: null,
+      morte: null
     }
     this._ocorrenciasService.getOcorrencias(params).pipe().subscribe(res => {
       this.ocorrencias = res.rows;
