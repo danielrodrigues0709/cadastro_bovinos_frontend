@@ -74,7 +74,7 @@ export class CadastroOcorrenciaComponent implements OnInit {
     this.form.patchValue({
       numControle: element?.animal,
       animal: element?.animal,
-      data_ocorrencia: new Date(element?.data_ocorrencia),
+      data_ocorrencia: element.id ? new Date(element.data_ocorrencia): '',
       morte: element?.morte,
       medicamento: element?.medicamento,
       descricao: element?.descricao
