@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { Animal } from 'src/app/interfaces/animal';
 
 @Component({
   selector: 'app-historico-animal',
@@ -6,6 +7,8 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./historico-animal.component.scss']
 })
 export class HistoricoAnimalComponent implements OnInit {
+
+  @Input() data!: Animal;
 
   constructor() { }
 

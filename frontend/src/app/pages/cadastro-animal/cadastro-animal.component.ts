@@ -106,6 +106,7 @@ export class CadastroAnimalComponent implements OnInit {
     this.animal.producao = booleanToNumber(!!this.form.controls['producao'].value);
     
     if(this.state.element?.id) {
+      this.animal.id = this.state.element.id;
       this._animaisService.updateAnimal(this.state.element.id, this.animal).subscribe(res => {
         this._messageService.add({severity:'success', detail: res.message});
         this.editMode = false;

@@ -42,11 +42,8 @@ body {
 }
 .action-buttons {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     margin: $margin 0;
-    button {
-        margin: 0 !important;
-    }
 }
 .buttons {
     display: flex;
