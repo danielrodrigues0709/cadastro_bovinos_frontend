@@ -1,4 +1,4 @@
 export const environment = {
-    api: `https://cadastro-bovinos.herokuapp.com/`,
+    api: `http://localhost:3000/`,
     production: false
 };
