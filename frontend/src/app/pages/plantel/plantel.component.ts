@@ -97,6 +97,11 @@ export class PlantelComponent implements OnInit {
       data: { },
       header: `${mode} Ocorrência`,
       width: '90%'
+    })
+    .onClose.subscribe(() => {
+      this.getMatrizProducao();
+      this.getMatrizDescanso();
+      this.getReprodutores();
     });
   }
 

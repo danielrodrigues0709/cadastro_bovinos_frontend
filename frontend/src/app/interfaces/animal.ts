@@ -1,6 +1,6 @@
 export interface Animal {
     id: number;
-    nuro_controle: number;
+    nro_controle: number;
     matriz: number | null;
     nome_animal: string;
     sexo: number

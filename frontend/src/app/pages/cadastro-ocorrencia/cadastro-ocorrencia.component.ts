@@ -2,10 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { Animal } from 'src/app/interfaces/animal';
 import { Ocorrencia } from 'src/app/interfaces/ocorrencia';
 import { AnimaisService } from 'src/app/services/animais.service';
 import { MedicamentosService } from 'src/app/services/medicamentos.service';
 import { OcorrenciasService } from 'src/app/services/ocorrencias.service';
+import { booleanToNumber } from 'src/app/utils/utils';
 
 @Component({
   selector: 'app-cadastro-ocorrencia',
@@ -15,6 +17,7 @@ import { OcorrenciasService } from 'src/app/services/ocorrencias.service';
 export class CadastroOcorrenciaComponent implements OnInit {
 
   ocorrencia!: Ocorrencia;
+  animal!: Animal;
   editMode!: boolean;
   form!: FormGroup;
   animaisOptions: any[] = [];
@@ -56,7 +59,8 @@ export class CadastroOcorrenciaComponent implements OnInit {
   }
 
   onSelectAnimal(event: any): void {
-    this.form.get('numControle')?.patchValue(event.nro_controle)
+    this.animal = event;
+    this.form.get('numControle')?.patchValue(this.animal.nro_controle);
   }
 
   createform(): void {
@@ -64,8 +68,8 @@ export class CadastroOcorrenciaComponent implements OnInit {
       numControle: ['', Validators.required],
       animal: ['', Validators.required],
       data_ocorrencia: ['', Validators.required],
-      morte: ['', Validators.required],
-      medicamento: ['', Validators.required],
+      morte: [''],
+      medicamento: [''],
       descricao: ['', Validators.required]
     })
   }
@@ -99,6 +103,25 @@ export class CadastroOcorrenciaComponent implements OnInit {
     }
   }
 
+  removeAnimal(morte: number): void {
+    if(morte == 1) {
+      let params = {
+        ...this.animal,
+        rebanho: 0,
+        producao: 0,
+      };
+      this._animalService.updateAnimal(this.animal.id, params).subscribe(() => {
+        this.ref.close();
+      },
+      err => {
+        this._messageService.add({severity:'error', detail: err.error.message});
+      })
+    }
+    else {
+      this.ref.close();
+    }
+  }
+
   submit(): void {
     if(!this.form.valid) {
       return;
@@ -107,13 +130,14 @@ export class CadastroOcorrenciaComponent implements OnInit {
     let params = { 
       ...formValue,
       id_animal: formValue.animal.id,
-      id_medicamento: formValue.medicamento.id
+      id_medicamento: formValue.medicamento ? formValue.medicamento.id : null,
+      morte: booleanToNumber(formValue.morte)
     }
     
     if(this.ocorrencia.id) {
       this._ocorrenciaService.updateOcorrencia(this.ocorrencia.id, params).subscribe(res => {
         this._messageService.add({severity:'success', detail: res.message});
-        this.ref.close();
+        this.removeAnimal(params.morte);
       },
       err => {
         this._messageService.add({severity:'error', detail: err.error.message});
@@ -122,7 +146,7 @@ export class CadastroOcorrenciaComponent implements OnInit {
     else {
       this._ocorrenciaService.saveOcorrencia(params).subscribe(res => {
         this._messageService.add({severity:'success', detail: res.message});
-        this.ref.close();
+        this.removeAnimal(params.morte);
       },
       err => {
         this._messageService.add({severity:'error', detail: err.error.message});

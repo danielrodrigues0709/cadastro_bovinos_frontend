@@ -15,12 +15,14 @@
             <label for="data_ocorrencia">Data Ocorrência</label>
         </div>
         
-        <div class="p-float-label field col-3">
-            <input id="morte" type="text" pInputText formControlName="morte"> 
-            <label for="morte">Morte</label>
+        <div class="field col">
+            <div class="spanLabel">
+                <label for="morte">Morte?</label>
+            </div>
+            <p-inputSwitch id="morte" formControlName="morte"></p-inputSwitch>
         </div>
 
-        <div class="p-float-label field col-6">
+        <div class="p-float-label field col-8">
             <p-autoComplete id="medicamento" formControlName="medicamento" [suggestions]="medicamentosOptions" field="medicamento" (completeMethod)="autocompleteMedicamento($event)"></p-autoComplete>
             <label for="medicamento">Medicamento</label>
         </div>
