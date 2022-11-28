@@ -24,6 +24,20 @@ export class AnimaisService {
       headers: this.headers
     });
   }
+
+  getAnimalById(id_animal: number): Observable<any> {
+    const href = `${environment.api}animais/${id_animal}`;
+    return this.http.get(href, {
+      headers: this.headers
+    });
+  }
+
+  getAnimalByDesc(nome_animal: string): Observable<any> {
+    const href = `${environment.api}animais/searchByDesc/${nome_animal}`;
+    return this.http.get(href, {
+      headers: this.headers
+    });
+  }
   
   saveAnimal(animal: any): Observable<any> {
     const href = `${environment.api}animais/`;

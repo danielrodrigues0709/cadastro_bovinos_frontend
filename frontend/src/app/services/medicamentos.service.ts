@@ -19,6 +19,13 @@ export class MedicamentosService {
     });
   }
 
+  getMedicamentosById(id: number): Observable<any> {
+    const href = `${environment.api}medicamentos/${id}`;
+    return this.http.get(href, {
+      headers: this.headers
+    });
+  }
+
   getMedicamentosByDesc(medicamento: string): Observable<any> {
     const href = `${environment.api}medicamentos/searchByDesc/${medicamento}`;
     return this.http.get(href, {
