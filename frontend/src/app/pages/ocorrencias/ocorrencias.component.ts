@@ -3,6 +3,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { DialogService } from 'primeng/dynamicdialog';
 import { Ocorrencia } from 'src/app/interfaces/ocorrencia';
+import { AnimaisService } from 'src/app/services/animais.service';
+import { MedicamentosService } from 'src/app/services/medicamentos.service';
 import { OcorrenciasService } from 'src/app/services/ocorrencias.service';
 import { CadastroOcorrenciaComponent } from '../cadastro-ocorrencia/cadastro-ocorrencia.component';
 
@@ -18,6 +20,8 @@ export class OcorrenciasComponent implements OnInit {
 
   constructor(
     private _ocorrenciasService: OcorrenciasService,
+    private _animaisService: AnimaisService,
+    private _medicamentosService: MedicamentosService,
     public dialogService: DialogService,
     public router: Router,
     public activatedRoute: ActivatedRoute,
@@ -37,6 +41,26 @@ export class OcorrenciasComponent implements OnInit {
     }
     this._ocorrenciasService.getOcorrencias(params).pipe().subscribe(res => {
       this.ocorrencias = res.rows;
+      this.getDataById(res.rows);
+    })
+  }
+
+  getDataById(ocorrencias: Ocorrencia[]): void {
+    ocorrencias.forEach((ocorrencia, index) => {
+      this._animaisService.getAnimalById(ocorrencia.id_animal).subscribe(res => {
+        ocorrencias[index] = Object.assign(ocorrencias[index], {
+          animal: res.rows[0]
+        });
+        this.ocorrencias = ocorrencias;
+      });
+      if(ocorrencia.id_medicamento) {
+        this._medicamentosService.getMedicamentosById(ocorrencia.id_medicamento).subscribe(res => {
+          ocorrencias[index] = Object.assign(ocorrencias[index], {
+            medicamento: res.rows[0]
+          });
+          this.ocorrencias = ocorrencias;
+        });
+      }
     })
   }
 
