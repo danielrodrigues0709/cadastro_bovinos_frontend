@@ -37,12 +37,14 @@ export class CadastroMedicamentoComponent implements OnInit {
   createform(): void {
     this.form = this._fb.group({
       medicamento: ['', Validators.required],
+      principio_ativo: [''],
     })
   }
 
   setFormValues(element: any): void {
     this.form.patchValue({
-      medicamento: element?.medicamento
+      medicamento: element?.medicamento,
+      principio_ativo: element?.principio_ativo
     })
   }
 

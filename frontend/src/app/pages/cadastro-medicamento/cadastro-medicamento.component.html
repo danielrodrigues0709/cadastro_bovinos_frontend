@@ -1,8 +1,13 @@
 <form [formGroup]="form" (ngSubmit)="submit()">
     <div class="p-fluid grid formgrid">
-        <div class="p-float-label field col-12">
+        <div class="p-float-label field col-4">
             <input id="medicamento" type="text" pInputText formControlName="medicamento"> 
             <label for="medicamento">Nome Medicamento</label>
+        </div>
+
+        <div class="p-float-label field col-8">
+            <input id="principio_ativo" type="text" pInputText formControlName="principio_ativo"> 
+            <label for="principio_ativo">Princípio Ativo</label>
         </div>
     </div>
 
