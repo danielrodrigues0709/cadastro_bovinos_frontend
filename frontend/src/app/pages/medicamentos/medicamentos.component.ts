@@ -30,7 +30,8 @@ export class MedicamentosComponent implements OnInit {
   }
 
   getMedicamentos():void {
-    this._medicamentosService.getMedicamentos().pipe().subscribe(res => {
+    let params = {};
+    this._medicamentosService.getMedicamentos(params).pipe().subscribe(res => {
       this.medicamentos = res.rows;
     });
   }

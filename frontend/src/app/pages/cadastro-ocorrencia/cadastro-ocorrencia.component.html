@@ -6,7 +6,17 @@
         </div>
 
         <div class="p-float-label field col-8">
-            <p-autoComplete id="animal" formControlName="animal" [suggestions]="animaisOptions" field="nome_animal" (completeMethod)="autocompleteAnimal($event)" (onSelect)="onSelectAnimal($event)"></p-autoComplete>
+            <p-autoComplete
+                #animal
+                formControlName="animal"
+                [suggestions]="animaisOptions"
+                [showEmptyMessage]="true"
+                emptyMessage="Não há dados a serem exibidos."
+                field="nome_animal"
+                (completeMethod)="autocompleteAnimal($event)"
+                (onFocus)="animal.show()"
+                (onSelect)="onSelectAnimal($event)"
+                ></p-autoComplete>
             <label for="animal">Nome animal</label>
         </div>
         
@@ -23,7 +33,16 @@
         </div>
 
         <div class="p-float-label field col-8">
-            <p-autoComplete id="medicamento" formControlName="medicamento" [suggestions]="medicamentosOptions" field="medicamento" (completeMethod)="autocompleteMedicamento($event)"></p-autoComplete>
+            <p-autoComplete
+                #medicamento
+                formControlName="medicamento"
+                [suggestions]="medicamentosOptions"
+                [showEmptyMessage]="true"
+                emptyMessage="Não há dados a serem exibidos."
+                field="medicamento"
+                (completeMethod)="autocompleteMedicamento($event)"
+                (onFocus)="medicamento.show()"
+                ></p-autoComplete>
             <label for="medicamento">Medicamento</label>
         </div>
         

@@ -41,20 +41,24 @@ export class CadastroOcorrenciaComponent implements OnInit {
   ngOnInit(): void {
     this.setFormValues(this.ocorrencia);
     this.ocorrencia.id ? this.form.disable() : this.form.enable();
+    this.autocompleteAnimal();
+    this.autocompleteMedicamento();
   }
 
-  autocompleteAnimal(event: any): void {
+  autocompleteAnimal(event?: any): void {
     let params: any = {};
-    params.nomeAnimal = event.query;
+    params.nomeAnimal = event ? event?.query : "";
     this._animalService.getAnimais(params).subscribe(res => {
       this.animaisOptions = res.rows;
     })
   }
 
-  autocompleteMedicamento(event: any): void {
-    let medicamento = event.query;
-    this._medicamentoService.getMedicamentosByDesc(medicamento).subscribe(res => {
+  autocompleteMedicamento(event?: any): void {
+    let params: any = {};
+    params.medicamento = event ? event?.query : "";
+    this._medicamentoService.getMedicamentos(params).subscribe(res => {
       this.medicamentosOptions = res.rows;
+      console.log(res.rows)
     })
   }
 

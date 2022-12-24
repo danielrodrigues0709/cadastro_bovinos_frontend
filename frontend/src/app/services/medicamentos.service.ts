@@ -12,8 +12,9 @@ export class MedicamentosService {
 
   constructor(private http: HttpClient) { }
 
-  getMedicamentos(): Observable<any> {
-    const href = `${environment.api}medicamentos/`;
+  getMedicamentos(params: any): Observable<any> {
+    let medicamento = params.medicamento != undefined ? params.medicamento : '';
+    const href = `${environment.api}medicamentos?medicamento=${medicamento}`;
     return this.http.get(href, {
       headers: this.headers
     });
