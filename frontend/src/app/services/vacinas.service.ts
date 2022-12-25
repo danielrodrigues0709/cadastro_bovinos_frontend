@@ -21,6 +21,13 @@ export class VacinasService {
       headers: this.headers
     });
   }
+
+  getVacinaById(id_vacina: number): Observable<any> {
+    const href = `${environment.api}vacinas/${id_vacina}`;
+    return this.http.get(href, {
+      headers: this.headers
+    });
+  }
   
   saveVacina(vacina: any): Observable<any> {
     const href = `${environment.api}vacinas/`;

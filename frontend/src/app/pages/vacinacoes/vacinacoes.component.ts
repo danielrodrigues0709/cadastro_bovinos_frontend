@@ -68,15 +68,14 @@ export class VacinacoesComponent implements OnInit {
         this.vacinacoes = vacinacoes;
       });
     });
-    // TODO Implementar getVacinaById
-    // vacinacoes.forEach((inseminacao, index) => {
-    //   this._vacinasService.getVacinaById(inseminacao.id_vacina).subscribe(res => {
-    //     vacinacoes[index] = Object.assign(vacinacoes[index], {
-    //       vacina: res.rows[0]
-    //     });
-    //     this.vacinacoes = vacinacoes;
-    //   });
-    // })
+    vacinacoes.forEach((inseminacao, index) => {
+      this._vacinasService.getVacinaById(inseminacao.id_vacina).subscribe(res => {
+        vacinacoes[index] = Object.assign(vacinacoes[index], {
+          vacina: res.rows[0]
+        });
+        this.vacinacoes = vacinacoes;
+      });
+    });
   }
 
   edit(element: any): void {
