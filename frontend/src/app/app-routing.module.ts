@@ -14,6 +14,9 @@ import { CadastroVacinacaoComponent } from './pages/cadastro-vacinacao/cadastro-
 import { CadastroPartoComponent } from './pages/cadastro-parto/cadastro-parto.component';
 import { CadastroUsuarioComponent } from './pages/cadastro-usuario/cadastro-usuario.component';
 import { LoginComponent } from './pages/login/login.component';
+import { VacinacoesComponent } from './pages/vacinacoes/vacinacoes.component';
+import { PartosComponent } from './pages/partos/partos.component';
+import { InseminacoesComponent } from './pages/inseminacoes/inseminacoes.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'animais', pathMatch: 'full' },
@@ -63,6 +66,33 @@ const routes: Routes = [
   {
     path: 'ocorrencias/cadastro',
     component: CadastroOcorrenciaComponent,
+  },
+  {
+    path: 'vacinacoes',
+    component: VacinacoesComponent,
+    children: []
+  },
+  {
+    path: 'vacinacoes/cadastro',
+    component: CadastroVacinacaoComponent,
+  },
+  {
+    path: 'partos',
+    component: PartosComponent,
+    children: []
+  },
+  {
+    path: 'partos/cadastro',
+    component: CadastroPartoComponent,
+  },
+  {
+    path: 'inseminacoes',
+    component: InseminacoesComponent,
+    children: []
+  },
+  {
+    path: 'inseminacoes/cadastro',
+    component: CadastroInseminacaoComponent,
   },
   {
     path: 'login',

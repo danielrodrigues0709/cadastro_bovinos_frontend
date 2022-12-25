@@ -35,6 +35,9 @@ import { ToastModule } from 'primeng/toast';
 import { HistoricoAnimalComponent } from './pages/historico-animal/historico-animal.component';
 import { AutoCompleteModule } from 'primeng/autocomplete';
 import { InputTextareaModule } from 'primeng/inputtextarea';
+import { VacinacoesComponent } from './pages/vacinacoes/vacinacoes.component';
+import { InseminacoesComponent } from './pages/inseminacoes/inseminacoes.component';
+import { PartosComponent } from './pages/partos/partos.component';
 
 @NgModule({
   declarations: [
@@ -52,7 +55,10 @@ import { InputTextareaModule } from 'primeng/inputtextarea';
     CadastroPartoComponent,
     CadastroUsuarioComponent,
     LoginComponent,
-    HistoricoAnimalComponent
+    HistoricoAnimalComponent,
+    VacinacoesComponent,
+    InseminacoesComponent,
+    PartosComponent
   ],
   imports: [
     BrowserModule,
