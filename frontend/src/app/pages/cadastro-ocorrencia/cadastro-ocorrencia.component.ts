@@ -92,6 +92,7 @@ export class CadastroOcorrenciaComponent implements OnInit {
   edit(): void {
     this.editMode = true;
     this.form.enable();
+    this.form.get('numControle')?.disable();
   }
 
   cancel(goBack: boolean): void {
