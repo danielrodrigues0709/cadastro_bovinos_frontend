@@ -80,7 +80,7 @@ export class CadastroOcorrenciaComponent implements OnInit {
 
   setFormValues(element: any): void {
     this.form.patchValue({
-      numControle: element?.animal,
+      numControle: element?.animal.nro_controle,
       animal: element?.animal,
       data_ocorrencia: element.id ? new Date(element.data_ocorrencia): '',
       morte: element?.morte,
