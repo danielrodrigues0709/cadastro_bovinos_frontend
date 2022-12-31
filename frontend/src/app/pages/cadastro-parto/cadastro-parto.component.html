@@ -1,1 +1,70 @@
-<p>cadastro-parto works!</p>
+<form [formGroup]="form" (ngSubmit)="submit()">
+    <div class="p-fluid grid formgrid">
+        <div class="p-float-label field col-3">
+            <p-calendar id="data_parto" [showIcon]="true"  formControlName="data_parto" appendTo='body'></p-calendar>
+            <label for="data_parto">Data Parto</label>
+        </div>
+        
+        <div class="field col">
+            <div class="spanLabel">
+                <label for="vivo">Cria Viva?</label>
+            </div>
+            <p-inputSwitch id="vivo" formControlName="vivo"></p-inputSwitch>
+        </div>
+        
+        <div class="field col-3">
+            <div class="spanLabel">
+                <label for="sexo">Sexo?</label>
+            </div>
+            <p-selectButton id="sexo" [options]="sexo" formControlName="sexo" optionLabel="label" optionValue="value"></p-selectButton>
+        </div>
+
+        <div class="p-float-label field col-4">
+            <input id="nro_controle_cria" type="number" pInputText formControlName="nro_controle_cria"> 
+            <label for="nro_controle_cria">Número de Controle</label>
+        </div>
+
+        <div class="p-float-label field col-4">
+            <input id="nome_cria" type="text" pInputText formControlName="nome_cria"> 
+            <label for="nome_cria">Nome Cria</label>
+        </div>
+
+        <div class="p-float-label field col-4">
+            <p-autoComplete
+                #mae
+                formControlName="mae"
+                [suggestions]="maesOptions"
+                [showEmptyMessage]="true"
+                emptyMessage="Não há dados a serem exibidos."
+                field="nome_animal"
+                (completeMethod)="autocompleteMae($event)"
+                (onFocus)="mae.show()"
+                ></p-autoComplete>
+            <label for="mae">Mãe</label>
+        </div>
+
+        <div class="p-float-label field col-4">
+            <p-autoComplete
+                #reprodutor
+                formControlName="reprodutor"
+                [suggestions]="reprodutoresOptions"
+                [showEmptyMessage]="true"
+                emptyMessage="Não há dados a serem exibidos."
+                field="nome_animal"
+                (completeMethod)="autocompleteReprodutor($event)"
+                (onFocus)="reprodutor.show()"
+                ></p-autoComplete>
+            <label for="reprodutor">Reprodutor</label>
+        </div>
+    </div>
+
+    <div class="modal-buttons-bar">
+        <div class="buttons">
+            <button *ngIf="editMode" pButton type="submit" label="Salvar" class="p-button-raised"></button>
+            <button *ngIf="!editMode" pButton type="button" (click)="edit()" label="Editar" class="p-button-raised"></button>
+
+            <button *ngIf="editMode" pButton type="button" (click)="cancel(!parto.id)" label="Cancelar" class="p-button-outlined"></button>
+            <button *ngIf="!editMode" pButton type="button" (click)="cancel(true)" label="Voltar" class="p-button-outlined"></button>
+        </div>
+    </div>
+</form>
