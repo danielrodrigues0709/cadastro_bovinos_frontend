@@ -39,6 +39,7 @@
                 field="nome_animal"
                 (completeMethod)="autocompleteMae($event)"
                 (onFocus)="mae.show()"
+                appendTo="body"
                 ></p-autoComplete>
             <label for="mae">Mãe</label>
         </div>
@@ -53,6 +54,7 @@
                 field="nome_animal"
                 (completeMethod)="autocompleteReprodutor($event)"
                 (onFocus)="reprodutor.show()"
+                appendTo="body"
                 ></p-autoComplete>
             <label for="reprodutor">Reprodutor</label>
         </div>

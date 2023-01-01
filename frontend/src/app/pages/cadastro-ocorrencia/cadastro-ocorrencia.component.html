@@ -16,6 +16,7 @@
                 (completeMethod)="autocompleteAnimal($event)"
                 (onFocus)="animal.show()"
                 (onSelect)="onSelectAnimal($event)"
+                appendTo="body"
                 ></p-autoComplete>
             <label for="animal">Nome animal</label>
         </div>
@@ -42,6 +43,7 @@
                 field="medicamento"
                 (completeMethod)="autocompleteMedicamento($event)"
                 (onFocus)="medicamento.show()"
+                appendTo="body"
                 ></p-autoComplete>
             <label for="medicamento">Medicamento</label>
         </div>
