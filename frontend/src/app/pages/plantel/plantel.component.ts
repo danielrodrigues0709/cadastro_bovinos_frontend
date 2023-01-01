@@ -96,7 +96,7 @@ export class PlantelComponent implements OnInit {
     const ref = this.dialogService.open(CadastroOcorrenciaComponent, {
       data: { },
       header: `${mode} Ocorrência`,
-      width: '90%'
+      width: '80%'
     })
     .onClose.subscribe(() => {
       this.getMatrizProducao();

@@ -68,7 +68,7 @@ export class OcorrenciasComponent implements OnInit {
     const ref = this.dialogService.open(CadastroOcorrenciaComponent, {
       data: element,
       header: `Editar Ocorrência`,
-      width: '90%'
+      width: '80%'
     });
   }
 
@@ -92,7 +92,7 @@ export class OcorrenciasComponent implements OnInit {
     const ref = this.dialogService.open(CadastroOcorrenciaComponent, {
       data: { },
       header: `Nova Ocorrência`,
-      width: '90%'
+      width: '80%'
     });
   }
 

@@ -63,7 +63,7 @@ export class PartosComponent implements OnInit {
     const ref = this.dialogService.open(CadastroPartoComponent, {
       data: element,
       header: `Editar Parto`,
-      width: '90%'
+      width: '80%'
     });
   }
 
@@ -87,7 +87,7 @@ export class PartosComponent implements OnInit {
     const ref = this.dialogService.open(CadastroPartoComponent, {
       data: { },
       header: `Novo Parto`,
-      width: '90%'
+      width: '80%'
     });
   }
 

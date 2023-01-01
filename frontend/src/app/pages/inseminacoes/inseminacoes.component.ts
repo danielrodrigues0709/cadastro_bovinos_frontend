@@ -62,7 +62,7 @@ export class InseminacoesComponent implements OnInit {
     const ref = this.dialogService.open(CadastroInseminacaoComponent, {
       data: element,
       header: `Editar Inseminação`,
-      width: '90%'
+      width: '80%'
     });
   }
 
@@ -86,7 +86,7 @@ export class InseminacoesComponent implements OnInit {
     const ref = this.dialogService.open(CadastroInseminacaoComponent, {
       data: { },
       header: `Nova Inseminacao`,
-      width: '90%'
+      width: '80%'
     });
   }
 

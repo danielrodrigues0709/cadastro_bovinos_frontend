@@ -40,7 +40,7 @@ export class MedicamentosComponent implements OnInit {
     const ref = this.dialogService.open(CadastroMedicamentoComponent, {
       data: element,
       header: `Editar Medicamento`,
-      width: '90%'
+      width: '80%'
     })
     .onClose.subscribe(() => {
       this.getMedicamentos();
@@ -67,7 +67,7 @@ export class MedicamentosComponent implements OnInit {
     const ref = this.dialogService.open(CadastroMedicamentoComponent, {
       data: { },
       header: `Novo Medicamento`,
-      width: '90%'
+      width: '80%'
     })
     .onClose.subscribe(() => {
       this.getMedicamentos();

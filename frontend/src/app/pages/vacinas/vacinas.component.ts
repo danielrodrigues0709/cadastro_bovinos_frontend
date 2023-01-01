@@ -54,7 +54,7 @@ export class VacinasComponent implements OnInit {
     const ref = this.dialogService.open(CadastroVacinaComponent, {
       data: element,
       header: `Editar Vacina/Vermífugo`,
-      width: '90%'
+      width: '80%'
     })
     .onClose.subscribe(() => {
       this.getVacinas();
@@ -83,7 +83,7 @@ export class VacinasComponent implements OnInit {
     const ref = this.dialogService.open(CadastroVacinaComponent, {
       data: { },
       header: `Nova Vacina/Vermífugo`,
-      width: '90%'
+      width: '80%'
     })
     .onClose.subscribe(() => {
       this.getVacinas();
