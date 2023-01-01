@@ -44,7 +44,7 @@ export class CadastroAnimalComponent implements OnInit {
   createform(): void {
     this.form = this._fb.group({
       nro_controle: ['', Validators.required],
-      matriz: ['', Validators.required],
+      matriz: [''],
       nome_animal: ['', Validators.required],
       sexo: ['', Validators.required],
       data_nascimento: [''],
