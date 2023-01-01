@@ -51,7 +51,7 @@ export class CadastroAnimalComponent implements OnInit {
       rebanho: ['', Validators.required],
       producao: ['', Validators.required],
       id_mae: [],
-      id_pai: [],
+      id_reprodutor: [],
     })
   }
 
@@ -65,7 +65,7 @@ export class CadastroAnimalComponent implements OnInit {
       rebanho: element ? numberToBoolean(element?.rebanho) : true,
       producao: element ? numberToBoolean(element.producao) : true,
       // id_mae: element.
-      // id_pai: element.
+      // id_reprodutor: element.
     })
   }
 

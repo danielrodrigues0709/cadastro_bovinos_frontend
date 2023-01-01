@@ -5,7 +5,7 @@ export interface Animal {
     nome_animal: string;
     sexo: number
     id_mae: Animal | null;
-    id_pai: Animal | null;
+    id_reprodutor: Animal | null;
     data_nascimento: Date;
     rebanho: number;
     registrado: number;
