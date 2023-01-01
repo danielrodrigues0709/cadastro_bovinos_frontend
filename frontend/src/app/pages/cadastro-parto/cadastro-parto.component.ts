@@ -18,6 +18,7 @@ export class CadastroPartoComponent implements OnInit {
   parto!: Parto;
   // mae!: Animal;
   // reprodutor!: Animal;
+  animal!: Animal;
   editMode!: boolean;
   form!: FormGroup;
   maesOptions: any[] = [];
@@ -29,7 +30,7 @@ export class CadastroPartoComponent implements OnInit {
     public config: DynamicDialogConfig,
     private _fb: FormBuilder,
     private _partoService: PartosService,
-    private _animalService: AnimaisService,
+    private _animaisService: AnimaisService,
     private _messageService: MessageService
   ) {
     this.parto = this.config.data;
@@ -41,6 +42,11 @@ export class CadastroPartoComponent implements OnInit {
   ngOnInit(): void {
     this.setFormValues(this.parto);
     this.parto.id ? this.form.disable() : this.form.enable();
+    if(this.parto.id) {
+      this._animaisService.getAnimalById(this.parto.id_cria).subscribe(res => {
+        this.animal = res.rows[0];
+      })
+    }
     this.autocompleteMae();
     this.autocompleteReprodutor();
   }
@@ -49,7 +55,7 @@ export class CadastroPartoComponent implements OnInit {
     let params: any = {};
     params.nomeAnimal = event ? event?.query : "";
     params.sexo = sexo.FEMEA;
-    this._animalService.getAnimais(params).subscribe(res => {
+    this._animaisService.getAnimais(params).subscribe(res => {
       this.maesOptions = res.rows;
     })
   }
@@ -58,7 +64,7 @@ export class CadastroPartoComponent implements OnInit {
     let params: any = {};
     params.nomeAnimal = event ? event?.query : "";
     params.sexo = sexo.MACHO;
-    this._animalService.getAnimais(params).subscribe(res => {
+    this._animaisService.getAnimais(params).subscribe(res => {
       this.reprodutoresOptions = res.rows;
     })
   }
@@ -113,8 +119,40 @@ export class CadastroPartoComponent implements OnInit {
     }
   }
 
-  saveAnimal(): void {
+  saveAnimal(formValues: any): void {
+    let cria = {
+      ...formValues,
+      nome_animal: formValues.nome_cria,
+      data_nascimento: formValues.data_parto,
+      id_mae: formValues.mae.id,
+      id_reprodutor: formValues.reprodutor.id,
+      nro_controle: formValues.nro_controle_cria,
+      matriz: null,
+      rebanho: 1,
+      registrado: 0,
+      producao: 0,
+    };
     
+    if(this.animal?.id) {
+      this._animaisService.updateAnimal(this.animal.id, cria).subscribe(res => {
+        this._messageService.add({severity:'success', detail: res.message});
+        this.animal = res.rows;
+        this.saveParto(this.animal);
+      },
+      err => {
+        this._messageService.add({severity:'error', detail: err.error.message});
+      })
+    }
+    else {
+      this._animaisService.saveAnimal(cria).subscribe(res => {
+        this._messageService.add({severity:'success', detail: res.message});
+        this.animal = res.data.rows[0];
+        this.saveParto(this.animal);
+      },
+      err => {
+        this._messageService.add({severity:'error', detail: err.error.message});
+      })
+    }
   }
 
   submit(): void {
@@ -122,30 +160,39 @@ export class CadastroPartoComponent implements OnInit {
       return;
     }
     let formValue = this.form.value;
-    let params = { 
-      ...formValue,
-    }
-
-    console.log(params)
     
-    // if(this.parto.id) {
-    //   this._partoService.updateParto(this.parto.id, params).subscribe(res => {
-    //     this._messageService.add({severity:'success', detail: res.message});
-    //     this.saveAnimal();
-    //   },
-    //   err => {
-    //     this._messageService.add({severity:'error', detail: err.error.message});
-    //   })
-    // }
-    // else {
-    //   this._partoService.saveParto(params).subscribe(res => {
-    //     this._messageService.add({severity:'success', detail: res.message});
-    //     this.saveAnimal();
-    //   },
-    //   err => {
-    //     this._messageService.add({severity:'error', detail: err.error.message});
-    //   })
-    // }
+    if(formValue.vivo) {
+      this.saveAnimal(formValue);
+    }
+  }
+
+  saveParto(animal: Animal):  void {
+    let formValues = this.form.value;
+    let parto = {
+      ...formValues,
+      id_cria: animal.id,
+      id_mae: formValues.mae.id,
+      id_reprodutor: formValues.reprodutor.id,
+    }
+    if(this.parto.id) {
+      this._partoService.updateParto(this.parto.id, parto).subscribe(res => {
+        this._messageService.add({severity:'success', detail: res.message});
+        this.ref.close();
+      },
+      err => {
+        this._messageService.add({severity:'error', detail: err.error.message});
+        this._animaisService.deleteAnimal(animal.id);
+      })
+    }
+    else {
+      this._partoService.saveParto(parto).subscribe(res => {
+        this._messageService.add({severity:'success', detail: res.message});
+        this.ref.close();
+      },
+      err => {
+        this._messageService.add({severity:'error', detail: err.error.message});
+      })
+    }
   }
 
 }
