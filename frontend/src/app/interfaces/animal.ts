@@ -4,8 +4,8 @@ export interface Animal {
     matriz: number | null;
     nome_animal: string;
     sexo: number
-    id_mae: Animal | null;
-    id_reprodutor: Animal | null;
+    id_mae: number;
+    id_reprodutor: number;
     data_nascimento: Date;
     rebanho: number;
     registrado: number;
