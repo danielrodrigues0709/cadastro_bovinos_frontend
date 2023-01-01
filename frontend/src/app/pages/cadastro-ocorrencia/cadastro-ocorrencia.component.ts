@@ -7,7 +7,7 @@ import { Ocorrencia } from 'src/app/interfaces/ocorrencia';
 import { AnimaisService } from 'src/app/services/animais.service';
 import { MedicamentosService } from 'src/app/services/medicamentos.service';
 import { OcorrenciasService } from 'src/app/services/ocorrencias.service';
-import { booleanToNumber } from 'src/app/utils/utils';
+import { booleanToNumber, numberToBoolean } from 'src/app/utils/utils';
 
 @Component({
   selector: 'app-cadastro-ocorrencia',
@@ -17,7 +17,6 @@ import { booleanToNumber } from 'src/app/utils/utils';
 export class CadastroOcorrenciaComponent implements OnInit {
 
   ocorrencia!: Ocorrencia;
-  animal!: Animal;
   editMode!: boolean;
   form!: FormGroup;
   animaisOptions: any[] = [];
@@ -58,13 +57,11 @@ export class CadastroOcorrenciaComponent implements OnInit {
     params.medicamento = event ? event?.query : "";
     this._medicamentoService.getMedicamentos(params).subscribe(res => {
       this.medicamentosOptions = res.rows;
-      console.log(res.rows)
     })
   }
 
   onSelectAnimal(event: any): void {
-    this.animal = event;
-    this.form.get('numControle')?.patchValue(this.animal.nro_controle);
+    this.form.get('numControle')?.patchValue(event.nro_controle);
   }
 
   createform(): void {
@@ -80,10 +77,10 @@ export class CadastroOcorrenciaComponent implements OnInit {
 
   setFormValues(element: any): void {
     this.form.patchValue({
-      numControle: element?.animal.nro_controle,
+      numControle: element?.animal?.nro_controle,
       animal: element?.animal,
       data_ocorrencia: element.id ? new Date(element.data_ocorrencia): '',
-      morte: element?.morte,
+      morte: numberToBoolean(element?.morte),
       medicamento: element?.medicamento,
       descricao: element?.descricao
     })
@@ -108,23 +105,21 @@ export class CadastroOcorrenciaComponent implements OnInit {
     }
   }
 
-  removeAnimal(morte: number): void {
-    if(morte == 1) {
-      let params = {
-        ...this.animal,
+  removeAnimal(params: any): void {
+    if(params.morte == 1) {
+      let animal = {
+        ...params.animal,
         rebanho: 0,
         producao: 0,
       };
-      this._animalService.updateAnimal(this.animal.id, params).subscribe(() => {
+      this._animalService.updateAnimal(params.animal.id, animal).subscribe(() => {
         this.ref.close();
       },
       err => {
         this._messageService.add({severity:'error', detail: err.error.message});
       })
     }
-    else {
-      this.ref.close();
-    }
+    this.ref.close();
   }
 
   submit(): void {
@@ -142,7 +137,7 @@ export class CadastroOcorrenciaComponent implements OnInit {
     if(this.ocorrencia.id) {
       this._ocorrenciaService.updateOcorrencia(this.ocorrencia.id, params).subscribe(res => {
         this._messageService.add({severity:'success', detail: res.message});
-        this.removeAnimal(params.morte);
+        this.removeAnimal(params);
       },
       err => {
         this._messageService.add({severity:'error', detail: err.error.message});
@@ -151,7 +146,7 @@ export class CadastroOcorrenciaComponent implements OnInit {
     else {
       this._ocorrenciaService.saveOcorrencia(params).subscribe(res => {
         this._messageService.add({severity:'success', detail: res.message});
-        this.removeAnimal(params.morte);
+        this.removeAnimal(params);
       },
       err => {
         this._messageService.add({severity:'error', detail: err.error.message});
