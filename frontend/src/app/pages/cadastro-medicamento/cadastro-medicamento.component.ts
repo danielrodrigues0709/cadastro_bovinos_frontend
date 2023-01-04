@@ -70,7 +70,7 @@ export class CadastroMedicamentoComponent implements OnInit {
     if(!this.form.valid) {
       return;
     }
-    let formValue = this.form.value;
+    let formValue = this.form.getRawValue();
     
     if(this.medicamento.id) {
       this._medicamentoService.updateMedicamento(this.medicamento.id, formValue).subscribe(res => {

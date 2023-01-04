@@ -73,7 +73,7 @@ export class CadastroVacinaComponent implements OnInit {
     if(!this.form.valid) {
       return;
     }
-    let formValue = this.form.value;
+    let formValue = this.form.getRawValue();
     
     if(this.vacina_vermifugo.id) {
       this._vacinasService.updateVacina(this.vacina_vermifugo.id, formValue).subscribe(res => {

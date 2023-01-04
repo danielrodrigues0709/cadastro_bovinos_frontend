@@ -100,7 +100,7 @@ export class CadastroAnimalComponent implements OnInit {
     if(!this.form.valid) {
       return;
     }
-    this.animal = this.form.value;
+    this.animal = this.form.getRawValue();
     this.animal.rebanho = booleanToNumber(!!this.form.controls['rebanho'].value);
     this.animal.registrado = this.form.controls['matriz'].value ? 1 : 0;
     this.animal.producao = booleanToNumber(!!this.form.controls['producao'].value);
@@ -119,6 +119,7 @@ export class CadastroAnimalComponent implements OnInit {
     else {
       this._animaisService.saveAnimal(this.animal).subscribe(res => {
         this._messageService.add({severity:'success', detail: res.message});
+        this.animal = res.data.rows[0];
         this.editMode = false;
         this.form.disable();
       },

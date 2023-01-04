@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
-import { Animal } from 'src/app/interfaces/animal';
 import { Ocorrencia } from 'src/app/interfaces/ocorrencia';
 import { AnimaisService } from 'src/app/services/animais.service';
 import { MedicamentosService } from 'src/app/services/medicamentos.service';
@@ -33,7 +32,7 @@ export class CadastroOcorrenciaComponent implements OnInit {
   ) {
     this.ocorrencia = this.config.data;
     this.editMode = this.ocorrencia.id ? false : true;
-
+    
     this.createform();
   }
 
@@ -98,7 +97,9 @@ export class CadastroOcorrenciaComponent implements OnInit {
     }
     else {
       this.form.patchValue({
-        ...this.ocorrencia
+        ...this.ocorrencia,
+        data_ocorrencia: new Date(this.ocorrencia.data_ocorrencia),
+        morte: numberToBoolean(this.ocorrencia.morte),
       });
       this.editMode = false;
       this.form.disable();
@@ -126,7 +127,7 @@ export class CadastroOcorrenciaComponent implements OnInit {
     if(!this.form.valid) {
       return;
     }
-    let formValue = this.form.value;
+    let formValue = this.form.getRawValue();
     let params = { 
       ...formValue,
       id_animal: formValue.animal.id,

@@ -112,7 +112,9 @@ export class CadastroPartoComponent implements OnInit {
     }
     else {
       this.form.patchValue({
-        ...this.parto
+        ...this.parto,
+        data_parto: new Date(this.parto.data_parto),
+        vivo: true
       });
       this.editMode = false;
       this.form.disable();
@@ -136,7 +138,7 @@ export class CadastroPartoComponent implements OnInit {
     if(this.animal?.id) {
       this._animaisService.updateAnimal(this.animal.id, cria).subscribe(res => {
         this._messageService.add({severity:'success', detail: res.message});
-        this.animal = res.rows;
+        this.animal = res.data.rows[0];
         this.saveParto(this.animal);
       },
       err => {
@@ -159,7 +161,7 @@ export class CadastroPartoComponent implements OnInit {
     if(!this.form.valid) {
       return;
     }
-    let formValue = this.form.value;
+    let formValue = this.form.getRawValue();
     
     if(formValue.vivo) {
       this.saveAnimal(formValue);
@@ -167,7 +169,7 @@ export class CadastroPartoComponent implements OnInit {
   }
 
   saveParto(animal: Animal):  void {
-    let formValues = this.form.value;
+    let formValues = this.form.getRawValue();
     let parto = {
       ...formValues,
       id_cria: animal.id,
