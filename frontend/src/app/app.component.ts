@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { MegaMenuItem,MenuItem } from 'primeng/api';
+import { MegaMenuItem, PrimeNGConfig } from 'primeng/api';
 
 @Component({
   selector: 'app-root',
@@ -10,7 +10,20 @@ export class AppComponent {
   title = 'frontend';
   items: MegaMenuItem[] = [];
 
+  constructor(private config: PrimeNGConfig) {}
+
   ngOnInit() {
+    this.config.setTranslation({
+      firstDayOfWeek: 0,
+      dayNames: ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'],
+      dayNamesShort: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
+      dayNamesMin: ['Do', 'Se', 'Te', 'Qu', 'Qu', 'Se', 'Sa'],
+      monthNames: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'],
+      monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+      today: 'Hoje',
+      clear: 'Limpar'
+    });
+
     this.items = [
       {label: 'Plantel', icon: 'pi pi-fw pi-angle-right', routerLink: 'animais'},
       {label: 'Medicamentos', icon: 'pi pi-fw pi-angle-right', routerLink: 'medicamentos'},

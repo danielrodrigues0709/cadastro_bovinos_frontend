@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule, LOCALE_ID } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -38,7 +38,9 @@ import { InputTextareaModule } from 'primeng/inputtextarea';
 import { VacinacoesComponent } from './pages/vacinacoes/vacinacoes.component';
 import { InseminacoesComponent } from './pages/inseminacoes/inseminacoes.component';
 import { PartosComponent } from './pages/partos/partos.component';
-
+import { registerLocaleData } from '@angular/common';
+import localePT from '@angular/common/locales/pt';
+registerLocaleData(localePT);
 @NgModule({
   declarations: [
     AppComponent,
@@ -81,7 +83,7 @@ import { PartosComponent } from './pages/partos/partos.component';
     AutoCompleteModule,
     InputTextareaModule
   ],
-  providers: [],
+  providers: [{ provide: LOCALE_ID, useValue: 'pt-br' }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
