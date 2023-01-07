@@ -1,1 +1,69 @@
-<p>cadastro-vacinacao works!</p>
+<form [formGroup]="form" (ngSubmit)="submit()">
+    <div class="flex-row">
+        <div class="field col-auto">
+            <div class="spanLabel">
+                <label for="tipo">Tipo</label>
+            </div>
+            <p-selectButton
+                id="tipo"
+                [options]="tipoOptions"
+                formControlName="tipo"
+                optionLabel="label"
+                optionValue="value"
+                (onChange)="onSelectTipo($event)"
+                ></p-selectButton>
+        </div>
+    </div>
+
+    <div class="p-fluid grid formgrid">
+        <div class="p-float-label field col-9">
+            <p-autoComplete
+                #animal
+                formControlName="animal"
+                [suggestions]="animaisOptions"
+                [showEmptyMessage]="true"
+                emptyMessage="Não há dados a serem exibidos."
+                field="nome_animal"
+                (completeMethod)="autocompleteAnimal($event)"
+                (onFocus)="animal.show()"
+                appendTo="body"
+                ></p-autoComplete>
+            <label for="animal">Nome animal</label>
+        </div>
+        
+        <div class="p-float-label field col-3">
+            <p-calendar id="data_vacinacao" [showIcon]="true"  formControlName="data_vacinacao" appendTo='body' dateFormat="dd/mm/yy"></p-calendar>
+            <label for="data_vacinacao">Data Vacinação/Vermifugação</label>
+        </div>
+
+        <div class="p-float-label field col-9">
+            <p-autoComplete
+                #vacina_vermifugo
+                formControlName="vacina_vermifugo"
+                [suggestions]="vacinas_vermifugosOptions"
+                [showEmptyMessage]="true"
+                emptyMessage="Não há dados a serem exibidos."
+                field="vacina_vermifugo"
+                (completeMethod)="autocompleteVacinaVermifugo($event)"
+                (onFocus)="vacina_vermifugo.show()"
+                appendTo="body"
+                ></p-autoComplete>
+            <label for="vacina_vermifugo">Vacina / Vermífugo</label>
+        </div>
+
+        <div class="p-float-label field col-3">
+            <input id="dose" type="text" pInputText formControlName="dose"> 
+            <label for="dose">Dose</label>
+        </div>
+    </div>
+
+    <div class="modal-buttons-bar">
+        <div class="buttons">
+            <button *ngIf="editMode" pButton type="submit" label="Salvar" class="p-button-raised"></button>
+            <button *ngIf="!editMode" pButton type="button" (click)="edit()" label="Editar" class="p-button-raised"></button>
+
+            <button *ngIf="editMode" pButton type="button" (click)="cancel(!vacinacao_vermifugacao.id)" label="Cancelar" class="p-button-outlined"></button>
+            <button *ngIf="!editMode" pButton type="button" (click)="cancel(true)" label="Voltar" class="p-button-outlined"></button>
+        </div>
+    </div>
+</form>
