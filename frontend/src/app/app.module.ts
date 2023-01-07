@@ -39,8 +39,8 @@ import { VacinacoesComponent } from './pages/vacinacoes/vacinacoes.component';
 import { InseminacoesComponent } from './pages/inseminacoes/inseminacoes.component';
 import { PartosComponent } from './pages/partos/partos.component';
 import { registerLocaleData } from '@angular/common';
-import localePT from '@angular/common/locales/pt';
-registerLocaleData(localePT);
+import localeBr from '@angular/common/locales/pt';
+registerLocaleData(localeBr);
 @NgModule({
   declarations: [
     AppComponent,
@@ -83,7 +83,7 @@ registerLocaleData(localePT);
     AutoCompleteModule,
     InputTextareaModule
   ],
-  providers: [{ provide: LOCALE_ID, useValue: 'pt-br' }],
+  providers: [{ provide: LOCALE_ID, useValue: 'pt-BR' }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

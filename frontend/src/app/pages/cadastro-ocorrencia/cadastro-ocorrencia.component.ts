@@ -1,3 +1,4 @@
+import { formatDate } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MessageService } from 'primeng/api';
@@ -75,10 +76,11 @@ export class CadastroOcorrenciaComponent implements OnInit {
   }
 
   setFormValues(element: any): void {
+    let data_formatada = formatDate(new Date(element?.data_ocorrencia).toISOString(),'short','pt-BR','GMT-0');
     this.form.patchValue({
       numControle: element?.animal?.nro_controle,
       animal: element?.animal,
-      data_ocorrencia: element.id ? new Date(element.data_ocorrencia): '',
+      data_ocorrencia: element.id ? data_formatada : '',
       morte: numberToBoolean(element?.morte),
       medicamento: element?.medicamento,
       descricao: element?.descricao

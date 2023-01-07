@@ -15,7 +15,7 @@
                 </ng-template>
                 <ng-template pTemplate="body" let-element>
                     <tr>
-                        <td class="alignCenter">{{element.data_vacinacao | date:'dd/MM/yyyy'}}</td>
+                        <td class="alignCenter">{{element.data_vacinacao | date: 'dd/MM/yyyy': 'UTC'}}</td>
                         <td class="alignLeft">{{element.animal?.nome_animal}}</td>
                         <td class="alignLeft">{{element.vacina?.vacina_vermifugo}}</td>
                         <td class="alignCenter">{{element.dose}} de {{element.vacina?.doses}}</td>
@@ -44,7 +44,7 @@
                 </ng-template>
                 <ng-template pTemplate="body" let-element>
                     <tr>
-                        <td class="alignCenter">{{element.data_vacinacao | date:'dd/MM/yyyy'}}</td>
+                        <td class="alignCenter">{{element.data_vacinacao | date: 'dd/MM/yyyy': 'UTC'}}</td>
                         <td class="alignLeft">{{element.animal?.nome_animal}}</td>
                         <td class="alignLeft">{{element.vacina?.vacina_vermifugo}}</td>
                         <td class="alignCenter">{{element.dose}} de {{element.vacina?.doses}}</td>

@@ -15,7 +15,7 @@
         </ng-template>
         <ng-template pTemplate="body" let-element>
             <tr>
-                <td class="alignCenter">{{element.data_parto | date:'dd/MM/yyyy'}}</td>
+                <td class="alignCenter">{{element.data_parto | date: 'dd/MM/yyyy': 'UTC'}}</td>
                 <td class="alignLeft">{{element.nome_cria}}</td>
                 <td class="alignCenter">{{element.sexo == 0 ? "Fêmea" : "Macho"}}</td>
                 <td class="alignCenter">{{element.nro_controle_cria}}</td>

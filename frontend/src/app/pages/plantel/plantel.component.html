@@ -20,7 +20,7 @@
                         <td class="alignLeft">{{element.nome_animal}}</td>
                         <td class="alignLeft">{{element.mae?.nome_animal}}</td>
                         <td class="alignLeft">{{element.pai?.nome_animal}}</td>
-                        <td class="alignCenter">{{element.data_nascimento | date: 'dd/MM/yyyy'}}</td>
+                        <td class="alignCenter">{{element.data_nascimento | date: 'dd/MM/yyyy': 'UTC'}}</td>
                         <td class="alignCenter">
                             <button pButton (click)="edit(element)" class="p-button-rounded" icon="pi pi-pencil"></button>
                             <button pButton (click)="delete(element.id)" class="p-button-rounded p-button-danger" icon="pi pi-trash"></button>
@@ -51,7 +51,7 @@
                         <td class="alignLeft">{{element.nome_animal}}</td>
                         <td class="alignLeft">{{element.mae?.nome_animal}}</td>
                         <td class="alignLeft">{{element.pai?.nome_animal}}</td>
-                        <td class="alignCenter">{{element.data_nascimento | date: 'dd/MM/yyyy'}}</td>
+                        <td class="alignCenter">{{element.data_nascimento | date: 'dd/MM/yyyy': 'UTC'}}</td>
                         <td class="alignCenter">
                             <button pButton (click)="edit(element)" class="p-button-rounded" icon="pi pi-pencil"></button>
                             <button pButton (click)="delete(element.id)" class="p-button-rounded p-button-danger" icon="pi pi-trash"></button>
@@ -82,7 +82,7 @@
                         <td class="alignLeft">{{element.nome_animal}}</td>
                         <td class="alignLeft">{{element.mae?.nome_animal}}</td>
                         <td class="alignLeft">{{element.pai?.nome_animal}}</td>
-                        <td class="alignCenter">{{element.data_nascimento | date: 'dd/MM/yyyy'}}</td>
+                        <td class="alignCenter">{{element.data_nascimento | date: 'dd/MM/yyyy': 'UTC'}}</td>
                         <td class="alignCenter">
                             <button pButton (click)="edit(element)" class="p-button-rounded" icon="pi pi-pencil"></button>
                             <button pButton (click)="delete(element.id)" class="p-button-rounded p-button-danger" icon="pi pi-trash"></button>

@@ -15,8 +15,8 @@
         </ng-template>
         <ng-template pTemplate="body" let-element>
             <tr>
-                <td class="alignCenter">{{element.data_inseminacao | date:'dd/MM/yyyy'}}</td>
-                <td class="alignCenter">{{element.data_previsao_parto | date:'dd/MM/yyyy'}}</td>
+                <td class="alignCenter">{{element.data_inseminacao | date: 'dd/MM/yyyy': 'UTC'}}</td>
+                <td class="alignCenter">{{element.data_previsao_parto | date: 'dd/MM/yyyy': 'UTC'}}</td>
                 <td class="alignLeft">{{element.animal?.nome_animal}}</td>
                 <td class="alignCenter">{{element.animal?.nro_controle}}</td>
                 <td class="alignCenter">{{element.animal?.matriz}}</td>

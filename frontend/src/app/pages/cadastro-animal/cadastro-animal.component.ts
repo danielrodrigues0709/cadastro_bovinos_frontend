@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Location } from '@angular/common';
+import { formatDate, Location } from '@angular/common';
 import { Animal } from 'src/app/interfaces/animal';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { booleanToNumber, numberToBoolean } from 'src/app/utils/utils';
@@ -56,12 +56,13 @@ export class CadastroAnimalComponent implements OnInit {
   }
 
   setFormValues(element: any): void {
+    let data_formatada = formatDate(new Date(element?.data_nascimento).toISOString(),'short','pt-BR','GMT-0');
     this.form.patchValue({
       nro_controle: element?.nro_controle,
       matriz: element?.matriz,
       nome_animal: element?.nome_animal,
       sexo: element?.sexo,
-      data_nascimento: element?.data_nascimento ? new Date(element.data_nascimento) : '',
+      data_nascimento: element.id ? data_formatada : '',
       rebanho: element ? numberToBoolean(element?.rebanho) : true,
       producao: element ? numberToBoolean(element.producao) : true,
       // id_mae: element.
