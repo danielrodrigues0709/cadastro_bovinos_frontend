@@ -56,7 +56,8 @@ export class CadastroAnimalComponent implements OnInit {
   }
 
   setFormValues(element: any): void {
-    let data_formatada = formatDate(new Date(element?.data_nascimento).toISOString(),'short','pt-BR','GMT-0');
+    let data_formatada = element?.data_nascimento ? formatDate(
+      new Date(element.data_nascimento).toISOString(),'short','pt-BR','GMT-0') : '';
     this.form.patchValue({
       nro_controle: element?.nro_controle,
       matriz: element?.matriz,
@@ -85,9 +86,11 @@ export class CadastroAnimalComponent implements OnInit {
       history.back();
     }
     else {
+      let data_formatada = this.animal?.data_nascimento ? formatDate(
+        new Date(this.animal.data_nascimento).toISOString(),'short','pt-BR','GMT-0') : '';
       this.form.patchValue({
         ...this.animal,
-        data_nascimento: this.animal? new Date(this.animal.data_nascimento) : '',
+        data_nascimento: data_formatada,
         rebanho: numberToBoolean(this.animal?.rebanho),
         registrado: numberToBoolean(this.animal?.registrado),
         producao: numberToBoolean(this.animal?.producao),

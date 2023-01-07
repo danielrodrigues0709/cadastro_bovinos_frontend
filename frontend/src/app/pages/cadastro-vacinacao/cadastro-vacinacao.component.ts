@@ -101,8 +101,11 @@ export class CadastroVacinacaoComponent implements OnInit {
       this.ref.close();
     }
     else {
+      let data_formatada = this.vacinacao_vermifugacao?.data_vacinacao ? formatDate(
+        new Date(this.vacinacao_vermifugacao.data_vacinacao).toISOString(),'short','pt-BR','GMT-0') : '';
       this.form.patchValue({
-        ...this.vacinacao_vermifugacao
+        ...this.vacinacao_vermifugacao,
+        data_vacinacao: data_formatada
       });
       this.editMode = false;
       this.form.disable();

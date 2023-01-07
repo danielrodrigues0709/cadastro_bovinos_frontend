@@ -76,7 +76,8 @@ export class CadastroOcorrenciaComponent implements OnInit {
   }
 
   setFormValues(element: any): void {
-    let data_formatada = formatDate(new Date(element?.data_ocorrencia).toISOString(),'short','pt-BR','GMT-0');
+    let data_formatada = element?.data_ocorrencia ? formatDate(
+      new Date(element.data_ocorrencia).toISOString(),'short','pt-BR','GMT-0') : '';
     this.form.patchValue({
       numControle: element?.animal?.nro_controle,
       animal: element?.animal,
@@ -98,9 +99,11 @@ export class CadastroOcorrenciaComponent implements OnInit {
       this.ref.close();
     }
     else {
+      let data_formatada = this.ocorrencia?.data_ocorrencia ? formatDate(
+        new Date(this.ocorrencia.data_ocorrencia).toISOString(),'short','pt-BR','GMT-0') : '';
       this.form.patchValue({
         ...this.ocorrencia,
-        data_ocorrencia: new Date(this.ocorrencia.data_ocorrencia),
+        data_ocorrencia: data_formatada,
         morte: numberToBoolean(this.ocorrencia.morte),
       });
       this.editMode = false;

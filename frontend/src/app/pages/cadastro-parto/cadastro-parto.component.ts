@@ -17,8 +17,6 @@ import { sexo } from 'src/app/utils/enums';
 export class CadastroPartoComponent implements OnInit {
 
   parto!: Parto;
-  // mae!: Animal;
-  // reprodutor!: Animal;
   animal!: Animal;
   editMode!: boolean;
   form!: FormGroup;
@@ -70,14 +68,6 @@ export class CadastroPartoComponent implements OnInit {
     })
   }
 
-  // onSelectMother(event: any): void {
-  //   this.mae = event;
-  // }
-
-  // onSelectFather(event: any): void {
-  //   this.reprodutor = event;
-  // }
-
   createform(): void {
     this.form = this._fb.group({
       data_parto: ['', Validators.required],
@@ -91,7 +81,8 @@ export class CadastroPartoComponent implements OnInit {
   }
 
   setFormValues(element: any): void {
-    let data_formatada = formatDate(new Date(element?.data_parto).toISOString(),'short','pt-BR','GMT-0');
+    let data_formatada = element?.data_parto ? formatDate(
+      new Date(element.data_parto).toISOString(),'short','pt-BR','GMT-0') : '';
     this.form.patchValue({
       data_parto: element.id ? data_formatada : '',
       nro_controle_cria: element?.nro_controle_cria,
@@ -113,9 +104,11 @@ export class CadastroPartoComponent implements OnInit {
       this.ref.close();
     }
     else {
+      let data_formatada = this.parto?.data_parto ? formatDate(
+        new Date(this.parto.data_parto).toISOString(),'short','pt-BR','GMT-0') : '';
       this.form.patchValue({
         ...this.parto,
-        data_parto: new Date(this.parto.data_parto),
+        data_parto: data_formatada,
         vivo: true
       });
       this.editMode = false;
