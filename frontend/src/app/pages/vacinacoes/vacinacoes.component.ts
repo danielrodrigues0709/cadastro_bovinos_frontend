@@ -45,7 +45,7 @@ export class VacinacoesComponent implements OnInit {
     }
     this._vacinacoesService.getVacinacoes(params).pipe().subscribe(res => {
       this.vacinacoes = res.rows;
-      this.getDataById(res.rows);
+      this.getDataById(res.rows, true);
     });
   }
 
@@ -55,25 +55,25 @@ export class VacinacoesComponent implements OnInit {
     }
     this._vacinacoesService.getVacinacoes(params).pipe().subscribe(res => {
       this.vermifugacoes = res.rows;
-      this.getDataById(res.rows);
+      this.getDataById(res.rows, false);
     });
   }
 
-  getDataById(vacinacoes: VacinacaoVermifugacao[]): void {
-    vacinacoes.forEach((inseminacao, index) => {
-      this._animaisService.getAnimalById(inseminacao.id_animal).subscribe(res => {
+  getDataById(vacinacoes: VacinacaoVermifugacao[], vacinacao: boolean): void {
+    vacinacoes.forEach((vac, index) => {
+      this._animaisService.getAnimalById(vac.id_animal).subscribe(res => {
         vacinacoes[index] = Object.assign(vacinacoes[index], {
           animal: res.rows[0]
         });
-        this.vacinacoes = vacinacoes;
+        vacinacao ? this.vacinacoes = vacinacoes : this.vermifugacoes = vacinacoes;
       });
     });
-    vacinacoes.forEach((inseminacao, index) => {
-      this._vacinasService.getVacinaById(inseminacao.id_vacina).subscribe(res => {
+    vacinacoes.forEach((vac, index) => {
+      this._vacinasService.getVacinaById(vac.id_vacina).subscribe(res => {
         vacinacoes[index] = Object.assign(vacinacoes[index], {
           vacina: res.rows[0]
         });
-        this.vacinacoes = vacinacoes;
+        vacinacao ? this.vacinacoes = vacinacoes : this.vermifugacoes = vacinacoes;
       });
     });
   }
