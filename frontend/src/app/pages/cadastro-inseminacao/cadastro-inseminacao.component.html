@@ -1,1 +1,53 @@
-<p>cadastro-inseminacao works!</p>
+<form [formGroup]="form" (ngSubmit)="submit()">
+    <div class="p-fluid grid formgrid">
+        <div class="p-float-label field col-4">
+            <p-calendar id="data_inseminacao" [showIcon]="true"  formControlName="data_inseminacao" appendTo='body' dateFormat="dd/mm/yy"></p-calendar>
+            <label for="data_inseminacao">Data Inseminação</label>
+        </div>
+        
+        <div class="p-float-label field col-4">
+            <p-calendar id="data_previsao_parto" [showIcon]="true"  formControlName="data_previsao_parto" appendTo='body' dateFormat="dd/mm/yy"></p-calendar>
+            <label for="data_previsao_parto">Data Previsão Parto</label>
+        </div>
+
+        <div class="p-float-label field col-6">
+            <p-autoComplete
+                #animal
+                formControlName="animal"
+                [suggestions]="animaisOptions"
+                [showEmptyMessage]="true"
+                emptyMessage="Não há dados a serem exibidos."
+                field="nome_animal"
+                (completeMethod)="autocompleteMae($event)"
+                (onFocus)="animal.show()"
+                appendTo="body"
+                ></p-autoComplete>
+            <label for="animal">Animal</label>
+        </div>
+
+        <div class="p-float-label field col-6">
+            <p-autoComplete
+                #reprodutor
+                formControlName="reprodutor"
+                [suggestions]="reprodutoresOptions"
+                [showEmptyMessage]="true"
+                emptyMessage="Não há dados a serem exibidos."
+                field="nome_animal"
+                (completeMethod)="autocompleteReprodutor($event)"
+                (onFocus)="reprodutor.show()"
+                appendTo="body"
+                ></p-autoComplete>
+            <label for="reprodutor">Reprodutor</label>
+        </div>
+    </div>
+
+    <div class="modal-buttons-bar">
+        <div class="buttons">
+            <button *ngIf="editMode" pButton type="submit" label="Salvar" class="p-button-raised"></button>
+            <button *ngIf="!editMode" pButton type="button" (click)="edit()" label="Editar" class="p-button-raised"></button>
+
+            <button *ngIf="editMode" pButton type="button" (click)="cancel(!inseminacao.id)" label="Cancelar" class="p-button-outlined"></button>
+            <button *ngIf="!editMode" pButton type="button" (click)="cancel(true)" label="Voltar" class="p-button-outlined"></button>
+        </div>
+    </div>
+</form>
