@@ -69,6 +69,9 @@ export class OcorrenciasComponent implements OnInit {
       data: element,
       header: `Editar Ocorrência`,
       width: '80%'
+    })
+    .onClose.subscribe(() => {
+      this.getOcorrencias();
     });
   }
 
@@ -93,6 +96,9 @@ export class OcorrenciasComponent implements OnInit {
       data: { },
       header: `Nova Ocorrência`,
       width: '80%'
+    })
+    .onClose.subscribe(() => {
+      this.getOcorrencias();
     });
   }
 

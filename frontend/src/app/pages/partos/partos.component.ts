@@ -91,6 +91,9 @@ export class PartosComponent implements OnInit {
       data: { },
       header: `Novo Parto`,
       width: '80%'
+    })
+    .onClose.subscribe(() => {
+      this.getPartos();
     });
   }
 
