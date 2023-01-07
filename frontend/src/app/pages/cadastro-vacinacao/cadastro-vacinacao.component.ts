@@ -20,6 +20,7 @@ export class CadastroVacinacaoComponent implements OnInit {
   form!: FormGroup;
   tipoOptions: any[] = [{label: 'Vacinação', value: 0}, {label: 'Vermífugação', value: 1}];
   tipo!: number;
+  total!: string;
   animaisOptions: any[] = [];
   vacinas_vermifugosOptions: any[] = [];
 
@@ -53,9 +54,14 @@ export class CadastroVacinacaoComponent implements OnInit {
     })
   }
 
-  onSelectTipo(event: any): void {
+  onSelectTipo(event: any, clearfields: boolean): void {
     this.tipo = event?.value;
     this.autocompleteVacinaVermifugo();
+    if(clearfields) {
+      this.form.get('vacina_vermifugo')?.patchValue('');
+      this.form.get('dose')?.patchValue('');
+      this.total = "";
+    }
     this.form.get('vacina_vermifugo')?.enable();
   }
 
@@ -66,6 +72,10 @@ export class CadastroVacinacaoComponent implements OnInit {
     this._vacinasService.getVacinas(params).subscribe(res => {
       this.vacinas_vermifugosOptions = res.rows;
     })
+  }
+
+  onSelectVacinaVermifugo(event: any): void {
+    this.total = `(Total de ${event?.doses} doses)`;
   }
 
   createform(): void {
@@ -88,7 +98,7 @@ export class CadastroVacinacaoComponent implements OnInit {
       dose: element?.dose,
       tipo: element?.tipo
     });
-    this.onSelectTipo(this.form.get('tipo')?.value);
+    this.onSelectTipo(this.form.get('tipo')?.value, false);
   }
 
   edit(): void {

@@ -10,7 +10,7 @@
                 formControlName="tipo"
                 optionLabel="label"
                 optionValue="value"
-                (onChange)="onSelectTipo($event)"
+                (onChange)="onSelectTipo($event, true)"
                 ></p-selectButton>
         </div>
     </div>
@@ -47,13 +47,14 @@
                 (completeMethod)="autocompleteVacinaVermifugo($event)"
                 (onFocus)="vacina_vermifugo.show()"
                 appendTo="body"
+                (onSelect)="onSelectVacinaVermifugo($event)"
                 ></p-autoComplete>
             <label for="vacina_vermifugo">Vacina / Vermífugo</label>
         </div>
 
         <div class="p-float-label field col-3">
             <input id="dose" type="text" pInputText formControlName="dose"> 
-            <label for="dose">Dose</label>
+            <label for="dose">Dose {{total}}</label>
         </div>
     </div>
 
