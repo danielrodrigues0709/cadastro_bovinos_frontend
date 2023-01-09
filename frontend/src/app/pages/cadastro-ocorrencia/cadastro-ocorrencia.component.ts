@@ -7,6 +7,7 @@ import { Ocorrencia } from 'src/app/interfaces/ocorrencia';
 import { AnimaisService } from 'src/app/services/animais.service';
 import { MedicamentosService } from 'src/app/services/medicamentos.service';
 import { OcorrenciasService } from 'src/app/services/ocorrencias.service';
+import { rebanho } from 'src/app/utils/enums';
 import { booleanToNumber, dateToStr, numberToBoolean, strToDate } from 'src/app/utils/utils';
 
 @Component({
@@ -48,6 +49,7 @@ export class CadastroOcorrenciaComponent implements OnInit {
   autocompleteAnimal(event?: any): void {
     let params: any = {};
     params.nomeAnimal = event ? event?.query : "";
+    params.rebanho = rebanho.SIM;
     this._animalService.getAnimais(params).subscribe(res => {
       this.animaisOptions = res.rows;
     })

@@ -7,6 +7,7 @@ import { VacinacaoVermifugacao } from 'src/app/interfaces/vacinacao-vermifugacao
 import { AnimaisService } from 'src/app/services/animais.service';
 import { VacinacoesService } from 'src/app/services/vacinacoes.service';
 import { VacinasService } from 'src/app/services/vacinas.service';
+import { rebanho } from 'src/app/utils/enums';
 import { dateToStr, strToDate } from 'src/app/utils/utils';
 
 @Component({
@@ -51,6 +52,7 @@ export class CadastroVacinacaoComponent implements OnInit {
   autocompleteAnimal(event?: any): void {
     let params: any = {};
     params.nomeAnimal = event ? event?.query : "";
+    params.rebanho = rebanho.SIM;
     this._animalService.getAnimais(params).subscribe(res => {
       this.animaisOptions = res.rows;
     })

@@ -7,7 +7,7 @@ import { Animal } from 'src/app/interfaces/animal';
 import { Inseminacao } from 'src/app/interfaces/inseminacao';
 import { AnimaisService } from 'src/app/services/animais.service';
 import { InseminacoesService } from 'src/app/services/inseminacoes.service';
-import { sexo } from 'src/app/utils/enums';
+import { rebanho, sexo } from 'src/app/utils/enums';
 import { dateToStr, strToDate } from 'src/app/utils/utils';
 
 @Component({
@@ -56,6 +56,7 @@ export class CadastroInseminacaoComponent implements OnInit {
     let params: any = {};
     params.nomeAnimal = event ? event?.query : "";
     params.sexo = sexo.FEMEA;
+    params.rebanho = rebanho.SIM;
     this._animaisService.getAnimais(params).subscribe(res => {
       this.animaisOptions = res.rows;
     })
