@@ -81,7 +81,7 @@ export class VacinacoesComponent implements OnInit {
   edit(element: any): void {
     const ref = this.dialogService.open(CadastroVacinacaoComponent, {
       data: element,
-      header: `Editar Vacina/Vermífugo`,
+      header: `Editar Vacinação/Vermifugação`,
       width: '80%'
     })
     .onClose.subscribe(() => {
@@ -110,7 +110,7 @@ export class VacinacoesComponent implements OnInit {
   include(): void {
     const ref = this.dialogService.open(CadastroVacinacaoComponent, {
       data: { },
-      header: `Nova Vacina/Vermífugo`,
+      header: `Nova Vacinação/Vermifugação`,
       width: '80%'
     })
     .onClose.subscribe(() => {

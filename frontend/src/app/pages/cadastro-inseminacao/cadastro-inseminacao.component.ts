@@ -8,6 +8,7 @@ import { Inseminacao } from 'src/app/interfaces/inseminacao';
 import { AnimaisService } from 'src/app/services/animais.service';
 import { InseminacoesService } from 'src/app/services/inseminacoes.service';
 import { sexo } from 'src/app/utils/enums';
+import { dateToStr, strToDate } from 'src/app/utils/utils';
 
 @Component({
   selector: 'app-cadastro-inseminacao',
@@ -22,6 +23,8 @@ export class CadastroInseminacaoComponent implements OnInit {
   form!: FormGroup;
   animaisOptions: any[] = [];
   reprodutoresOptions: any[] = [];
+  changedIns: boolean = false;
+  changedPrev: boolean = false;
 
   constructor(
     public ref: DynamicDialogRef,
@@ -77,13 +80,9 @@ export class CadastroInseminacaoComponent implements OnInit {
   }
 
   setFormValues(element: any): void {
-    let data_inseminacao = element?.data_inseminacao ? formatDate(
-      new Date(element.data_inseminacao).toISOString(),'short','pt-BR','GMT-0') : '';
-    let data_previsao_parto = element?.data_previsao_parto ? formatDate(
-      new Date(element.data_previsao_parto).toISOString(),'short','pt-BR','GMT-0') : '';
     this.form.patchValue({
-      data_inseminacao: element.id ? data_inseminacao : '',
-      data_previsao_parto: element.id ? data_previsao_parto : '',
+      data_inseminacao: element?.id ? dateToStr(element.data_inseminacao) : '',
+      data_previsao_parto: element?.id ? dateToStr(element.data_previsao_parto) : '',
       animal: element.animal ,
       reprodutor: element.reprodutor
     })
@@ -100,14 +99,10 @@ export class CadastroInseminacaoComponent implements OnInit {
       this.ref.close();
     }
     else {
-      let data_inseminacao = this.inseminacao?.data_inseminacao ? formatDate(
-        new Date(this.inseminacao.data_inseminacao).toISOString(),'short','pt-BR','GMT-0') : '';
-      let data_previsao_parto = this.inseminacao?.data_previsao_parto ? formatDate(
-        new Date(this.inseminacao.data_previsao_parto).toISOString(),'short','pt-BR','GMT-0') : '';
       this.form.patchValue({
         ...this.inseminacao,
-        data_inseminacao: data_inseminacao,
-        data_previsao_parto: data_previsao_parto
+        data_inseminacao: dateToStr(this.inseminacao.data_inseminacao),
+        data_previsao_parto: dateToStr(this.inseminacao.data_previsao_parto)
       });
       this.editMode = false;
       this.form.disable();
@@ -118,8 +113,8 @@ export class CadastroInseminacaoComponent implements OnInit {
     let formValues = this.form.getRawValue();
     let params = {
       ...formValues,
-      data_inseminacao: formValues.data_inseminacao,
-      data_previsao_parto: formValues.data_previsao_parto,
+      data_inseminacao: this.changedIns ? formValues.data_inseminacao : strToDate(formValues.data_inseminacao),
+      data_previsao_parto: this.changedPrev ? formValues.data_previsao_parto : strToDate(formValues.data_previsao_parto),
       id_animal: formValues.animal.id,
       id_reprodutor: formValues.reprodutor.id,
     }

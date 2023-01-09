@@ -32,7 +32,7 @@
         </div>
         
         <div class="p-float-label field col-3">
-            <p-calendar id="data_vacinacao" [showIcon]="true"  formControlName="data_vacinacao" appendTo='body' dateFormat="dd/mm/yy"></p-calendar>
+            <p-calendar id="data_vacinacao" [showIcon]="true"  formControlName="data_vacinacao" appendTo='body' dateFormat="dd/mm/yy" (onSelect)="changed = true"></p-calendar>
             <label for="data_vacinacao">Data Vacinação/Vermifugação</label>
         </div>
 

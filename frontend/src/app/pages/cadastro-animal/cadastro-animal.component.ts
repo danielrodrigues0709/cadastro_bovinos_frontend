@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { formatDate, Location } from '@angular/common';
 import { Animal } from 'src/app/interfaces/animal';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { booleanToNumber, numberToBoolean } from 'src/app/utils/utils';
+import { booleanToNumber, dateToStr, numberToBoolean, strToDate } from 'src/app/utils/utils';
 import { AnimaisService } from 'src/app/services/animais.service';
 import { MessageService } from 'primeng/api';
 
@@ -20,7 +20,7 @@ export class CadastroAnimalComponent implements OnInit {
   editMode: boolean;
   form!: FormGroup;
   sexo: any[] = [{label: 'Fêmea', value: 0}, {label: 'Macho', value: 1}];
-
+  changed: boolean = false;
 
   constructor(
     private _location: Location,
@@ -56,14 +56,12 @@ export class CadastroAnimalComponent implements OnInit {
   }
 
   setFormValues(element: any): void {
-    let data_formatada = element?.data_nascimento ? formatDate(
-      new Date(element.data_nascimento).toISOString(),'short','pt-BR','GMT-0') : '';
     this.form.patchValue({
       nro_controle: element?.nro_controle,
       matriz: element?.matriz,
       nome_animal: element?.nome_animal,
       sexo: element?.sexo,
-      data_nascimento: element.id ? data_formatada : '',
+      data_nascimento: element?.id ? dateToStr(element.data_nascimento) : '',
       rebanho: element ? numberToBoolean(element?.rebanho) : true,
       producao: element ? numberToBoolean(element.producao) : true,
       // id_mae: element.
@@ -86,11 +84,9 @@ export class CadastroAnimalComponent implements OnInit {
       history.back();
     }
     else {
-      let data_formatada = this.animal?.data_nascimento ? formatDate(
-        new Date(this.animal.data_nascimento).toISOString(),'short','pt-BR','GMT-0') : '';
       this.form.patchValue({
         ...this.animal,
-        data_nascimento: data_formatada,
+        data_nascimento: dateToStr(this.animal.data_nascimento),
         rebanho: numberToBoolean(this.animal?.rebanho),
         registrado: numberToBoolean(this.animal?.registrado),
         producao: numberToBoolean(this.animal?.producao),
@@ -104,14 +100,19 @@ export class CadastroAnimalComponent implements OnInit {
     if(!this.form.valid) {
       return;
     }
-    this.animal = this.form.getRawValue();
-    this.animal.rebanho = booleanToNumber(!!this.form.controls['rebanho'].value);
-    this.animal.registrado = this.form.controls['matriz'].value ? 1 : 0;
-    this.animal.producao = booleanToNumber(!!this.form.controls['producao'].value);
+    let formValues = this.form.getRawValue();
+    let params = { 
+      ...formValues,
+      data_nascimento: this.changed ? formValues.data_nascimento : strToDate(formValues.data_nascimento),
+      rebanho: booleanToNumber(!!formValues.rebanho),
+      registrado: formValues.matriz ? 1 : 0,
+      producao: booleanToNumber(!!formValues.producao)
+    }
+    this.animal = params;
     
     if(this.state.element?.id) {
       this.animal.id = this.state.element.id;
-      this._animaisService.updateAnimal(this.state.element.id, this.animal).subscribe(res => {
+      this._animaisService.updateAnimal(this.state.element.id, params).subscribe(res => {
         this._messageService.add({severity:'success', detail: res.message});
         this.editMode = false;
         this.form.disable();
@@ -121,7 +122,7 @@ export class CadastroAnimalComponent implements OnInit {
       })
     }
     else {
-      this._animaisService.saveAnimal(this.animal).subscribe(res => {
+      this._animaisService.saveAnimal(params).subscribe(res => {
         this._messageService.add({severity:'success', detail: res.message});
         this.animal = res.data.rows[0];
         this.editMode = false;

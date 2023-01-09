@@ -7,6 +7,7 @@ import { VacinacaoVermifugacao } from 'src/app/interfaces/vacinacao-vermifugacao
 import { AnimaisService } from 'src/app/services/animais.service';
 import { VacinacoesService } from 'src/app/services/vacinacoes.service';
 import { VacinasService } from 'src/app/services/vacinas.service';
+import { dateToStr, strToDate } from 'src/app/utils/utils';
 
 @Component({
   selector: 'app-cadastro-vacinacao',
@@ -18,11 +19,12 @@ export class CadastroVacinacaoComponent implements OnInit {
   vacinacao_vermifugacao!: VacinacaoVermifugacao;
   editMode!: boolean;
   form!: FormGroup;
-  tipoOptions: any[] = [{label: 'Vacinação', value: 0}, {label: 'Vermífugação', value: 1}];
+  tipoOptions: any[] = [{label: 'Vacinação', value: 0}, {label: 'Vermifugação', value: 1}];
   tipo!: number;
   total!: string;
   animaisOptions: any[] = [];
   vacinas_vermifugosOptions: any[] = [];
+  changed: boolean = false;
 
   constructor(
     public ref: DynamicDialogRef,
@@ -89,10 +91,8 @@ export class CadastroVacinacaoComponent implements OnInit {
   }
 
   setFormValues(element: any): void {
-    let data_formatada = element?.data_vacinacao ? formatDate(
-      new Date(element.data_vacinacao).toISOString(),'short','pt-BR','GMT-0') : '';
     this.form.patchValue({
-      data_vacinacao: data_formatada,
+      data_vacinacao: element?.id ? dateToStr(element.data_vacinacao) : '',
       animal: element?.animal,
       vacina_vermifugo: element?.vacina_vermifugo,
       dose: element?.dose,
@@ -111,11 +111,9 @@ export class CadastroVacinacaoComponent implements OnInit {
       this.ref.close();
     }
     else {
-      let data_formatada = this.vacinacao_vermifugacao?.data_vacinacao ? formatDate(
-        new Date(this.vacinacao_vermifugacao.data_vacinacao).toISOString(),'short','pt-BR','GMT-0') : '';
       this.form.patchValue({
         ...this.vacinacao_vermifugacao,
-        data_vacinacao: data_formatada
+        data_vacinacao: dateToStr(this.vacinacao_vermifugacao.data_vacinacao)
       });
       this.editMode = false;
       this.form.disable();
@@ -126,11 +124,12 @@ export class CadastroVacinacaoComponent implements OnInit {
     if(!this.form.valid) {
       return;
     }
-    let formValue = this.form.getRawValue();
+    let formValues = this.form.getRawValue();
     let params = { 
-      ...formValue,
-      id_animal: formValue.animal.id,
-      id_vacina: formValue.vacina_vermifugo.id
+      ...formValues,
+      data_vacinacao: this.changed ? formValues.data_vacinacao : strToDate(formValues.data_vacinacao),
+      id_animal: formValues.animal.id,
+      id_vacina: formValues.vacina_vermifugo.id
     }
     
     if(this.vacinacao_vermifugacao.id) {

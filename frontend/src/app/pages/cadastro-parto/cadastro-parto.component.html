@@ -1,7 +1,7 @@
 <form [formGroup]="form" (ngSubmit)="submit()">
     <div class="p-fluid grid formgrid">
         <div class="p-float-label field col-3">
-            <p-calendar id="data_parto" [showIcon]="true"  formControlName="data_parto" appendTo='body' dateFormat="dd/mm/yy"></p-calendar>
+            <p-calendar id="data_parto" [showIcon]="true"  formControlName="data_parto" appendTo='body' dateFormat="dd/mm/yy" (onSelect)="changed = true"></p-calendar>
             <label for="data_parto">Data Parto</label>
         </div>
         

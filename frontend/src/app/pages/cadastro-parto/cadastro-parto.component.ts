@@ -8,6 +8,7 @@ import { Parto } from 'src/app/interfaces/parto';
 import { AnimaisService } from 'src/app/services/animais.service';
 import { PartosService } from 'src/app/services/partos.service';
 import { sexo } from 'src/app/utils/enums';
+import { dateToStr, strToDate } from 'src/app/utils/utils';
 
 @Component({
   selector: 'app-cadastro-parto',
@@ -23,6 +24,7 @@ export class CadastroPartoComponent implements OnInit {
   maesOptions: any[] = [];
   reprodutoresOptions: any[] = [];
   sexo: any[] = [{label: 'Fêmea', value: 0}, {label: 'Macho', value: 1}];
+  changed: boolean = false;
 
   constructor(
     public ref: DynamicDialogRef,
@@ -81,10 +83,8 @@ export class CadastroPartoComponent implements OnInit {
   }
 
   setFormValues(element: any): void {
-    let data_formatada = element?.data_parto ? formatDate(
-      new Date(element.data_parto).toISOString(),'short','pt-BR','GMT-0') : '';
     this.form.patchValue({
-      data_parto: element.id ? data_formatada : '',
+      data_parto: element?.id ? dateToStr(element.data_parto) : '',
       nro_controle_cria: element?.nro_controle_cria,
       nome_cria: element?.nome_cria,
       reprodutor: element?.reprodutor,
@@ -104,11 +104,9 @@ export class CadastroPartoComponent implements OnInit {
       this.ref.close();
     }
     else {
-      let data_formatada = this.parto?.data_parto ? formatDate(
-        new Date(this.parto.data_parto).toISOString(),'short','pt-BR','GMT-0') : '';
       this.form.patchValue({
         ...this.parto,
-        data_parto: data_formatada,
+        data_parto: dateToStr(this.parto.data_parto),
         vivo: true
       });
       this.editMode = false;
@@ -120,7 +118,7 @@ export class CadastroPartoComponent implements OnInit {
     let cria = {
       ...formValues,
       nome_animal: formValues.nome_cria,
-      data_nascimento: formValues.data_parto,
+      data_nascimento: this.changed ? formValues.data_parto : strToDate(formValues.data_parto),
       id_mae: formValues.mae.id,
       id_reprodutor: formValues.reprodutor.id,
       nro_controle: formValues.nro_controle_cria,
@@ -170,6 +168,7 @@ export class CadastroPartoComponent implements OnInit {
       id_cria: animal.id,
       id_mae: formValues.mae.id,
       id_reprodutor: formValues.reprodutor.id,
+      data_parto: this.changed ? formValues.data_parto : strToDate(formValues.data_parto)
     }
     if(this.parto.id) {
       this._partoService.updateParto(this.parto.id, parto).subscribe(res => {

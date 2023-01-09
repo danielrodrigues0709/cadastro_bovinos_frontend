@@ -7,7 +7,7 @@ import { Ocorrencia } from 'src/app/interfaces/ocorrencia';
 import { AnimaisService } from 'src/app/services/animais.service';
 import { MedicamentosService } from 'src/app/services/medicamentos.service';
 import { OcorrenciasService } from 'src/app/services/ocorrencias.service';
-import { booleanToNumber, numberToBoolean } from 'src/app/utils/utils';
+import { booleanToNumber, dateToStr, numberToBoolean, strToDate } from 'src/app/utils/utils';
 
 @Component({
   selector: 'app-cadastro-ocorrencia',
@@ -21,6 +21,7 @@ export class CadastroOcorrenciaComponent implements OnInit {
   form!: FormGroup;
   animaisOptions: any[] = [];
   medicamentosOptions: any[] = [];
+  changed: boolean = false;
 
   constructor(
     public ref: DynamicDialogRef,
@@ -76,12 +77,10 @@ export class CadastroOcorrenciaComponent implements OnInit {
   }
 
   setFormValues(element: any): void {
-    let data_formatada = element?.data_ocorrencia ? formatDate(
-      new Date(element.data_ocorrencia).toISOString(),'short','pt-BR','GMT-0') : '';
     this.form.patchValue({
       numControle: element?.animal?.nro_controle,
       animal: element?.animal,
-      data_ocorrencia: element.id ? data_formatada : '',
+      data_ocorrencia: element?.id ? dateToStr(element.data_ocorrencia) : '',
       morte: numberToBoolean(element?.morte),
       medicamento: element?.medicamento,
       descricao: element?.descricao
@@ -99,11 +98,9 @@ export class CadastroOcorrenciaComponent implements OnInit {
       this.ref.close();
     }
     else {
-      let data_formatada = this.ocorrencia?.data_ocorrencia ? formatDate(
-        new Date(this.ocorrencia.data_ocorrencia).toISOString(),'short','pt-BR','GMT-0') : '';
       this.form.patchValue({
         ...this.ocorrencia,
-        data_ocorrencia: data_formatada,
+        data_ocorrencia: dateToStr(this.ocorrencia.data_ocorrencia),
         morte: numberToBoolean(this.ocorrencia.morte),
       });
       this.editMode = false;
@@ -132,12 +129,13 @@ export class CadastroOcorrenciaComponent implements OnInit {
     if(!this.form.valid) {
       return;
     }
-    let formValue = this.form.getRawValue();
+    let formValues = this.form.getRawValue();
     let params = { 
-      ...formValue,
-      id_animal: formValue.animal.id,
-      id_medicamento: formValue.medicamento ? formValue.medicamento.id : null,
-      morte: booleanToNumber(formValue.morte)
+      ...formValues,
+      data_ocorrencia: this.changed ? formValues.data_ocorrencia : strToDate(formValues.data_ocorrencia),
+      id_animal: formValues.animal.id,
+      id_medicamento: formValues.medicamento ? formValues.medicamento.id : null,
+      morte: booleanToNumber(formValues.morte)
     }
     
     if(this.ocorrencia.id) {
