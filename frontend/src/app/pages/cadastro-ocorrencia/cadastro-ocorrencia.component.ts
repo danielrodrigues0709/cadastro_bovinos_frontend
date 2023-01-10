@@ -66,6 +66,15 @@ export class CadastroOcorrenciaComponent implements OnInit {
     this.form.get('numControle')?.patchValue(event.nro_controle);
   }
 
+  onSetNumControle(event: any): void {
+    let params = {
+      nro_controle: event?.target.value,
+    };
+    this._animalService.getAnimais(params).subscribe(res => {
+      this.form.get('animal')?.patchValue(res.rows[0]);
+    })
+  }
+
   createform(): void {
     this.form = this._fb.group({
       numControle: ['', Validators.required],
@@ -91,7 +100,6 @@ export class CadastroOcorrenciaComponent implements OnInit {
   edit(): void {
     this.editMode = true;
     this.form.enable();
-    this.form.get('numControle')?.disable();
   }
 
   cancel(goBack: boolean): void {
