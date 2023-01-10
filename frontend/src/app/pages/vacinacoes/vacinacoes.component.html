@@ -18,7 +18,7 @@
                         <td class="alignCenter">{{element.data_vacinacao | date: 'dd/MM/yyyy': 'UTC'}}</td>
                         <td class="alignLeft">{{element.animal?.nome_animal}}</td>
                         <td class="alignLeft">{{element.vacina_vermifugo?.vacina_vermifugo}}</td>
-                        <td class="alignCenter">{{element.dose}} de {{element.vacina_vermifugo?.doses}}</td>
+                        <td class="alignCenter">{{element.dose}} {{element.doses}}</td>
                         <td class="alignCenter">
                             <button pButton (click)="edit(element)" class="p-button-rounded" icon="pi pi-pencil"></button>
                             <button pButton (click)="delete(element.id)" class="p-button-rounded p-button-danger" icon="pi pi-trash"></button>
@@ -47,7 +47,7 @@
                         <td class="alignCenter">{{element.data_vacinacao | date: 'dd/MM/yyyy': 'UTC'}}</td>
                         <td class="alignLeft">{{element.animal?.nome_animal}}</td>
                         <td class="alignLeft">{{element.vacina_vermifugo?.vacina_vermifugo}}</td>
-                        <td class="alignCenter">{{element.dose}} de {{element.vacina_vermifugo?.doses}}</td>
+                        <td class="alignCenter">{{element.dose}} {{element.doses}}</td>
                         <td class="alignCenter">
                             <button pButton (click)="edit(element)" class="p-button-rounded" icon="pi pi-pencil"></button>
                             <button pButton (click)="delete(element.id)" class="p-button-rounded p-button-danger" icon="pi pi-trash"></button>

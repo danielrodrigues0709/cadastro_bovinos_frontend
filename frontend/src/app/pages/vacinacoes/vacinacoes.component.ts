@@ -71,7 +71,8 @@ export class VacinacoesComponent implements OnInit {
     vacinacoes.forEach((vac, index) => {
       this._vacinasService.getVacinaById(vac.id_vacina).subscribe(res => {
         vacinacoes[index] = Object.assign(vacinacoes[index], {
-          vacina_vermifugo: res.rows[0]
+          vacina_vermifugo: res.rows[0],
+          doses: res.rows[0].doses ? `de ${res.rows[0].doses}` : null
         });
         vacinacao ? this.vacinacoes = vacinacoes : this.vermifugacoes = vacinacoes;
       });
