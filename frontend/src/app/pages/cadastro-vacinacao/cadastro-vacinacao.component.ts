@@ -21,7 +21,7 @@ export class CadastroVacinacaoComponent implements OnInit {
   form!: FormGroup;
   tipoOptions: any[] = [{label: 'Vacinação', value: 0}, {label: 'Vermifugação', value: 1}];
   tipo!: number;
-  total!: string;
+  total!: string | null;
   animaisOptions: any[] = [];
   vacinas_vermifugosOptions: any[] = [];
   changed: boolean = false;
@@ -78,7 +78,7 @@ export class CadastroVacinacaoComponent implements OnInit {
   }
 
   onSelectVacinaVermifugo(event: any): void {
-    this.total = `(Total de ${event?.doses} doses)`;
+    this.total = event?.doses ? `(Total de ${event?.doses} doses)` : null;
   }
 
   createform(): void {
@@ -87,7 +87,7 @@ export class CadastroVacinacaoComponent implements OnInit {
       data_vacinacao: ['', Validators.required],
       animal: ['', Validators.required],
       vacina_vermifugo: ['', Validators.required],
-      dose: ['', Validators.required],
+      dose: [''],
     })
   }
 
@@ -130,7 +130,8 @@ export class CadastroVacinacaoComponent implements OnInit {
       ...formValues,
       data_vacinacao: this.changed ? formValues.data_vacinacao : strToDate(formValues.data_vacinacao),
       id_animal: formValues.animal.id,
-      id_vacina: formValues.vacina_vermifugo.id
+      id_vacina: formValues.vacina_vermifugo.id,
+      dose: formValues.dose ? formValues.dose : null
     }
     
     if(this.vacinacao_vermifugacao.id) {

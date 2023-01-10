@@ -38,7 +38,7 @@ export class CadastroVacinaComponent implements OnInit {
   createform(): void {
     this.form = this._fb.group({
       vacina_vermifugo: ['', Validators.required],
-      doses: ['', Validators.required],
+      doses: [''],
       tipo: ['', Validators.required],
     })
   }
@@ -74,9 +74,13 @@ export class CadastroVacinaComponent implements OnInit {
       return;
     }
     let formValue = this.form.getRawValue();
+    let params = {
+      ...formValue,
+      doses: formValue.doses ? formValue.doses : null
+    }
     
     if(this.vacina_vermifugo.id) {
-      this._vacinasService.updateVacina(this.vacina_vermifugo.id, formValue).subscribe(res => {
+      this._vacinasService.updateVacina(this.vacina_vermifugo.id, params).subscribe(res => {
         this._messageService.add({severity:'success', detail: res.message});
         this.ref.close();
       },
@@ -85,7 +89,7 @@ export class CadastroVacinaComponent implements OnInit {
       })
     }
     else {
-      this._vacinasService.saveVacina(formValue).subscribe(res => {
+      this._vacinasService.saveVacina(params).subscribe(res => {
         this._messageService.add({severity:'success', detail: res.message});
         this.ref.close();
       },
