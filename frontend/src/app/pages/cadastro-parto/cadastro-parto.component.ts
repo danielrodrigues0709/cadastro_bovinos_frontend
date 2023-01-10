@@ -25,6 +25,7 @@ export class CadastroPartoComponent implements OnInit {
   reprodutoresOptions: any[] = [];
   sexo: any[] = [{label: 'Fêmea', value: 0}, {label: 'Macho', value: 1}];
   changed: boolean = false;
+  vivo: boolean = true;
 
   constructor(
     public ref: DynamicDialogRef,
@@ -43,7 +44,7 @@ export class CadastroPartoComponent implements OnInit {
   ngOnInit(): void {
     this.setFormValues(this.parto);
     this.parto.id ? this.form.disable() : this.form.enable();
-    if(this.parto.id) {
+    if(this.parto.id && this.parto.id_cria) {
       this._animaisService.getAnimalById(this.parto.id_cria).subscribe(res => {
         this.animal = res.rows[0];
       })
@@ -74,12 +75,12 @@ export class CadastroPartoComponent implements OnInit {
   createform(): void {
     this.form = this._fb.group({
       data_parto: ['', Validators.required],
-      vivo: [true, Validators.required],
-      nro_controle_cria: ['', Validators.required],
-      nome_cria: ['', Validators.required],
+      vivo: [this.vivo],
+      nro_controle_cria: [''],
+      nome_cria: [''],
       reprodutor: ['', Validators.required],
       mae: ['', Validators.required],
-      sexo: ['', Validators.required]
+      sexo: ['']
     })
   }
 
@@ -92,6 +93,20 @@ export class CadastroPartoComponent implements OnInit {
       mae: element?.mae,
       sexo: element?.sexo
     })
+  }
+
+  toggle(event: any): void {
+    this.vivo = event.checked;
+    if(this.vivo) {
+      this.form.get('nro_controle_cria')?.enable();
+      this.form.get('nome_cria')?.enable();
+      this.form.get('sexo')?.enable();
+    }
+    else {
+      this.form.get('nro_controle_cria')?.disable();
+      this.form.get('nome_cria')?.disable();
+      this.form.get('sexo')?.disable();
+    }
   }
 
   edit(): void {
@@ -112,6 +127,20 @@ export class CadastroPartoComponent implements OnInit {
       });
       this.editMode = false;
       this.form.disable();
+    }
+  }
+
+  submit(): void {
+    if(!this.form.valid) {
+      return;
+    }
+    let formValue = this.form.getRawValue();
+    
+    if(this.vivo) {
+      this.saveAnimal(formValue);
+    }
+    else {
+      this.saveParto();
     }
   }
 
@@ -151,24 +180,16 @@ export class CadastroPartoComponent implements OnInit {
     }
   }
 
-  submit(): void {
-    if(!this.form.valid) {
-      return;
-    }
-    let formValue = this.form.getRawValue();
-    
-    if(formValue.vivo) {
-      this.saveAnimal(formValue);
-    }
-  }
-
-  saveParto(animal: Animal):  void {
+  saveParto(animal?: Animal):  void {
     let formValues = this.form.getRawValue();
     let parto = {
       ...formValues,
-      id_cria: animal.id,
-      id_mae: formValues.mae.id,
-      id_reprodutor: formValues.reprodutor.id,
+      id_cria: animal?.id,
+      nome_cria: animal?.id ? formValues.nome_cria : "",
+      nro_controle_cria: animal?.id ? formValues.nro_controle_cria : null,
+      sexo: animal?.id ? formValues.sexo : null,
+      id_mae: formValues.mae?.id,
+      id_reprodutor: formValues.reprodutor?.id,
       data_parto: this.changed ? formValues.data_parto : strToDate(formValues.data_parto)
     }
     if(this.parto.id) {
@@ -178,7 +199,6 @@ export class CadastroPartoComponent implements OnInit {
       },
       err => {
         this._messageService.add({severity:'error', detail: err.error.message});
-        this._animaisService.deleteAnimal(animal.id);
       })
     }
     else {

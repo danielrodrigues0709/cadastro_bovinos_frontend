@@ -9,7 +9,7 @@
             <div class="spanLabel">
                 <label for="vivo">Cria Viva?</label>
             </div>
-            <p-inputSwitch id="vivo" formControlName="vivo"></p-inputSwitch>
+            <p-inputSwitch id="vivo" formControlName="vivo" (onChange)="toggle($event)"></p-inputSwitch>
         </div>
         
         <div class="field col-3">

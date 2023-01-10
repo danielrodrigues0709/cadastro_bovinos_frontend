@@ -17,8 +17,8 @@
             <tr>
                 <td class="alignCenter">{{element.data_parto | date: 'dd/MM/yyyy': 'UTC'}}</td>
                 <td class="alignLeft">{{element.nome_cria}}</td>
-                <td class="alignCenter">{{element.sexo == 0 ? "Fêmea" : "Macho"}}</td>
-                <td class="alignCenter">{{element.nro_controle_cria}}</td>
+                <td class="alignCenter">{{element.sexo == 0 ? "Fêmea" : element.sexo == 1 ? "Macho" : ""}}</td>
+                <td class="alignCenter">{{element.nro_controle_cria ? element.nro_controle_cria : ""}}</td>
                 <td class="alignLeft">{{element.mae?.nome_animal}}</td>
                 <td class="alignLeft">{{element.reprodutor?.nome_animal}}</td>
                 <td class="alignCenter">
