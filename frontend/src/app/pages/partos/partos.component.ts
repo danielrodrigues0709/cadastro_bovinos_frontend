@@ -4,7 +4,6 @@ import { ConfirmationService, MessageService } from 'primeng/api';
 import { DialogService } from 'primeng/dynamicdialog';
 import { Parto } from 'src/app/interfaces/parto';
 import { AnimaisService } from 'src/app/services/animais.service';
-import { MedicamentosService } from 'src/app/services/medicamentos.service';
 import { PartosService } from 'src/app/services/partos.service';
 import { CadastroPartoComponent } from '../cadastro-parto/cadastro-parto.component';
 

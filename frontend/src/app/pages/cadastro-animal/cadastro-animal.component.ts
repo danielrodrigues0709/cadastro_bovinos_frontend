@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { formatDate, Location } from '@angular/common';
+import { Location } from '@angular/common';
 import { Animal } from 'src/app/interfaces/animal';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { booleanToNumber, dateToStr, numberToBoolean, strToDate } from 'src/app/utils/utils';
