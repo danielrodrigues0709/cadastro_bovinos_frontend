@@ -35,6 +35,30 @@ export class PlantelComponent implements OnInit {
     this.getReprodutores();
   }
 
+  getDataById(animais: Animal[], matriz: string): void {
+    animais.forEach((animal, index) => {
+      if(animal.id_mae) {
+        this._animaisService.getAnimalById(animal.id_mae).subscribe(res => {
+          animais[index] = Object.assign(animais[index], {
+            mae: res.rows[0]
+          });
+          if(matriz == 'matrizProducao') this.matrizProducao = animais;
+          if(matriz == 'matrizDescanso') this.matrizDescanso = animais;
+        });
+      }
+    });
+    animais.forEach((animal, index) => {
+      if(animal.id_reprodutor) {
+        this._animaisService.getAnimalById(animal.id_reprodutor).subscribe(res => {
+          animais[index] = Object.assign(animais[index], {
+            reprodutor: res.rows[0]
+          });
+          if(matriz == 'reprodutores') this.reprodutores = animais;
+        });
+      }
+    });
+  }
+
   getMatrizProducao():void {
     let params = {
       sexo: sexo.FEMEA,
@@ -43,6 +67,7 @@ export class PlantelComponent implements OnInit {
     }
     this._animaisService.getAnimais(params).pipe().subscribe(res => {
       this.matrizProducao = res.rows;
+      this.getDataById(res.rows, "matrizProducao");
     });
   }
 
@@ -54,6 +79,7 @@ export class PlantelComponent implements OnInit {
     }
     this._animaisService.getAnimais(params).pipe().subscribe(res => {
       this.matrizDescanso = res.rows;
+      this.getDataById(res.rows, "matrizDescanso");
     });
   }
 
@@ -63,6 +89,7 @@ export class PlantelComponent implements OnInit {
     }
     this._animaisService.getAnimais(params).pipe().subscribe(res => {
       this.reprodutores = res.rows;
+      this.getDataById(res.rows, "reprodutores");
     });
   }
 
