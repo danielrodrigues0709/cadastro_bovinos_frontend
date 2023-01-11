@@ -51,7 +51,8 @@ export class CadastroAnimalComponent implements OnInit {
     params.nomeAnimal = event ? event?.query : "";
     params.sexo = sexo.FEMEA;
     this._animaisService.getAnimais(params).subscribe(res => {
-      this.maesOptions = res.rows;
+      let notItself = res.rows.filter((res: any) => this.animal?.id != res.id);
+      this.maesOptions = notItself;
     })
   }
 
@@ -60,7 +61,8 @@ export class CadastroAnimalComponent implements OnInit {
     params.nomeAnimal = event ? event?.query : "";
     params.sexo = sexo.MACHO;
     this._animaisService.getAnimais(params).subscribe(res => {
-      this.reprodutoresOptions = res.rows;
+      let notItself = res.rows.filter((res: any) => this.animal?.id != res.id);
+      this.reprodutoresOptions = notItself;
     })
   }
 
