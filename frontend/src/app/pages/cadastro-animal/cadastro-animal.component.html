@@ -42,15 +42,39 @@
             </div>
             <p-inputSwitch id="producao" formControlName="producao" [disabled]="disableInput()"></p-inputSwitch>
         </div>
-        
-        <div class="p-float-label field col-3">
-            <input id="mae" type="text" pInputText formControlName="id_mae"> 
+
+        <div class="p-float-label field col-4">
+            <p-autoComplete
+                #mae
+                formControlName="mae"
+                [suggestions]="maesOptions"
+                [showEmptyMessage]="true"
+                emptyMessage="Não há dados a serem exibidos."
+                field="nome_animal"
+                (completeMethod)="autocompleteMae($event)"
+                (onFocus)="mae.show()"
+                appendTo="body"
+                ></p-autoComplete>
             <label for="mae">Mãe</label>
         </div>
-        
-        <div class="p-float-label field col-3">
-            <input id="pai" type="text" pInputText formControlName="id_reprodutor"> 
-            <label for="pai">Pai</label>
+
+        <div class="p-float-label field col-4">
+            <p-autoComplete
+                #reprodutor
+                formControlName="reprodutor"
+                [suggestions]="reprodutoresOptions"
+                [showEmptyMessage]="true"
+                emptyMessage="Não há dados a serem exibidos."
+                field="nome_animal"
+                (completeMethod)="autocompleteReprodutor($event)"
+                (onFocus)="reprodutor.show()"
+                appendTo="body"
+                ></p-autoComplete>
+            <label for="reprodutor">Pai</label>
+        </div>
+
+        <div class="field col-4">
+            <button id="familyTreeBtn" pButton type="button" (click)="familyTree()" label="Árvore Genealógica" class="p-button-raised"></button>
         </div>
     </div>
 

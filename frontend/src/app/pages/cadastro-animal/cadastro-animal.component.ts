@@ -5,6 +5,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { booleanToNumber, dateToStr, numberToBoolean, strToDate } from 'src/app/utils/utils';
 import { AnimaisService } from 'src/app/services/animais.service';
 import { MessageService } from 'primeng/api';
+import { sexo } from 'src/app/utils/enums';
 
 @Component({
   selector: 'app-cadastro-animal',
@@ -19,6 +20,8 @@ export class CadastroAnimalComponent implements OnInit {
   animal: Animal;
   editMode: boolean;
   form!: FormGroup;
+  maesOptions: any[] = [];
+  reprodutoresOptions: any[] = [];
   sexo: any[] = [{label: 'Fêmea', value: 0}, {label: 'Macho', value: 1}];
   changed: boolean = false;
 
@@ -39,6 +42,26 @@ export class CadastroAnimalComponent implements OnInit {
   ngOnInit(): void {
     this.setFormValues(this.animal);
     this.animal ? this.form.disable() : this.form.enable();
+    this.autocompleteMae();
+    this.autocompleteReprodutor();
+  }
+
+  autocompleteMae(event?: any): void {
+    let params: any = {};
+    params.nomeAnimal = event ? event?.query : "";
+    params.sexo = sexo.FEMEA;
+    this._animaisService.getAnimais(params).subscribe(res => {
+      this.maesOptions = res.rows;
+    })
+  }
+
+  autocompleteReprodutor(event?: any): void {
+    let params: any = {};
+    params.nomeAnimal = event ? event?.query : "";
+    params.sexo = sexo.MACHO;
+    this._animaisService.getAnimais(params).subscribe(res => {
+      this.reprodutoresOptions = res.rows;
+    })
   }
 
   createform(): void {
@@ -50,8 +73,8 @@ export class CadastroAnimalComponent implements OnInit {
       data_nascimento: [''],
       rebanho: ['', Validators.required],
       producao: ['', Validators.required],
-      id_mae: [],
-      id_reprodutor: [],
+      mae: ['', Validators.required],
+      reprodutor: ['', Validators.required],
     })
   }
 
@@ -64,9 +87,18 @@ export class CadastroAnimalComponent implements OnInit {
       data_nascimento: element?.id ? dateToStr(element.data_nascimento) : '',
       rebanho: element ? numberToBoolean(element?.rebanho) : true,
       producao: element ? numberToBoolean(element.producao) : true,
-      // id_mae: element.
-      // id_reprodutor: element.
+      mae: element?.mae,
+      reprodutor: element?.reprodutor
     })
+  }
+
+  familyTree(): void {
+    let formValue = this.form.getRawValue();
+    let family = {
+      mae: formValue.mae,
+      reprodutor: formValue.reprodutor,
+    };
+    console.log(family)
   }
 
   disableInput(): boolean {
@@ -106,7 +138,9 @@ export class CadastroAnimalComponent implements OnInit {
       data_nascimento: this.changed ? formValues.data_nascimento : strToDate(formValues.data_nascimento),
       rebanho: booleanToNumber(!!formValues.rebanho),
       registrado: formValues.matriz ? 1 : 0,
-      producao: booleanToNumber(!!formValues.producao)
+      producao: booleanToNumber(!!formValues.producao),
+      id_mae: formValues.mae.id,
+      id_reprodutor: formValues.reprodutor.id
     }
     this.animal = params;
     
