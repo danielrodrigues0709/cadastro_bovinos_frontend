@@ -16,8 +16,8 @@
                         <td class="alignCenter">{{element.data_previsao_parto | date: 'dd/MM/yyyy': 'UTC'}}</td>
                         <td class="alignLeft">{{element.reprodutor?.nome_animal}}</td>
                         <td class="alignCenter">
-                            <button pButton (click)="edit(element, 'inseminacao')" class="p-button-rounded" icon="pi pi-pencil"></button>
-                            <button pButton (click)="delete(element.id, 'inseminacao')" class="p-button-rounded p-button-danger" icon="pi pi-trash"></button>
+                            <button pButton (click)="editInseminacao(element)" class="p-button-rounded" icon="pi pi-pencil"></button>
+                            <button pButton (click)="deleteInseminacao(element.id)" class="p-button-rounded p-button-danger" icon="pi pi-trash"></button>
                         </td>
                     </tr>
                 </ng-template>
@@ -25,14 +25,43 @@
             <div class="noData" *ngIf="inseminacoes.length == 0">
                 Não há dados a serem exibidos.
             </div>
+        </p-tabPanel>
 
-        </p-tabPanel>
         <p-tabPanel class="tabHeader" header="Partos" *ngIf="data?.sexo == 0">
-            
+            <p-table [value]="partos" styleClass="p-datatable-sm">
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th class="alignCenter">Data</th>
+                        <th class="alignCenter">Nome Cria</th>
+                        <th class="alignCenter">Sexo Cria</th>
+                        <th class="alignCenter">Nº Registro Cria</th>
+                        <th class="alignCenter">Reprodutor</th>
+                        <th class="alignCenter">Detalhes</th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-element>
+                    <tr>
+                        <td class="alignCenter">{{element.data_parto | date: 'dd/MM/yyyy': 'UTC'}}</td>
+                        <td class="alignLeft">{{element.nome_cria}}</td>
+                        <td class="alignCenter">{{element.sexo == 0 ? "Fêmea" : element.sexo == 1 ? "Macho" : ""}}</td>
+                        <td class="alignCenter">{{element.nro_controle_cria ? element.nro_controle_cria : ""}}</td>
+                        <td class="alignLeft">{{element.reprodutor?.nome_animal}}</td>
+                        <td class="alignCenter">
+                            <button pButton (click)="editParto(element)" class="p-button-rounded" icon="pi pi-pencil"></button>
+                            <button pButton (click)="deleteParto(element.id)" class="p-button-rounded p-button-danger" icon="pi pi-trash"></button>
+                        </td>
+                    </tr>
+                </ng-template>
+            </p-table>
+            <div class="noData" *ngIf="partos.length == 0">
+                Não há dados a serem exibidos.
+            </div>
         </p-tabPanel>
+
         <p-tabPanel class="tabHeader" header="Vacinações/Vermifugações">
             
         </p-tabPanel>
+
         <p-tabPanel class="tabHeader" header="Ocorrências/Medicações">
             
         </p-tabPanel>
