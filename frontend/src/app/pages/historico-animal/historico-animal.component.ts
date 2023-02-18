@@ -229,6 +229,7 @@ export class HistoricoAnimalComponent implements OnInit {
         this._vacinacoesService.deleteVacinacao(id).subscribe(res => {
           this._messageService.add({severity:'success', detail: res.message});
           this.getVacinacoes(this.data);
+          this.getVermifugacoes(this.data);
         },
         err => this._messageService.add({severity:'error', detail: err.error.message}))
       }
