@@ -43,8 +43,10 @@ export class CadastroVacinacaoComponent implements OnInit {
 
   ngOnInit(): void {
     this.setFormValues(this.vacinacao_vermifugacao);
+    this.tipo = this.vacinacao_vermifugacao.tipo;
     this.vacinacao_vermifugacao.id ? this.form.disable() : this.form.enable();
     this.autocompleteAnimal();
+    this.autocompleteVacinaVermifugo();
     this.form.get('vacina_vermifugo')?.disable();
   }
 
