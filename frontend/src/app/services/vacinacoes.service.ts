@@ -17,7 +17,7 @@ export class VacinacoesService {
     let id_animal = params.id_animal != undefined ? params.id_animal : '';
     let tipo = params.tipo != undefined ? params.tipo : '';
 
-    const href = `${environment.api}vacinacoes?id_animal=${id_vacina}&id_vacina=${id_animal}&tipo=${tipo}`;
+    const href = `${environment.api}vacinacoes?id_animal=${id_animal}&id_vacina=${id_vacina}&tipo=${tipo}`;
     return this.http.get(href, {
       headers: this.headers
     });
