@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { Subscription } from 'rxjs';
 import { VacinacaoVermifugacao } from 'src/app/interfaces/vacinacao-vermifugacao';
 import { AnimaisService } from 'src/app/services/animais.service';
 import { VacinacoesService } from 'src/app/services/vacinacoes.service';
@@ -25,6 +26,7 @@ export class CadastroVacinacaoComponent implements OnInit {
   animaisOptions: any[] = [];
   vacinas_vermifugosOptions: any[] = [];
   changed: boolean = false;
+  subscription: Subscription = new Subscription();
 
   constructor(
     public ref: DynamicDialogRef,
@@ -74,9 +76,13 @@ export class CadastroVacinacaoComponent implements OnInit {
     let params: any = {};
     params.vacina_vermifugo = event ? event?.query : "";
     params.tipo = this.tipo;
-    this._vacinasService.getVacinas(params).subscribe(res => {
+
+    this.subscription = this._vacinasService.getVacinas(params).subscribe(res => {
       this.vacinas_vermifugosOptions = res.rows;
-    })
+    });
+    if(!this.tipo && this.tipo != 0) {
+      this.subscription.unsubscribe();
+    }
   }
 
   onSelectVacinaVermifugo(event: any): void {
