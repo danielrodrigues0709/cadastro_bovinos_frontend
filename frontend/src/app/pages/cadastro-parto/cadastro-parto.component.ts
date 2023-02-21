@@ -80,17 +80,21 @@ export class CadastroPartoComponent implements OnInit, OnDestroy {
     this.form = this._fb.group({
       data_parto: ['', Validators.required],
       vivo: [this.vivo],
-      nro_controle_cria: [''],
-      nome_cria: [''],
+      nro_controle_cria: ['', Validators.required],
+      nome_cria: ['', Validators.required],
       reprodutor: ['', Validators.required],
       mae: ['', Validators.required],
-      sexo: ['']
+      sexo: ['', Validators.required]
     })
   }
 
   setFormValues(element: any): void {
+    if(element.id && !element.nro_controle_cria) {
+      this.vivo = false;
+    };
     this.form.patchValue({
       data_parto: element?.id ? dateToStr(element.data_parto) : '',
+      vivo: this.vivo,
       nro_controle_cria: element?.nro_controle_cria,
       nome_cria: element?.nome_cria,
       reprodutor: element?.reprodutor,
@@ -103,13 +107,32 @@ export class CadastroPartoComponent implements OnInit, OnDestroy {
     this.vivo = event.checked;
     if(this.vivo) {
       this.form.get('nro_controle_cria')?.enable();
+      this.form.get('nro_controle_cria')?.clearValidators();
+      this.form.get('nro_controle_cria')?.setValidators(Validators.required);
+      this.form.get('nro_controle_cria')?.updateValueAndValidity();
+      
       this.form.get('nome_cria')?.enable();
+      this.form.get('nome_cria')?.clearValidators();
+      this.form.get('nome_cria')?.setValidators(Validators.required);
+      this.form.get('nome_cria')?.updateValueAndValidity();
+
       this.form.get('sexo')?.enable();
+      this.form.get('sexo')?.clearValidators();
+      this.form.get('sexo')?.setValidators(Validators.required);
+      this.form.get('sexo')?.updateValueAndValidity();
     }
     else {
       this.form.get('nro_controle_cria')?.disable();
+      this.form.get('nro_controle_cria')?.clearValidators();
+      this.form.get('nro_controle_cria')?.updateValueAndValidity();
+
       this.form.get('nome_cria')?.disable();
+      this.form.get('nome_cria')?.clearValidators();
+      this.form.get('nome_cria')?.updateValueAndValidity();
+
       this.form.get('sexo')?.disable();
+      this.form.get('sexo')?.clearValidators();
+      this.form.get('sexo')?.updateValueAndValidity();
     }
   }
 
@@ -127,7 +150,7 @@ export class CadastroPartoComponent implements OnInit, OnDestroy {
       this.form.patchValue({
         ...this.parto,
         data_parto: dateToStr(this.parto.data_parto),
-        vivo: true
+        vivo: this.parto.nro_controle_cria ? true : false
       });
       this.editMode = false;
       this.form.disable();
@@ -190,7 +213,7 @@ export class CadastroPartoComponent implements OnInit, OnDestroy {
     let formValues = this.form.getRawValue();
     let parto = {
       ...formValues,
-      id_cria: animal?.id,
+      id_cria: animal?.id ? animal.id : null,
       nome_cria: animal?.id ? formValues.nome_cria : "",
       nro_controle_cria: animal?.id ? formValues.nro_controle_cria : null,
       sexo: animal?.id ? formValues.sexo : null,
