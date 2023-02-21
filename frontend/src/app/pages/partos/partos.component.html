@@ -1,4 +1,10 @@
-<h2 class="header">Partos</h2>
+<div class="header">
+    <div> <h2>Partos</h2> </div>
+    
+    <div class="buttons">
+        <button pButton (click)="include()" label="Novo Parto" class="p-button-raised"></button>
+    </div>
+</div>
 
 <div>
     <p-table [value]="partos" styleClass="p-datatable-sm">
@@ -34,11 +40,5 @@
 
     <p-confirmDialog header="Atenção!" icon="pi pi-exclamation-triangle"></p-confirmDialog>
     <p-toast></p-toast>
-
-    <div class="footer-buttons-bar">
-        <div class="buttons">
-            <button pButton (click)="include()" label="Novo Parto" class="p-button-raised"></button>
-        </div>
-    </div>
 </div>
 

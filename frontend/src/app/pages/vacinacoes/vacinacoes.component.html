@@ -1,4 +1,10 @@
-<h2 class="header">Vacinações e Vermifugações</h2>
+<div class="header">
+    <div> <h2>Vacinações e Vermifugações</h2> </div>
+    
+    <div class="buttons">
+        <button pButton (click)="include()" label="Nova Vacinação/Vermifugação" class="p-button-raised"></button>
+    </div>
+</div>
 
 <div>
     <p-tabView>
@@ -63,10 +69,4 @@
 
     <p-confirmDialog header="Atenção!" icon="pi pi-exclamation-triangle"></p-confirmDialog>
     <p-toast></p-toast>
-
-    <div class="footer-buttons-bar">
-        <div class="buttons">
-            <button pButton (click)="include()" label="Nova Vacinação/Vermifugação" class="p-button-raised"></button>
-        </div>
-    </div>
 </div>

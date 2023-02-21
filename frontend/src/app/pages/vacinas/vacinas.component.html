@@ -1,4 +1,10 @@
-<h2 class="header">Vacinas e Vermífugos</h2>
+<div class="header">
+    <div> <h2>Vacinas e Vermífugos</h2> </div>
+    
+    <div class="buttons">
+        <button pButton (click)="include()" label="Nova Vacina/Vermífugo" class="p-button-raised"></button>
+    </div>
+</div>
 
 <div>
     <p-tabView>
@@ -55,10 +61,4 @@
 
     <p-confirmDialog header="Atenção!" icon="pi pi-exclamation-triangle"></p-confirmDialog>
     <p-toast></p-toast>
-
-    <div class="footer-buttons-bar">
-        <div class="buttons">
-            <button pButton (click)="include()" label="Nova Vacina/Vermífugo" class="p-button-raised"></button>
-        </div>
-    </div>
 </div>
