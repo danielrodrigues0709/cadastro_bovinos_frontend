@@ -71,8 +71,9 @@ export class InseminacoesComponent implements OnInit {
       header: `Editar Inseminação`,
       width: '80%'
     })
-    .onClose.subscribe(() => {
-      this._inseminacoesService.triggerInseminacoesUpdate();
+    .onClose.subscribe((edited: boolean) => {
+      if(edited)
+        this._inseminacoesService.triggerInseminacoesUpdate();
     });
   }
 
@@ -98,8 +99,9 @@ export class InseminacoesComponent implements OnInit {
       header: `Nova Inseminacao`,
       width: '80%'
     })
-    .onClose.subscribe(() => {
-      this._inseminacoesService.triggerInseminacoesUpdate();
+    .onClose.subscribe((edited: boolean) => {
+      if(edited)
+        this._inseminacoesService.triggerInseminacoesUpdate();
     });
   }
 

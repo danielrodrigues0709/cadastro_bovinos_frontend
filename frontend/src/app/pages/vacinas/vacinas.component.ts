@@ -64,8 +64,9 @@ export class VacinasComponent implements OnInit {
       header: `Editar Vacina/Vermífugo`,
       width: '80%'
     })
-    .onClose.subscribe(() => {
-      this._vacinasService.triggerVacinasUpdate();
+    .onClose.subscribe((edited: boolean) => {
+      if(edited)
+        this._vacinasService.triggerVacinasUpdate();
     });
   }
 
@@ -91,8 +92,9 @@ export class VacinasComponent implements OnInit {
       header: `Nova Vacina/Vermífugo`,
       width: '80%'
     })
-    .onClose.subscribe(() => {
-      this._vacinasService.triggerVacinasUpdate();
+    .onClose.subscribe((edited: boolean) => {
+      if(edited)
+        this._vacinasService.triggerVacinasUpdate();
     });
   }
 

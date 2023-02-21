@@ -71,8 +71,9 @@ export class PartosComponent implements OnInit {
       header: `Editar Parto`,
       width: '80%'
     })
-    .onClose.subscribe(() => {
-      this._partosService.triggerPartosUpdate();
+    .onClose.subscribe((edited: boolean) => {
+      if(edited)
+        this._partosService.triggerPartosUpdate();
     });
   }
 
@@ -98,8 +99,9 @@ export class PartosComponent implements OnInit {
       header: `Novo Parto`,
       width: '80%'
     })
-    .onClose.subscribe(() => {
-      this._partosService.triggerPartosUpdate();
+    .onClose.subscribe((edited: boolean) => {
+      if(edited)
+        this._partosService.triggerPartosUpdate();
     });
   }
 

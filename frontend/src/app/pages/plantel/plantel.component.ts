@@ -132,8 +132,9 @@ export class PlantelComponent implements OnInit {
       header: `${mode} Ocorrência`,
       width: '80%'
     })
-    .onClose.subscribe(() => {
-      this._animaisService.triggerAnimaisUpdate();
+    .onClose.subscribe((edited: boolean) => {
+      if(edited)
+        this._animaisService.triggerAnimaisUpdate();
     });
   }
 

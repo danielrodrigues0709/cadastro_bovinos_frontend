@@ -198,8 +198,9 @@ export class HistoricoAnimalComponent implements OnInit {
       header: `Editar Inseminação`,
       width: '80%'
     })
-    .onClose.subscribe(() => {
-      this._inseminacoesService.triggerInseminacoesUpdate();
+    .onClose.subscribe((edited: boolean) => {
+      if(edited)
+        this._inseminacoesService.triggerInseminacoesUpdate();
     });
   }
 
@@ -213,8 +214,9 @@ export class HistoricoAnimalComponent implements OnInit {
       header: `Editar Parto`,
       width: '80%'
     })
-    .onClose.subscribe(() => {
-      this._partosService.triggerPartosUpdate();
+    .onClose.subscribe((edited: boolean) => {
+      if(edited)
+        this._partosService.triggerPartosUpdate();
     });
   }
 
@@ -228,8 +230,9 @@ export class HistoricoAnimalComponent implements OnInit {
       header: `Editar Vacinação/Vermifugação`,
       width: '80%'
     })
-    .onClose.subscribe(() => {
-      this._vacinacoesService.triggerVacinacoesUpdate();
+    .onClose.subscribe((edited: boolean) => {
+      if(edited)
+        this._vacinacoesService.triggerVacinacoesUpdate();
     });
   }
 
@@ -243,8 +246,9 @@ export class HistoricoAnimalComponent implements OnInit {
       header: `Editar Ocorrência`,
       width: '80%'
     })
-    .onClose.subscribe(() => {
-      this._ocorrenciasService.triggerOcorrenciasUpdate();
+    .onClose.subscribe((edited: boolean) => {
+      if(edited)
+        this._ocorrenciasService.triggerOcorrenciasUpdate();
     });
   }
 

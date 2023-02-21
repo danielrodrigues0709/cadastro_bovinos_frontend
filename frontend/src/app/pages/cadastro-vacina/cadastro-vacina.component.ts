@@ -58,7 +58,7 @@ export class CadastroVacinaComponent implements OnInit {
 
   cancel(goBack: boolean): void {
     if(goBack) {
-      this.ref.close();
+      this.ref.close(false);
     }
     else {
       this.form.patchValue({
@@ -82,7 +82,7 @@ export class CadastroVacinaComponent implements OnInit {
     if(this.vacina_vermifugo.id) {
       this._vacinasService.updateVacina(this.vacina_vermifugo.id, params).subscribe(res => {
         this._messageService.add({severity:'success', detail: res.message});
-        this.ref.close();
+        this.ref.close(true);
       },
       err => {
         this._messageService.add({severity:'error', detail: err.error.message});
@@ -91,7 +91,7 @@ export class CadastroVacinaComponent implements OnInit {
     else {
       this._vacinasService.saveVacina(params).subscribe(res => {
         this._messageService.add({severity:'success', detail: res.message});
-        this.ref.close();
+        this.ref.close(true);
       },
       err => {
         this._messageService.add({severity:'error', detail: err.error.message});

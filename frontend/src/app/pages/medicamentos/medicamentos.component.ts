@@ -49,8 +49,9 @@ export class MedicamentosComponent implements OnInit {
       header: `Editar Medicamento`,
       width: '80%'
     })
-    .onClose.subscribe(() => {
-      this._medicamentosService.triggerMedicamentosUpdate();
+    .onClose.subscribe((edited: boolean) => {
+      if(edited)
+        this._medicamentosService.triggerMedicamentosUpdate();
     });
   }
 
@@ -76,8 +77,9 @@ export class MedicamentosComponent implements OnInit {
       header: `Novo Medicamento`,
       width: '80%'
     })
-    .onClose.subscribe(() => {
-      this._medicamentosService.triggerMedicamentosUpdate();
+    .onClose.subscribe((edited: boolean) => {
+      if(edited)
+        this._medicamentosService.triggerMedicamentosUpdate();
     });
   }
 

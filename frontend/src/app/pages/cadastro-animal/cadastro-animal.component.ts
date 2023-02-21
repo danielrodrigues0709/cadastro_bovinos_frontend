@@ -152,8 +152,9 @@ export class CadastroAnimalComponent implements OnInit {
       header: `Nova Inseminacao`,
       width: '80%'
     })
-    .onClose.subscribe(() => {
-      this._inseminacoesService.triggerInseminacoesUpdate();
+    .onClose.subscribe((edited: boolean) => {
+      if(edited)
+        this._inseminacoesService.triggerInseminacoesUpdate();
     });
   }
 
@@ -165,8 +166,9 @@ export class CadastroAnimalComponent implements OnInit {
       header: `Novo Parto`,
       width: '80%'
     })
-    .onClose.subscribe(() => {
-      this._partosService.triggerPartosUpdate();
+    .onClose.subscribe((edited: boolean) => {
+      if(edited)
+        this._partosService.triggerPartosUpdate();
     });
   }
 
@@ -178,8 +180,9 @@ export class CadastroAnimalComponent implements OnInit {
       header: `Nova Vacinação/Vermifugação`,
       width: '80%'
     })
-    .onClose.subscribe(() => {
-      this._vacinacoesService.triggerVacinacoesUpdate();
+    .onClose.subscribe((edited: boolean) => {
+      if(edited)
+        this._vacinacoesService.triggerVacinacoesUpdate();
     });
   }
 
@@ -191,8 +194,9 @@ export class CadastroAnimalComponent implements OnInit {
       header: `Nova Ocorrência`,
       width: '80%'
     })
-    .onClose.subscribe(() => {
-      this._ocorrenciasService.triggerOcorrenciasUpdate();
+    .onClose.subscribe((edited: boolean) => {
+      if(edited)
+        this._ocorrenciasService.triggerOcorrenciasUpdate();
     });
   }
 

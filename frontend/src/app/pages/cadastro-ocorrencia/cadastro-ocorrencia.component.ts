@@ -108,7 +108,7 @@ export class CadastroOcorrenciaComponent implements OnInit {
 
   cancel(goBack: boolean): void {
     if(goBack) {
-      this.ref.close();
+      this.ref.close(false);
     }
     else {
       this.form.patchValue({
@@ -129,13 +129,13 @@ export class CadastroOcorrenciaComponent implements OnInit {
         producao: 0,
       };
       this._animalService.updateAnimal(params.animal.id, animal).subscribe(() => {
-        this.ref.close();
+        this.ref.close(true);
       },
       err => {
         this._messageService.add({severity:'error', detail: err.error.message});
       })
     }
-    this.ref.close();
+    this.ref.close(true);
   }
 
   submit(): void {

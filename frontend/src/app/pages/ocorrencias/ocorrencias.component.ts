@@ -77,8 +77,9 @@ export class OcorrenciasComponent implements OnInit {
       header: `Editar Ocorrência`,
       width: '80%'
     })
-    .onClose.subscribe(() => {
-      this._ocorrenciasService.triggerOcorrenciasUpdate();
+    .onClose.subscribe((edited: boolean) => {
+      if(edited)
+        this._ocorrenciasService.triggerOcorrenciasUpdate();
     });
   }
 
@@ -104,8 +105,9 @@ export class OcorrenciasComponent implements OnInit {
       header: `Nova Ocorrência`,
       width: '80%'
     })
-    .onClose.subscribe(() => {
-      this._ocorrenciasService.triggerOcorrenciasUpdate();
+    .onClose.subscribe((edited: boolean) => {
+      if(edited)
+        this._ocorrenciasService.triggerOcorrenciasUpdate();
     });
   }
 

@@ -93,8 +93,9 @@ export class VacinacoesComponent implements OnInit {
       header: `Editar Vacinação/Vermifugação`,
       width: '80%'
     })
-    .onClose.subscribe(() => {
-      this._vacinacoesService.triggerVacinacoesUpdate();
+    .onClose.subscribe((edited: boolean) => {
+      if(edited)
+        this._vacinacoesService.triggerVacinacoesUpdate();
     });
   }
 
@@ -120,8 +121,9 @@ export class VacinacoesComponent implements OnInit {
       header: `Nova Vacinação/Vermifugação`,
       width: '80%'
     })
-    .onClose.subscribe(() => {
-      this._vacinacoesService.triggerVacinacoesUpdate();
+    .onClose.subscribe((edited: boolean) => {
+      if(edited)
+        this._vacinacoesService.triggerVacinacoesUpdate();
     });
   }
 

@@ -119,7 +119,7 @@ export class CadastroPartoComponent implements OnInit {
 
   cancel(goBack: boolean): void {
     if(goBack) {
-      this.ref.close();
+      this.ref.close(false);
     }
     else {
       this.form.patchValue({
@@ -197,7 +197,7 @@ export class CadastroPartoComponent implements OnInit {
     if(this.parto.id) {
       this._partoService.updateParto(this.parto.id, parto).subscribe(res => {
         this._messageService.add({severity:'success', detail: res.message});
-        this.ref.close();
+        this.ref.close(true);
       },
       err => {
         this._messageService.add({severity:'error', detail: err.error.message});
@@ -206,7 +206,7 @@ export class CadastroPartoComponent implements OnInit {
     else {
       this._partoService.saveParto(parto).subscribe(res => {
         this._messageService.add({severity:'success', detail: res.message});
-        this.ref.close();
+        this.ref.close(true);
       },
       err => {
         this._messageService.add({severity:'error', detail: err.error.message});
