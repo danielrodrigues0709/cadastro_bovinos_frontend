@@ -1,6 +1,6 @@
 <div>
     <p-tabView>
-        <p-tabPanel class="tabHeader" header="Inseminações/Coberturas">
+        <p-tabPanel class="tabHeader" header="Inseminações/Coberturas" *ngIf="data?.sexo == 0">
             <p-table [value]="inseminacoes" styleClass="p-datatable-sm">
                 <ng-template pTemplate="header">
                     <tr>

@@ -79,7 +79,7 @@
     </div>
 
     <div *ngIf="animal && animal.id" class="action-buttons">
-        <button pButton type="button" label="Nova Inseminação" class="p-button-raised"></button>
+        <button pButton type="button" label="Nova Inseminação" class="p-button-raised" *ngIf="animal?.sexo == 0"></button>
         <button pButton type="button" label="Novo Parto" class="p-button-raised" *ngIf="animal?.sexo == 0"></button>
         <button pButton type="button" label="Nova Vacinação/Vermifugação" class="p-button-raised"></button>
         <button pButton type="button" label="Nova Ocorrência/Medicação" class="p-button-raised"></button>

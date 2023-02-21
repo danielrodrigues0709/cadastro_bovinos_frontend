@@ -46,8 +46,10 @@ export class HistoricoAnimalComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.getInseminacoes(this.data);
-    this.getPartos(this.data);
+    if(this.data.sexo == 0) {
+      this.getInseminacoes(this.data);
+      this.getPartos(this.data);
+    }
     this.getVacinacoes(this.data);
     this.getVermifugacoes(this.data);
   }
