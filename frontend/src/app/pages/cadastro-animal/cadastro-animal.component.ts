@@ -6,12 +6,17 @@ import { booleanToNumber, dateToStr, numberToBoolean, strToDate } from 'src/app/
 import { AnimaisService } from 'src/app/services/animais.service';
 import { MessageService } from 'primeng/api';
 import { sexo } from 'src/app/utils/enums';
+import { DialogService } from 'primeng/dynamicdialog';
+import { CadastroInseminacaoComponent } from '../cadastro-inseminacao/cadastro-inseminacao.component';
+import { CadastroPartoComponent } from '../cadastro-parto/cadastro-parto.component';
+import { CadastroVacinacaoComponent } from '../cadastro-vacinacao/cadastro-vacinacao.component';
+import { CadastroOcorrenciaComponent } from '../cadastro-ocorrencia/cadastro-ocorrencia.component';
 
 @Component({
   selector: 'app-cadastro-animal',
   templateUrl: './cadastro-animal.component.html',
   styleUrls: ['./cadastro-animal.component.scss'],
-  providers: [MessageService]
+  providers: [DialogService, MessageService]
 })
 export class CadastroAnimalComponent implements OnInit {
 
@@ -29,7 +34,8 @@ export class CadastroAnimalComponent implements OnInit {
     private _location: Location,
     private _fb: FormBuilder,
     private _animaisService: AnimaisService,
-    private _messageService: MessageService
+    private _messageService: MessageService,
+    public dialogService: DialogService,
   ) {
     this.state = this._location.getState();
     this.animal = this.state.element;
@@ -128,6 +134,50 @@ export class CadastroAnimalComponent implements OnInit {
       this.editMode = false;
       this.form.disable();
     }
+  }
+
+  includeInseminacao(): void {
+    const ref = this.dialogService.open(CadastroInseminacaoComponent, {
+      data: { },
+      header: `Nova Inseminacao`,
+      width: '80%'
+    })
+    .onClose.subscribe(() => {
+      // this.getInseminacoes();
+    });
+  }
+
+  includeParto(): void {
+    const ref = this.dialogService.open(CadastroPartoComponent, {
+      data: { },
+      header: `Novo Parto`,
+      width: '80%'
+    })
+    .onClose.subscribe(() => {
+      // this.getInseminacoes();
+    });
+  }
+
+  includeVacinacao(): void {
+    const ref = this.dialogService.open(CadastroVacinacaoComponent, {
+      data: { },
+      header: `Nova Vacinação/Vermifugação`,
+      width: '80%'
+    })
+    .onClose.subscribe(() => {
+      // this.getInseminacoes();
+    });
+  }
+
+  includeOcorrencia(): void {
+    const ref = this.dialogService.open(CadastroOcorrenciaComponent, {
+      data: { },
+      header: `Nova Ocorrência`,
+      width: '80%'
+    })
+    .onClose.subscribe(() => {
+      // this.getInseminacoes();
+    });
   }
 
   submit(): void {

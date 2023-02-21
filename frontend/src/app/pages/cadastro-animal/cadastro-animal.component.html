@@ -79,10 +79,36 @@
     </div>
 
     <div *ngIf="animal && animal.id" class="action-buttons">
-        <button pButton type="button" label="Nova Inseminação" class="p-button-raised" *ngIf="animal?.sexo == 0"></button>
-        <button pButton type="button" label="Novo Parto" class="p-button-raised" *ngIf="animal?.sexo == 0"></button>
-        <button pButton type="button" label="Nova Vacinação/Vermifugação" class="p-button-raised"></button>
-        <button pButton type="button" label="Nova Ocorrência/Medicação" class="p-button-raised"></button>
+        <button
+            pButton
+            type="button"
+            label="Nova Inseminação"
+            class="p-button-raised"
+            *ngIf="animal?.sexo == 0"
+            (click)="includeInseminacao()">
+        </button>
+        <button
+            pButton
+            type="button"
+            label="Novo Parto"
+            class="p-button-raised"
+            *ngIf="animal?.sexo == 0"
+            (click)="includeParto()">
+        </button>
+        <button
+            pButton
+            type="button"
+            label="Nova Vacinação/Vermifugação"
+            class="p-button-raised"
+            (click)="includeVacinacao()">
+        </button>
+        <button
+            pButton
+            type="button"
+            label="Nova Ocorrência/Medicação"
+            class="p-button-raised"
+            (click)="includeOcorrencia()">
+        </button>
     </div>
 
     <app-historico-animal *ngIf="animal && animal.id" [data]="animal"></app-historico-animal>
