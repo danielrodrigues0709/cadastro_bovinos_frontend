@@ -31,6 +31,13 @@ export class OcorrenciasComponent implements OnInit {
 
   ngOnInit() {
     this.getOcorrencias();
+    this.updateData();
+  }
+
+  updateData(): void {
+    this._ocorrenciasService.ocorrenciasUpdated.pipe().subscribe(() => {
+      this.getOcorrencias();
+    });
   }
 
   getOcorrencias():void {
@@ -71,7 +78,7 @@ export class OcorrenciasComponent implements OnInit {
       width: '80%'
     })
     .onClose.subscribe(() => {
-      this.getOcorrencias();
+      this._ocorrenciasService.triggerOcorrenciasUpdate();
     });
   }
 
@@ -84,7 +91,7 @@ export class OcorrenciasComponent implements OnInit {
       accept: () => {
         this._ocorrenciasService.deleteOcorrencia(id).subscribe(res => {
           this._messageService.add({severity:'success', detail: res.message});
-          this.getOcorrencias();
+          this._ocorrenciasService.triggerOcorrenciasUpdate();
         },
         err => this._messageService.add({severity:'error', detail: err.error.message}))
       }
@@ -98,7 +105,7 @@ export class OcorrenciasComponent implements OnInit {
       width: '80%'
     })
     .onClose.subscribe(() => {
-      this.getOcorrencias();
+      this._ocorrenciasService.triggerOcorrenciasUpdate();
     });
   }
 

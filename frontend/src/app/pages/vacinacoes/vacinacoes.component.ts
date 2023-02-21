@@ -37,6 +37,14 @@ export class VacinacoesComponent implements OnInit {
   ngOnInit() {
     this.getVacinacoes();
     this.getVermifugacoes();
+    this.updateData();
+  }
+
+  updateData(): void {
+    this._vacinacoesService.vacinacoesUpdated.pipe().subscribe(() => {
+      this.getVacinacoes();
+      this.getVermifugacoes();
+    });
   }
 
   getVacinacoes():void {
@@ -86,8 +94,7 @@ export class VacinacoesComponent implements OnInit {
       width: '80%'
     })
     .onClose.subscribe(() => {
-      this.getVacinacoes();
-      this.getVermifugacoes();
+      this._vacinacoesService.triggerVacinacoesUpdate();
     });
   }
 
@@ -100,8 +107,7 @@ export class VacinacoesComponent implements OnInit {
       accept: () => {
         this._vacinacoesService.deleteVacinacao(id).subscribe(res => {
           this._messageService.add({severity:'success', detail: res.message});
-          this.getVacinacoes();
-          this.getVermifugacoes();
+          this._vacinacoesService.triggerVacinacoesUpdate();
         },
         err => this._messageService.add({severity:'error', detail: err.error.message}))
       }
@@ -115,8 +121,7 @@ export class VacinacoesComponent implements OnInit {
       width: '80%'
     })
     .onClose.subscribe(() => {
-      this.getVacinacoes();
-      this.getVermifugacoes();
+      this._vacinacoesService.triggerVacinacoesUpdate();
     });
   }
 

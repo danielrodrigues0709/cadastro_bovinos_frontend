@@ -27,6 +27,13 @@ export class MedicamentosComponent implements OnInit {
 
   ngOnInit() {
     this.getMedicamentos();
+    this.updateData();
+  }
+
+  updateData(): void {
+    this._medicamentosService.medicamentosUpdated.pipe().subscribe(() => {
+      this.getMedicamentos();
+    });
   }
 
   getMedicamentos():void {
@@ -43,7 +50,7 @@ export class MedicamentosComponent implements OnInit {
       width: '80%'
     })
     .onClose.subscribe(() => {
-      this.getMedicamentos();
+      this._medicamentosService.triggerMedicamentosUpdate();
     });
   }
 
@@ -56,7 +63,7 @@ export class MedicamentosComponent implements OnInit {
       accept: () => {
         this._medicamentosService.deleteMedicamento(id).subscribe(res => {
           this._messageService.add({severity:'success', detail: res.message});
-          this.getMedicamentos();
+          this._medicamentosService.triggerMedicamentosUpdate();
         },
         err => this._messageService.add({severity:'error', detail: err.error.message}))
       }
@@ -70,7 +77,7 @@ export class MedicamentosComponent implements OnInit {
       width: '80%'
     })
     .onClose.subscribe(() => {
-      this.getMedicamentos();
+      this._medicamentosService.triggerMedicamentosUpdate();
     });
   }
 

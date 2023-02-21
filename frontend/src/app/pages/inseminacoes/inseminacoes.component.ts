@@ -29,6 +29,13 @@ export class InseminacoesComponent implements OnInit {
 
   ngOnInit() {
     this.getInseminacoes();
+    this.updateData();
+  }
+
+  updateData(): void {
+    this._inseminacoesService.inseminacoesUpdated.pipe().subscribe(() => {
+      this.getInseminacoes();
+    });
   }
 
   getInseminacoes():void {
@@ -65,7 +72,7 @@ export class InseminacoesComponent implements OnInit {
       width: '80%'
     })
     .onClose.subscribe(() => {
-      this.getInseminacoes();
+      this._inseminacoesService.triggerInseminacoesUpdate();
     });
   }
 
@@ -78,7 +85,7 @@ export class InseminacoesComponent implements OnInit {
       accept: () => {
         this._inseminacoesService.deleteInseminacao(id).subscribe(res => {
           this._messageService.add({severity:'success', detail: res.message});
-          this.getInseminacoes();
+          this._inseminacoesService.triggerInseminacoesUpdate();
         },
         err => this._messageService.add({severity:'error', detail: err.error.message}))
       }
@@ -92,7 +99,7 @@ export class InseminacoesComponent implements OnInit {
       width: '80%'
     })
     .onClose.subscribe(() => {
-      this.getInseminacoes();
+      this._inseminacoesService.triggerInseminacoesUpdate();
     });
   }
 

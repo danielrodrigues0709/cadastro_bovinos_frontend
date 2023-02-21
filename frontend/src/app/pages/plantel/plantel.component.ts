@@ -33,6 +33,15 @@ export class PlantelComponent implements OnInit {
     this.getMatrizProducao();
     this.getMatrizDescanso();
     this.getReprodutores();
+    this.updateData();
+  }
+
+  updateData(): void {
+    this._animaisService.animaisUpdated.pipe().subscribe(() => {
+      this.getMatrizProducao();
+      this.getMatrizDescanso();
+      this.getReprodutores();
+    });
   }
 
   getDataById(animais: Animal[], matriz: string): void {
@@ -106,9 +115,7 @@ export class PlantelComponent implements OnInit {
       accept: () => {
         this._animaisService.deleteAnimal(id).subscribe(res => {
           this._messageService.add({severity:'success', detail: res.message});
-          this.getMatrizProducao();
-          this.getMatrizDescanso();
-          this.getReprodutores();
+          this._animaisService.triggerAnimaisUpdate();
         },
         err => this._messageService.add({severity:'error', detail: err.error.message}))
       }
@@ -126,9 +133,7 @@ export class PlantelComponent implements OnInit {
       width: '80%'
     })
     .onClose.subscribe(() => {
-      this.getMatrizProducao();
-      this.getMatrizDescanso();
-      this.getReprodutores();
+      this._animaisService.triggerAnimaisUpdate();
     });
   }
 

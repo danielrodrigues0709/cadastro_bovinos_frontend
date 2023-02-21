@@ -29,6 +29,13 @@ export class PartosComponent implements OnInit {
 
   ngOnInit() {
     this.getPartos();
+    this.updateData();
+  }
+
+  updateData(): void {
+    this._partosService.partosUpdated.pipe().subscribe(() => {
+      this.getPartos();
+    });
   }
 
   getPartos():void {
@@ -65,7 +72,7 @@ export class PartosComponent implements OnInit {
       width: '80%'
     })
     .onClose.subscribe(() => {
-      this.getPartos();
+      this._partosService.triggerPartosUpdate();
     });
   }
 
@@ -78,7 +85,7 @@ export class PartosComponent implements OnInit {
       accept: () => {
         this._partosService.deleteParto(id).subscribe(res => {
           this._messageService.add({severity:'success', detail: res.message});
-          this.getPartos();
+          this._partosService.triggerPartosUpdate();
         },
         err => this._messageService.add({severity:'error', detail: err.error.message}))
       }
@@ -92,7 +99,7 @@ export class PartosComponent implements OnInit {
       width: '80%'
     })
     .onClose.subscribe(() => {
-      this.getPartos();
+      this._partosService.triggerPartosUpdate();
     });
   }
 
