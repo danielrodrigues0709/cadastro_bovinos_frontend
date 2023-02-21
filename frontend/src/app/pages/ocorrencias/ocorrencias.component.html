@@ -16,7 +16,7 @@
         <ng-template pTemplate="body" let-element>
             <tr>
                 <td class="alignCenter">{{element.data_ocorrencia | date: 'dd/MM/yyyy': 'UTC'}}</td>
-                <td class="alignLeft">{{element.descricao}}</td>
+                <td class="alignLeft">{{element.descricao.length > 20 ? (element.descricao | slice:0:20)+'...' : element.descricao}}</td>
                 <td class="alignLeft">{{element.animal?.nome_animal}}</td>
                 <td class="alignLeft">{{element.animal?.nro_controle}}</td>
                 <td class="alignLeft">{{element.animal?.matriz}}</td>
