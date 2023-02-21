@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { Subject, takeUntil } from 'rxjs';
 import { Animal } from 'src/app/interfaces/animal';
 import { Inseminacao } from 'src/app/interfaces/inseminacao';
 import { AnimaisService } from 'src/app/services/animais.service';
@@ -14,7 +15,7 @@ import { dateToStr, strToDate } from 'src/app/utils/utils';
   templateUrl: './cadastro-inseminacao.component.html',
   styleUrls: ['./cadastro-inseminacao.component.scss']
 })
-export class CadastroInseminacaoComponent implements OnInit {
+export class CadastroInseminacaoComponent implements OnInit, OnDestroy {
 
   inseminacao!: Inseminacao;
   animal!: Animal;
@@ -24,6 +25,7 @@ export class CadastroInseminacaoComponent implements OnInit {
   reprodutoresOptions: any[] = [];
   changedIns: boolean = false;
   changedPrev: boolean = false;
+  ngUnsubscribe: Subject<any> = new Subject<any>();
 
   constructor(
     public ref: DynamicDialogRef,
@@ -43,7 +45,7 @@ export class CadastroInseminacaoComponent implements OnInit {
     this.setFormValues(this.inseminacao);
     this.inseminacao.id ? this.form.disable() : this.form.enable();
     if(this.inseminacao.id) {
-      this._animaisService.getAnimalById(this.inseminacao.id_animal).subscribe(res => {
+      this._animaisService.getAnimalById(this.inseminacao.id_animal).pipe(takeUntil(this.ngUnsubscribe)).subscribe(res => {
         this.animal = res.rows[0];
       })
     }
@@ -59,7 +61,7 @@ export class CadastroInseminacaoComponent implements OnInit {
     params.nomeAnimal = event ? event?.query : "";
     params.sexo = sexo.FEMEA;
     params.rebanho = rebanho.SIM;
-    this._animaisService.getAnimais(params).subscribe(res => {
+    this._animaisService.getAnimais(params).pipe(takeUntil(this.ngUnsubscribe)).subscribe(res => {
       this.animaisOptions = res.rows;
     })
   }
@@ -68,7 +70,7 @@ export class CadastroInseminacaoComponent implements OnInit {
     let params: any = {};
     params.nomeAnimal = event ? event?.query : "";
     params.sexo = sexo.MACHO;
-    this._animaisService.getAnimais(params).subscribe(res => {
+    this._animaisService.getAnimais(params).pipe(takeUntil(this.ngUnsubscribe)).subscribe(res => {
       this.reprodutoresOptions = res.rows;
     })
   }
@@ -123,7 +125,7 @@ export class CadastroInseminacaoComponent implements OnInit {
     }
     
     if(this.inseminacao.id) {
-      this._inseminacoesService.updateInseminacao(this.inseminacao.id, params).subscribe(res => {
+      this._inseminacoesService.updateInseminacao(this.inseminacao.id, params).pipe(takeUntil(this.ngUnsubscribe)).subscribe(res => {
         this._messageService.add({severity:'success', detail: res.message});
         this.ref.close(true);
       },
@@ -132,7 +134,7 @@ export class CadastroInseminacaoComponent implements OnInit {
       })
     }
     else {
-      this._inseminacoesService.saveInseminacao(params).subscribe(res => {
+      this._inseminacoesService.saveInseminacao(params).pipe(takeUntil(this.ngUnsubscribe)).subscribe(res => {
         this._messageService.add({severity:'success', detail: res.message});
         this.ref.close(true);
       },
@@ -141,5 +143,15 @@ export class CadastroInseminacaoComponent implements OnInit {
       })
     }
   }
+  
+  onSubscriptionsDestroy(ngUnsubscribe: Subject<any>): void {
+    ngUnsubscribe.next(true);
+	  ngUnsubscribe.complete();
+	  ngUnsubscribe.unsubscribe();
+	}
+
+	ngOnDestroy(): void {
+	  this.onSubscriptionsDestroy(this.ngUnsubscribe);
+	}
 
 }

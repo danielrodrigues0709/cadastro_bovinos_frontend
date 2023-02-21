@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { Subject, takeUntil } from 'rxjs';
 import { VacinaVermifugo } from 'src/app/interfaces/vacina-vermifugo';
 import { VacinasService } from 'src/app/services/vacinas.service';
 
@@ -10,12 +11,13 @@ import { VacinasService } from 'src/app/services/vacinas.service';
   templateUrl: './cadastro-vacina.component.html',
   styleUrls: ['./cadastro-vacina.component.scss']
 })
-export class CadastroVacinaComponent implements OnInit {
+export class CadastroVacinaComponent implements OnInit, OnDestroy {
 
   vacina_vermifugo!: VacinaVermifugo;
   editMode!: boolean;
   form!: FormGroup;
   tipo: any[] = [{label: 'Vacina', value: 0}, {label: 'Vermífugo', value: 1}];
+  ngUnsubscribe: Subject<any> = new Subject<any>();
 
   constructor(
     public ref: DynamicDialogRef,
@@ -80,7 +82,7 @@ export class CadastroVacinaComponent implements OnInit {
     }
     
     if(this.vacina_vermifugo.id) {
-      this._vacinasService.updateVacina(this.vacina_vermifugo.id, params).subscribe(res => {
+      this._vacinasService.updateVacina(this.vacina_vermifugo.id, params).pipe(takeUntil(this.ngUnsubscribe)).subscribe(res => {
         this._messageService.add({severity:'success', detail: res.message});
         this.ref.close(true);
       },
@@ -89,7 +91,7 @@ export class CadastroVacinaComponent implements OnInit {
       })
     }
     else {
-      this._vacinasService.saveVacina(params).subscribe(res => {
+      this._vacinasService.saveVacina(params).pipe(takeUntil(this.ngUnsubscribe)).subscribe(res => {
         this._messageService.add({severity:'success', detail: res.message});
         this.ref.close(true);
       },
@@ -98,5 +100,15 @@ export class CadastroVacinaComponent implements OnInit {
       })
     }
   }
+  
+  onSubscriptionsDestroy(ngUnsubscribe: Subject<any>): void {
+    ngUnsubscribe.next(true);
+	  ngUnsubscribe.complete();
+	  ngUnsubscribe.unsubscribe();
+	}
+
+	ngOnDestroy(): void {
+	  this.onSubscriptionsDestroy(this.ngUnsubscribe);
+	}
 
 }

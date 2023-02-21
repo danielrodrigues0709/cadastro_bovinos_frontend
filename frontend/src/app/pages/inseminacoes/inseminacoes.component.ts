@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { DialogService } from 'primeng/dynamicdialog';
+import { Subject, takeUntil } from 'rxjs';
 import { Inseminacao } from 'src/app/interfaces/inseminacao';
 import { AnimaisService } from 'src/app/services/animais.service';
 import { InseminacoesService } from 'src/app/services/inseminacoes.service';
@@ -13,9 +14,10 @@ import { CadastroInseminacaoComponent } from '../cadastro-inseminacao/cadastro-i
   styleUrls: ['./inseminacoes.component.scss'],
   providers: [DialogService, ConfirmationService, MessageService]
 })
-export class InseminacoesComponent implements OnInit {
+export class InseminacoesComponent implements OnInit, OnDestroy {
 
   inseminacoes: Inseminacao[] = [];
+  ngUnsubscribe: Subject<any> = new Subject<any>();
 
   constructor(
     private _inseminacoesService: InseminacoesService,
@@ -33,14 +35,14 @@ export class InseminacoesComponent implements OnInit {
   }
 
   updateData(): void {
-    this._inseminacoesService.inseminacoesUpdated.pipe().subscribe(() => {
+    this._inseminacoesService.inseminacoesUpdated.pipe(takeUntil(this.ngUnsubscribe)).subscribe(() => {
       this.getInseminacoes();
     });
   }
 
   getInseminacoes():void {
     let params = {}
-    this._inseminacoesService.getInseminacoes(params).pipe().subscribe(res => {
+    this._inseminacoesService.getInseminacoes(params).pipe(takeUntil(this.ngUnsubscribe)).subscribe(res => {
       this.inseminacoes = res.rows;
       this.getDataById(res.rows);
     })
@@ -48,7 +50,7 @@ export class InseminacoesComponent implements OnInit {
 
   getDataById(inseminacoes: Inseminacao[]): void {
     inseminacoes.forEach((inseminacao, index) => {
-      this._animaisService.getAnimalById(inseminacao.id_animal).subscribe(res => {
+      this._animaisService.getAnimalById(inseminacao.id_animal).pipe(takeUntil(this.ngUnsubscribe)).subscribe(res => {
         inseminacoes[index] = Object.assign(inseminacoes[index], {
           animal: res.rows[0]
         });
@@ -56,7 +58,7 @@ export class InseminacoesComponent implements OnInit {
       });
     });
     inseminacoes.forEach((inseminacao, index) => {
-      this._animaisService.getAnimalById(inseminacao.id_reprodutor).subscribe(res => {
+      this._animaisService.getAnimalById(inseminacao.id_reprodutor).pipe(takeUntil(this.ngUnsubscribe)).subscribe(res => {
         inseminacoes[index] = Object.assign(inseminacoes[index], {
           reprodutor: res.rows[0]
         });
@@ -71,7 +73,7 @@ export class InseminacoesComponent implements OnInit {
       header: `Editar Inseminação`,
       width: '80%'
     })
-    .onClose.subscribe((edited: boolean) => {
+    .onClose.pipe(takeUntil(this.ngUnsubscribe)).subscribe((edited: boolean) => {
       if(edited)
         this._inseminacoesService.triggerInseminacoesUpdate();
     });
@@ -84,7 +86,7 @@ export class InseminacoesComponent implements OnInit {
       rejectLabel: 'Não',
       rejectButtonStyleClass: 'p-button-outlined',
       accept: () => {
-        this._inseminacoesService.deleteInseminacao(id).subscribe(res => {
+        this._inseminacoesService.deleteInseminacao(id).pipe(takeUntil(this.ngUnsubscribe)).subscribe(res => {
           this._messageService.add({severity:'success', detail: res.message});
           this._inseminacoesService.triggerInseminacoesUpdate();
         },
@@ -99,10 +101,20 @@ export class InseminacoesComponent implements OnInit {
       header: `Nova Inseminacao`,
       width: '80%'
     })
-    .onClose.subscribe((edited: boolean) => {
+    .onClose.pipe(takeUntil(this.ngUnsubscribe)).subscribe((edited: boolean) => {
       if(edited)
         this._inseminacoesService.triggerInseminacoesUpdate();
     });
   }
+  
+  onSubscriptionsDestroy(ngUnsubscribe: Subject<any>): void {
+    ngUnsubscribe.next(true);
+	  ngUnsubscribe.complete();
+	  ngUnsubscribe.unsubscribe();
+	}
+
+	ngOnDestroy(): void {
+	  this.onSubscriptionsDestroy(this.ngUnsubscribe);
+	}
 
 }

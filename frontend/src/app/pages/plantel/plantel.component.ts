@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DialogService } from 'primeng/dynamicdialog';
 import { producao, rebanho, sexo } from 'src/app/utils/enums';
@@ -7,6 +7,7 @@ import { Animal } from '../../interfaces/animal';
 import { CadastroOcorrenciaComponent } from '../cadastro-ocorrencia/cadastro-ocorrencia.component';
 import { ConfirmationService } from 'primeng/api';
 import { MessageService } from 'primeng/api';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-plantel',
@@ -14,11 +15,12 @@ import { MessageService } from 'primeng/api';
   styleUrls: ['./plantel.component.scss'],
   providers: [DialogService, ConfirmationService, MessageService]
 })
-export class PlantelComponent implements OnInit {
+export class PlantelComponent implements OnInit, OnDestroy {
 
   matrizProducao: Animal[] = [];
   matrizDescanso: Animal[] = [];
   reprodutores: Animal[] = [];
+  ngUnsubscribe: Subject<any> = new Subject<any>();
 
   constructor(
     private _animaisService: AnimaisService,
@@ -37,7 +39,7 @@ export class PlantelComponent implements OnInit {
   }
 
   updateData(): void {
-    this._animaisService.animaisUpdated.pipe().subscribe(() => {
+    this._animaisService.animaisUpdated.pipe(takeUntil(this.ngUnsubscribe)).subscribe(() => {
       this.getMatrizProducao();
       this.getMatrizDescanso();
       this.getReprodutores();
@@ -47,7 +49,7 @@ export class PlantelComponent implements OnInit {
   getDataById(animais: Animal[], matriz: string): void {
     animais.forEach((animal, index) => {
       if(animal.id_mae) {
-        this._animaisService.getAnimalById(animal.id_mae).subscribe(res => {
+        this._animaisService.getAnimalById(animal.id_mae).pipe(takeUntil(this.ngUnsubscribe)).subscribe(res => {
           animais[index] = Object.assign(animais[index], {
             mae: res.rows[0]
           });
@@ -58,7 +60,7 @@ export class PlantelComponent implements OnInit {
     });
     animais.forEach((animal, index) => {
       if(animal.id_reprodutor) {
-        this._animaisService.getAnimalById(animal.id_reprodutor).subscribe(res => {
+        this._animaisService.getAnimalById(animal.id_reprodutor).pipe(takeUntil(this.ngUnsubscribe)).subscribe(res => {
           animais[index] = Object.assign(animais[index], {
             reprodutor: res.rows[0]
           });
@@ -74,7 +76,7 @@ export class PlantelComponent implements OnInit {
       producao: producao.SIM,
       rebanho: rebanho.SIM,
     }
-    this._animaisService.getAnimais(params).pipe().subscribe(res => {
+    this._animaisService.getAnimais(params).pipe(takeUntil(this.ngUnsubscribe)).subscribe(res => {
       this.matrizProducao = res.rows;
       this.getDataById(res.rows, "matrizProducao");
     });
@@ -86,7 +88,7 @@ export class PlantelComponent implements OnInit {
       producao: producao.NAO,
       rebanho: rebanho.SIM,
     }
-    this._animaisService.getAnimais(params).pipe().subscribe(res => {
+    this._animaisService.getAnimais(params).pipe(takeUntil(this.ngUnsubscribe)).subscribe(res => {
       this.matrizDescanso = res.rows;
       this.getDataById(res.rows, "matrizDescanso");
     });
@@ -96,7 +98,7 @@ export class PlantelComponent implements OnInit {
     let params = {
       sexo: sexo.MACHO,
     }
-    this._animaisService.getAnimais(params).pipe().subscribe(res => {
+    this._animaisService.getAnimais(params).pipe(takeUntil(this.ngUnsubscribe)).subscribe(res => {
       this.reprodutores = res.rows;
       this.getDataById(res.rows, "reprodutores");
     });
@@ -113,7 +115,7 @@ export class PlantelComponent implements OnInit {
       rejectLabel: 'Não',
       rejectButtonStyleClass: 'p-button-outlined',
       accept: () => {
-        this._animaisService.deleteAnimal(id).subscribe(res => {
+        this._animaisService.deleteAnimal(id).pipe(takeUntil(this.ngUnsubscribe)).subscribe(res => {
           this._messageService.add({severity:'success', detail: res.message});
           this._animaisService.triggerAnimaisUpdate();
         },
@@ -132,10 +134,20 @@ export class PlantelComponent implements OnInit {
       header: `${mode} Ocorrência`,
       width: '80%'
     })
-    .onClose.subscribe((edited: boolean) => {
+    .onClose.pipe(takeUntil(this.ngUnsubscribe)).subscribe((edited: boolean) => {
       if(edited)
         this._animaisService.triggerAnimaisUpdate();
     });
   }
+  
+  onSubscriptionsDestroy(ngUnsubscribe: Subject<any>): void {
+    ngUnsubscribe.next(true);
+	  ngUnsubscribe.complete();
+	  ngUnsubscribe.unsubscribe();
+	}
+
+	ngOnDestroy(): void {
+	  this.onSubscriptionsDestroy(this.ngUnsubscribe);
+	}
 
 }

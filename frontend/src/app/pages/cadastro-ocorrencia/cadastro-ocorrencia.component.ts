@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { Subject, takeUntil } from 'rxjs';
 import { Ocorrencia } from 'src/app/interfaces/ocorrencia';
 import { AnimaisService } from 'src/app/services/animais.service';
 import { MedicamentosService } from 'src/app/services/medicamentos.service';
@@ -14,7 +15,7 @@ import { booleanToNumber, dateToStr, numberToBoolean, strToDate } from 'src/app/
   templateUrl: './cadastro-ocorrencia.component.html',
   styleUrls: ['./cadastro-ocorrencia.component.scss']
 })
-export class CadastroOcorrenciaComponent implements OnInit {
+export class CadastroOcorrenciaComponent implements OnInit, OnDestroy {
 
   ocorrencia!: Ocorrencia;
   editMode!: boolean;
@@ -22,6 +23,7 @@ export class CadastroOcorrenciaComponent implements OnInit {
   animaisOptions: any[] = [];
   medicamentosOptions: any[] = [];
   changed: boolean = false;
+  ngUnsubscribe: Subject<any> = new Subject<any>();
 
   constructor(
     public ref: DynamicDialogRef,
@@ -53,7 +55,7 @@ export class CadastroOcorrenciaComponent implements OnInit {
     let params: any = {};
     params.nomeAnimal = event ? event?.query : "";
     params.rebanho = rebanho.SIM;
-    this._animalService.getAnimais(params).subscribe(res => {
+    this._animalService.getAnimais(params).pipe(takeUntil(this.ngUnsubscribe)).subscribe(res => {
       this.animaisOptions = res.rows;
     })
   }
@@ -61,7 +63,7 @@ export class CadastroOcorrenciaComponent implements OnInit {
   autocompleteMedicamento(event?: any): void {
     let params: any = {};
     params.medicamento = event ? event?.query : "";
-    this._medicamentoService.getMedicamentos(params).subscribe(res => {
+    this._medicamentoService.getMedicamentos(params).pipe(takeUntil(this.ngUnsubscribe)).subscribe(res => {
       this.medicamentosOptions = res.rows;
     })
   }
@@ -74,7 +76,7 @@ export class CadastroOcorrenciaComponent implements OnInit {
     let params = {
       nro_controle: event?.target.value,
     };
-    this._animalService.getAnimais(params).subscribe(res => {
+    this._animalService.getAnimais(params).pipe(takeUntil(this.ngUnsubscribe)).subscribe(res => {
       this.form.get('animal')?.patchValue(res.rows[0]);
     })
   }
@@ -128,7 +130,7 @@ export class CadastroOcorrenciaComponent implements OnInit {
         rebanho: 0,
         producao: 0,
       };
-      this._animalService.updateAnimal(params.animal.id, animal).subscribe(() => {
+      this._animalService.updateAnimal(params.animal.id, animal).pipe(takeUntil(this.ngUnsubscribe)).subscribe(() => {
         this.ref.close(true);
       },
       err => {
@@ -152,7 +154,7 @@ export class CadastroOcorrenciaComponent implements OnInit {
     }
     
     if(this.ocorrencia.id) {
-      this._ocorrenciaService.updateOcorrencia(this.ocorrencia.id, params).subscribe(res => {
+      this._ocorrenciaService.updateOcorrencia(this.ocorrencia.id, params).pipe(takeUntil(this.ngUnsubscribe)).subscribe(res => {
         this._messageService.add({severity:'success', detail: res.message});
         this.removeAnimal(params);
       },
@@ -161,7 +163,7 @@ export class CadastroOcorrenciaComponent implements OnInit {
       })
     }
     else {
-      this._ocorrenciaService.saveOcorrencia(params).subscribe(res => {
+      this._ocorrenciaService.saveOcorrencia(params).pipe(takeUntil(this.ngUnsubscribe)).subscribe(res => {
         this._messageService.add({severity:'success', detail: res.message});
         this.removeAnimal(params);
       },
@@ -170,5 +172,15 @@ export class CadastroOcorrenciaComponent implements OnInit {
       })
     }
   }
+  
+  onSubscriptionsDestroy(ngUnsubscribe: Subject<any>): void {
+    ngUnsubscribe.next(true);
+	  ngUnsubscribe.complete();
+	  ngUnsubscribe.unsubscribe();
+	}
+
+	ngOnDestroy(): void {
+	  this.onSubscriptionsDestroy(this.ngUnsubscribe);
+	}
 
 }

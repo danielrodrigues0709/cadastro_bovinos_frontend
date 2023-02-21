@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { DialogService } from 'primeng/dynamicdialog';
+import { Subject, takeUntil } from 'rxjs';
 import { Ocorrencia } from 'src/app/interfaces/ocorrencia';
 import { AnimaisService } from 'src/app/services/animais.service';
 import { MedicamentosService } from 'src/app/services/medicamentos.service';
@@ -14,9 +15,10 @@ import { CadastroOcorrenciaComponent } from '../cadastro-ocorrencia/cadastro-oco
   styleUrls: ['./ocorrencias.component.scss'],
   providers: [DialogService, ConfirmationService, MessageService]
 })
-export class OcorrenciasComponent implements OnInit {
+export class OcorrenciasComponent implements OnInit, OnDestroy {
 
   ocorrencias: Ocorrencia[] = [];
+  ngUnsubscribe: Subject<any> = new Subject<any>();
 
   constructor(
     private _ocorrenciasService: OcorrenciasService,
@@ -35,7 +37,7 @@ export class OcorrenciasComponent implements OnInit {
   }
 
   updateData(): void {
-    this._ocorrenciasService.ocorrenciasUpdated.pipe().subscribe(() => {
+    this._ocorrenciasService.ocorrenciasUpdated.pipe(takeUntil(this.ngUnsubscribe)).subscribe(() => {
       this.getOcorrencias();
     });
   }
@@ -46,7 +48,7 @@ export class OcorrenciasComponent implements OnInit {
       id_medicamento: null,
       morte: null
     }
-    this._ocorrenciasService.getOcorrencias(params).pipe().subscribe(res => {
+    this._ocorrenciasService.getOcorrencias(params).pipe(takeUntil(this.ngUnsubscribe)).subscribe(res => {
       this.ocorrencias = res.rows;
       this.getDataById(res.rows);
     })
@@ -54,14 +56,14 @@ export class OcorrenciasComponent implements OnInit {
 
   getDataById(ocorrencias: Ocorrencia[]): void {
     ocorrencias.forEach((ocorrencia, index) => {
-      this._animaisService.getAnimalById(ocorrencia.id_animal).subscribe(res => {
+      this._animaisService.getAnimalById(ocorrencia.id_animal).pipe(takeUntil(this.ngUnsubscribe)).subscribe(res => {
         ocorrencias[index] = Object.assign(ocorrencias[index], {
           animal: res.rows[0]
         });
         this.ocorrencias = ocorrencias;
       });
       if(ocorrencia.id_medicamento) {
-        this._medicamentosService.getMedicamentosById(ocorrencia.id_medicamento).subscribe(res => {
+        this._medicamentosService.getMedicamentosById(ocorrencia.id_medicamento).pipe(takeUntil(this.ngUnsubscribe)).subscribe(res => {
           ocorrencias[index] = Object.assign(ocorrencias[index], {
             medicamento: res.rows[0]
           });
@@ -77,7 +79,7 @@ export class OcorrenciasComponent implements OnInit {
       header: `Editar Ocorrência`,
       width: '80%'
     })
-    .onClose.subscribe((edited: boolean) => {
+    .onClose.pipe(takeUntil(this.ngUnsubscribe)).subscribe((edited: boolean) => {
       if(edited)
         this._ocorrenciasService.triggerOcorrenciasUpdate();
     });
@@ -90,7 +92,7 @@ export class OcorrenciasComponent implements OnInit {
       rejectLabel: 'Não',
       rejectButtonStyleClass: 'p-button-outlined',
       accept: () => {
-        this._ocorrenciasService.deleteOcorrencia(id).subscribe(res => {
+        this._ocorrenciasService.deleteOcorrencia(id).pipe(takeUntil(this.ngUnsubscribe)).subscribe(res => {
           this._messageService.add({severity:'success', detail: res.message});
           this._ocorrenciasService.triggerOcorrenciasUpdate();
         },
@@ -105,10 +107,20 @@ export class OcorrenciasComponent implements OnInit {
       header: `Nova Ocorrência`,
       width: '80%'
     })
-    .onClose.subscribe((edited: boolean) => {
+    .onClose.pipe(takeUntil(this.ngUnsubscribe)).subscribe((edited: boolean) => {
       if(edited)
         this._ocorrenciasService.triggerOcorrenciasUpdate();
     });
   }
+  
+  onSubscriptionsDestroy(ngUnsubscribe: Subject<any>): void {
+    ngUnsubscribe.next(true);
+	  ngUnsubscribe.complete();
+	  ngUnsubscribe.unsubscribe();
+	}
+
+	ngOnDestroy(): void {
+	  this.onSubscriptionsDestroy(this.ngUnsubscribe);
+	}
 
 }

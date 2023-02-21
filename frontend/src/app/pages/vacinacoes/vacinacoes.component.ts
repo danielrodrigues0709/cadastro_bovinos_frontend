@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { DialogService } from 'primeng/dynamicdialog';
+import { Subject, takeUntil } from 'rxjs';
 import { VacinaVermifugo } from 'src/app/interfaces/vacina-vermifugo';
 import { VacinacaoVermifugacao } from 'src/app/interfaces/vacinacao-vermifugacao';
 import { AnimaisService } from 'src/app/services/animais.service';
@@ -16,12 +17,13 @@ import { CadastroVacinacaoComponent } from '../cadastro-vacinacao/cadastro-vacin
   styleUrls: ['./vacinacoes.component.scss'],
   providers: [DialogService, ConfirmationService, MessageService]
 })
-export class VacinacoesComponent implements OnInit {
+export class VacinacoesComponent implements OnInit, OnDestroy {
 
   vacinacoes: VacinacaoVermifugacao[] = [];
   vermifugacoes: VacinacaoVermifugacao[] = [];
   vacinas: VacinaVermifugo[] = [];
   vermifugas: VacinaVermifugo[] = [];
+  ngUnsubscribe: Subject<any> = new Subject<any>();
 
   constructor(
     private _vacinacoesService: VacinacoesService,
@@ -41,7 +43,7 @@ export class VacinacoesComponent implements OnInit {
   }
 
   updateData(): void {
-    this._vacinacoesService.vacinacoesUpdated.pipe().subscribe(() => {
+    this._vacinacoesService.vacinacoesUpdated.pipe(takeUntil(this.ngUnsubscribe)).subscribe(() => {
       this.getVacinacoes();
       this.getVermifugacoes();
     });
@@ -51,7 +53,7 @@ export class VacinacoesComponent implements OnInit {
     let params = {
       tipo: vacinaVermifugo.Vacina,
     }
-    this._vacinacoesService.getVacinacoes(params).pipe().subscribe(res => {
+    this._vacinacoesService.getVacinacoes(params).pipe(takeUntil(this.ngUnsubscribe)).subscribe(res => {
       this.vacinacoes = res.rows;
       this.getDataById(res.rows, true);
     });
@@ -61,7 +63,7 @@ export class VacinacoesComponent implements OnInit {
     let params = {
       tipo: vacinaVermifugo.Vermifugo,
     }
-    this._vacinacoesService.getVacinacoes(params).pipe().subscribe(res => {
+    this._vacinacoesService.getVacinacoes(params).pipe(takeUntil(this.ngUnsubscribe)).subscribe(res => {
       this.vermifugacoes = res.rows;
       this.getDataById(res.rows, false);
     });
@@ -69,7 +71,7 @@ export class VacinacoesComponent implements OnInit {
 
   getDataById(vacinacoes: VacinacaoVermifugacao[], vacinacao: boolean): void {
     vacinacoes.forEach((vac, index) => {
-      this._animaisService.getAnimalById(vac.id_animal).subscribe(res => {
+      this._animaisService.getAnimalById(vac.id_animal).pipe(takeUntil(this.ngUnsubscribe)).subscribe(res => {
         vacinacoes[index] = Object.assign(vacinacoes[index], {
           animal: res.rows[0]
         });
@@ -77,7 +79,7 @@ export class VacinacoesComponent implements OnInit {
       });
     });
     vacinacoes.forEach((vac, index) => {
-      this._vacinasService.getVacinaById(vac.id_vacina).subscribe(res => {
+      this._vacinasService.getVacinaById(vac.id_vacina).pipe(takeUntil(this.ngUnsubscribe)).subscribe(res => {
         vacinacoes[index] = Object.assign(vacinacoes[index], {
           vacina_vermifugo: res.rows[0],
           doses: res.rows[0].doses ? `de ${res.rows[0].doses}` : null
@@ -93,7 +95,7 @@ export class VacinacoesComponent implements OnInit {
       header: `Editar Vacinação/Vermifugação`,
       width: '80%'
     })
-    .onClose.subscribe((edited: boolean) => {
+    .onClose.pipe(takeUntil(this.ngUnsubscribe)).subscribe((edited: boolean) => {
       if(edited)
         this._vacinacoesService.triggerVacinacoesUpdate();
     });
@@ -106,7 +108,7 @@ export class VacinacoesComponent implements OnInit {
       rejectLabel: 'Não',
       rejectButtonStyleClass: 'p-button-outlined',
       accept: () => {
-        this._vacinacoesService.deleteVacinacao(id).subscribe(res => {
+        this._vacinacoesService.deleteVacinacao(id).pipe(takeUntil(this.ngUnsubscribe)).subscribe(res => {
           this._messageService.add({severity:'success', detail: res.message});
           this._vacinacoesService.triggerVacinacoesUpdate();
         },
@@ -121,10 +123,20 @@ export class VacinacoesComponent implements OnInit {
       header: `Nova Vacinação/Vermifugação`,
       width: '80%'
     })
-    .onClose.subscribe((edited: boolean) => {
+    .onClose.pipe(takeUntil(this.ngUnsubscribe)).subscribe((edited: boolean) => {
       if(edited)
         this._vacinacoesService.triggerVacinacoesUpdate();
     });
   }
+  
+  onSubscriptionsDestroy(ngUnsubscribe: Subject<any>): void {
+    ngUnsubscribe.next(true);
+	  ngUnsubscribe.complete();
+	  ngUnsubscribe.unsubscribe();
+	}
+
+	ngOnDestroy(): void {
+	  this.onSubscriptionsDestroy(this.ngUnsubscribe);
+	}
 
 }

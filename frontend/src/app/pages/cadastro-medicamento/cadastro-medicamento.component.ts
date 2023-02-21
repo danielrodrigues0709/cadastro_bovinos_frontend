@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { Subject, takeUntil } from 'rxjs';
 import { Medicamento } from 'src/app/interfaces/Medicamento';
 import { MedicamentosService } from 'src/app/services/medicamentos.service';
 
@@ -10,11 +11,12 @@ import { MedicamentosService } from 'src/app/services/medicamentos.service';
   templateUrl: './cadastro-medicamento.component.html',
   styleUrls: ['./cadastro-medicamento.component.scss']
 })
-export class CadastroMedicamentoComponent implements OnInit {
+export class CadastroMedicamentoComponent implements OnInit, OnDestroy {
 
   medicamento!: Medicamento;
   editMode!: boolean;
   form!: FormGroup;
+  ngUnsubscribe: Subject<any> = new Subject<any>();
 
   constructor(
     public ref: DynamicDialogRef,
@@ -73,7 +75,7 @@ export class CadastroMedicamentoComponent implements OnInit {
     let formValue = this.form.getRawValue();
     
     if(this.medicamento.id) {
-      this._medicamentoService.updateMedicamento(this.medicamento.id, formValue).subscribe(res => {
+      this._medicamentoService.updateMedicamento(this.medicamento.id, formValue).pipe(takeUntil(this.ngUnsubscribe)).subscribe(res => {
         this._messageService.add({severity:'success', detail: res.message});
         this.ref.close(true);
       },
@@ -82,7 +84,7 @@ export class CadastroMedicamentoComponent implements OnInit {
       })
     }
     else {
-      this._medicamentoService.saveMedicamento(formValue).subscribe(res => {
+      this._medicamentoService.saveMedicamento(formValue).pipe(takeUntil(this.ngUnsubscribe)).subscribe(res => {
         this._messageService.add({severity:'success', detail: res.message});
         this.ref.close(true);
       },
@@ -91,5 +93,15 @@ export class CadastroMedicamentoComponent implements OnInit {
       })
     }
   }
+  
+  onSubscriptionsDestroy(ngUnsubscribe: Subject<any>): void {
+    ngUnsubscribe.next(true);
+	  ngUnsubscribe.complete();
+	  ngUnsubscribe.unsubscribe();
+	}
+
+	ngOnDestroy(): void {
+	  this.onSubscriptionsDestroy(this.ngUnsubscribe);
+	}
 
 }

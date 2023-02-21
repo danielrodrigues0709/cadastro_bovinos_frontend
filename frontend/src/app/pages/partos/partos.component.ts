@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { DialogService } from 'primeng/dynamicdialog';
+import { Subject, takeUntil } from 'rxjs';
 import { Parto } from 'src/app/interfaces/parto';
 import { AnimaisService } from 'src/app/services/animais.service';
 import { PartosService } from 'src/app/services/partos.service';
@@ -13,9 +14,10 @@ import { CadastroPartoComponent } from '../cadastro-parto/cadastro-parto.compone
   styleUrls: ['./partos.component.scss'],
   providers: [DialogService, ConfirmationService, MessageService]
 })
-export class PartosComponent implements OnInit {
+export class PartosComponent implements OnInit, OnDestroy {
 
   partos: Parto[] = [];
+  ngUnsubscribe: Subject<any> = new Subject<any>();
 
   constructor(
     private _partosService: PartosService,
@@ -33,14 +35,14 @@ export class PartosComponent implements OnInit {
   }
 
   updateData(): void {
-    this._partosService.partosUpdated.pipe().subscribe(() => {
+    this._partosService.partosUpdated.pipe(takeUntil(this.ngUnsubscribe)).subscribe(() => {
       this.getPartos();
     });
   }
 
   getPartos():void {
     let params = {}
-    this._partosService.getPartos(params).pipe().subscribe(res => {
+    this._partosService.getPartos(params).pipe(takeUntil(this.ngUnsubscribe)).subscribe(res => {
       this.partos = res.rows;
       this.getDataById(res.rows);
     })
@@ -48,7 +50,7 @@ export class PartosComponent implements OnInit {
 
   getDataById(partos: Parto[]): void {
     partos.forEach((parto, index) => {
-      this._animaisService.getAnimalById(parto.id_mae).subscribe(res => {
+      this._animaisService.getAnimalById(parto.id_mae).pipe(takeUntil(this.ngUnsubscribe)).subscribe(res => {
         partos[index] = Object.assign(partos[index], {
           mae: res.rows[0]
         });
@@ -56,7 +58,7 @@ export class PartosComponent implements OnInit {
       });
     });
     partos.forEach((parto, index) => {
-      this._animaisService.getAnimalById(parto.id_reprodutor).subscribe(res => {
+      this._animaisService.getAnimalById(parto.id_reprodutor).pipe(takeUntil(this.ngUnsubscribe)).subscribe(res => {
         partos[index] = Object.assign(partos[index], {
           reprodutor: res.rows[0]
         });
@@ -71,7 +73,7 @@ export class PartosComponent implements OnInit {
       header: `Editar Parto`,
       width: '80%'
     })
-    .onClose.subscribe((edited: boolean) => {
+    .onClose.pipe(takeUntil(this.ngUnsubscribe)).subscribe((edited: boolean) => {
       if(edited)
         this._partosService.triggerPartosUpdate();
     });
@@ -84,7 +86,7 @@ export class PartosComponent implements OnInit {
       rejectLabel: 'Não',
       rejectButtonStyleClass: 'p-button-outlined',
       accept: () => {
-        this._partosService.deleteParto(id).subscribe(res => {
+        this._partosService.deleteParto(id).pipe(takeUntil(this.ngUnsubscribe)).subscribe(res => {
           this._messageService.add({severity:'success', detail: res.message});
           this._partosService.triggerPartosUpdate();
         },
@@ -99,10 +101,20 @@ export class PartosComponent implements OnInit {
       header: `Novo Parto`,
       width: '80%'
     })
-    .onClose.subscribe((edited: boolean) => {
+    .onClose.pipe(takeUntil(this.ngUnsubscribe)).subscribe((edited: boolean) => {
       if(edited)
         this._partosService.triggerPartosUpdate();
     });
   }
+  
+  onSubscriptionsDestroy(ngUnsubscribe: Subject<any>): void {
+    ngUnsubscribe.next(true);
+	  ngUnsubscribe.complete();
+	  ngUnsubscribe.unsubscribe();
+	}
+
+	ngOnDestroy(): void {
+	  this.onSubscriptionsDestroy(this.ngUnsubscribe);
+	}
 
 }

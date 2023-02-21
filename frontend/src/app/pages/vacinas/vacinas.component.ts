@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { DialogService } from 'primeng/dynamicdialog';
+import { Subject, takeUntil } from 'rxjs';
 import { VacinaVermifugo } from 'src/app/interfaces/vacina-vermifugo';
 import { VacinasService } from 'src/app/services/vacinas.service';
 import { vacinaVermifugo } from 'src/app/utils/enums';
@@ -13,10 +14,11 @@ import { CadastroVacinaComponent } from '../cadastro-vacina/cadastro-vacina.comp
   styleUrls: ['./vacinas.component.scss'],
   providers: [DialogService, ConfirmationService, MessageService]
 })
-export class VacinasComponent implements OnInit {
+export class VacinasComponent implements OnInit, OnDestroy {
 
   vacinas: VacinaVermifugo[] = [];
   vermifugos: VacinaVermifugo[] = [];
+  ngUnsubscribe: Subject<any> = new Subject<any>();
 
   constructor(
     private _vacinasService: VacinasService,
@@ -34,7 +36,7 @@ export class VacinasComponent implements OnInit {
   }
 
   updateData(): void {
-    this._vacinasService.vacinasUpdated.pipe().subscribe(() => {
+    this._vacinasService.vacinasUpdated.pipe(takeUntil(this.ngUnsubscribe)).subscribe(() => {
       this.getVacinas();
       this.getVermifugos();
     });
@@ -44,7 +46,7 @@ export class VacinasComponent implements OnInit {
     let params = {
       tipo: vacinaVermifugo.Vacina,
     }
-    this._vacinasService.getVacinas(params).pipe().subscribe(res => {
+    this._vacinasService.getVacinas(params).pipe(takeUntil(this.ngUnsubscribe)).subscribe(res => {
       this.vacinas = res.rows;
     });
   }
@@ -53,7 +55,7 @@ export class VacinasComponent implements OnInit {
     let params = {
       tipo: vacinaVermifugo.Vermifugo,
     }
-    this._vacinasService.getVacinas(params).pipe().subscribe(res => {
+    this._vacinasService.getVacinas(params).pipe(takeUntil(this.ngUnsubscribe)).subscribe(res => {
       this.vermifugos = res.rows;
     });
   }
@@ -64,7 +66,7 @@ export class VacinasComponent implements OnInit {
       header: `Editar Vacina/Vermífugo`,
       width: '80%'
     })
-    .onClose.subscribe((edited: boolean) => {
+    .onClose.pipe(takeUntil(this.ngUnsubscribe)).subscribe((edited: boolean) => {
       if(edited)
         this._vacinasService.triggerVacinasUpdate();
     });
@@ -77,7 +79,7 @@ export class VacinasComponent implements OnInit {
       rejectLabel: 'Não',
       rejectButtonStyleClass: 'p-button-outlined',
       accept: () => {
-        this._vacinasService.deleteVacina(id).subscribe(res => {
+        this._vacinasService.deleteVacina(id).pipe(takeUntil(this.ngUnsubscribe)).subscribe(res => {
           this._messageService.add({severity:'success', detail: res.message});
           this._vacinasService.triggerVacinasUpdate();
         },
@@ -92,10 +94,20 @@ export class VacinasComponent implements OnInit {
       header: `Nova Vacina/Vermífugo`,
       width: '80%'
     })
-    .onClose.subscribe((edited: boolean) => {
+    .onClose.pipe(takeUntil(this.ngUnsubscribe)).subscribe((edited: boolean) => {
       if(edited)
         this._vacinasService.triggerVacinasUpdate();
     });
   }
+  
+  onSubscriptionsDestroy(ngUnsubscribe: Subject<any>): void {
+    ngUnsubscribe.next(true);
+	  ngUnsubscribe.complete();
+	  ngUnsubscribe.unsubscribe();
+	}
+
+	ngOnDestroy(): void {
+	  this.onSubscriptionsDestroy(this.ngUnsubscribe);
+	}
 
 }

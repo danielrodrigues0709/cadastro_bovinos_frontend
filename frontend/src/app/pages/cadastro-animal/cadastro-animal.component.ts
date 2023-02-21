@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
 import { Animal } from 'src/app/interfaces/animal';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -15,6 +15,7 @@ import { InseminacoesService } from 'src/app/services/inseminacoes.service';
 import { PartosService } from 'src/app/services/partos.service';
 import { VacinacoesService } from 'src/app/services/vacinacoes.service';
 import { OcorrenciasService } from 'src/app/services/ocorrencias.service';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-cadastro-animal',
@@ -22,7 +23,7 @@ import { OcorrenciasService } from 'src/app/services/ocorrencias.service';
   styleUrls: ['./cadastro-animal.component.scss'],
   providers: [DialogService, MessageService]
 })
-export class CadastroAnimalComponent implements OnInit {
+export class CadastroAnimalComponent implements OnInit, OnDestroy {
 
   state: any;
   title: string = '';
@@ -33,6 +34,7 @@ export class CadastroAnimalComponent implements OnInit {
   reprodutoresOptions: any[] = [];
   sexo: any[] = [{label: 'Fêmea', value: 0}, {label: 'Macho', value: 1}];
   changed: boolean = false;
+  ngUnsubscribe: Subject<any> = new Subject<any>();
 
   constructor(
     private _location: Location,
@@ -64,7 +66,7 @@ export class CadastroAnimalComponent implements OnInit {
     let params: any = {};
     params.nomeAnimal = event ? event?.query : "";
     params.sexo = sexo.FEMEA;
-    this._animaisService.getAnimais(params).subscribe(res => {
+    this._animaisService.getAnimais(params).pipe(takeUntil(this.ngUnsubscribe)).subscribe(res => {
       let notItself = res.rows.filter((res: any) => this.animal?.id != res.id);
       this.maesOptions = notItself;
     })
@@ -74,7 +76,7 @@ export class CadastroAnimalComponent implements OnInit {
     let params: any = {};
     params.nomeAnimal = event ? event?.query : "";
     params.sexo = sexo.MACHO;
-    this._animaisService.getAnimais(params).subscribe(res => {
+    this._animaisService.getAnimais(params).pipe(takeUntil(this.ngUnsubscribe)).subscribe(res => {
       let notItself = res.rows.filter((res: any) => this.animal?.id != res.id);
       this.reprodutoresOptions = notItself;
     })
@@ -152,7 +154,7 @@ export class CadastroAnimalComponent implements OnInit {
       header: `Nova Inseminacao`,
       width: '80%'
     })
-    .onClose.subscribe((edited: boolean) => {
+    .onClose.pipe(takeUntil(this.ngUnsubscribe)).subscribe((edited: boolean) => {
       if(edited)
         this._inseminacoesService.triggerInseminacoesUpdate();
     });
@@ -166,7 +168,7 @@ export class CadastroAnimalComponent implements OnInit {
       header: `Novo Parto`,
       width: '80%'
     })
-    .onClose.subscribe((edited: boolean) => {
+    .onClose.pipe(takeUntil(this.ngUnsubscribe)).subscribe((edited: boolean) => {
       if(edited)
         this._partosService.triggerPartosUpdate();
     });
@@ -180,7 +182,7 @@ export class CadastroAnimalComponent implements OnInit {
       header: `Nova Vacinação/Vermifugação`,
       width: '80%'
     })
-    .onClose.subscribe((edited: boolean) => {
+    .onClose.pipe(takeUntil(this.ngUnsubscribe)).subscribe((edited: boolean) => {
       if(edited)
         this._vacinacoesService.triggerVacinacoesUpdate();
     });
@@ -194,7 +196,7 @@ export class CadastroAnimalComponent implements OnInit {
       header: `Nova Ocorrência`,
       width: '80%'
     })
-    .onClose.subscribe((edited: boolean) => {
+    .onClose.pipe(takeUntil(this.ngUnsubscribe)).subscribe((edited: boolean) => {
       if(edited)
         this._ocorrenciasService.triggerOcorrenciasUpdate();
     });
@@ -218,7 +220,7 @@ export class CadastroAnimalComponent implements OnInit {
     
     if(this.state.element?.id) {
       this.animal.id = this.state.element.id;
-      this._animaisService.updateAnimal(this.state.element.id, params).subscribe(res => {
+      this._animaisService.updateAnimal(this.state.element.id, params).pipe(takeUntil(this.ngUnsubscribe)).subscribe(res => {
         this._messageService.add({severity:'success', detail: res.message});
         this.editMode = false;
         this.form.disable();
@@ -228,7 +230,7 @@ export class CadastroAnimalComponent implements OnInit {
       })
     }
     else {
-      this._animaisService.saveAnimal(params).subscribe(res => {
+      this._animaisService.saveAnimal(params).pipe(takeUntil(this.ngUnsubscribe)).subscribe(res => {
         this._messageService.add({severity:'success', detail: res.message});
         this.animal = res.data.rows[0];
         this.editMode = false;
@@ -239,5 +241,15 @@ export class CadastroAnimalComponent implements OnInit {
       })
     }
   }
+  
+  onSubscriptionsDestroy(ngUnsubscribe: Subject<any>): void {
+    ngUnsubscribe.next(true);
+	  ngUnsubscribe.complete();
+	  ngUnsubscribe.unsubscribe();
+	}
+
+	ngOnDestroy(): void {
+	  this.onSubscriptionsDestroy(this.ngUnsubscribe);
+	}
 
 }

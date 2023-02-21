@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { Subject, takeUntil } from 'rxjs';
 import { Animal } from 'src/app/interfaces/animal';
 import { Parto } from 'src/app/interfaces/parto';
 import { AnimaisService } from 'src/app/services/animais.service';
@@ -14,7 +15,7 @@ import { dateToStr, strToDate } from 'src/app/utils/utils';
   templateUrl: './cadastro-parto.component.html',
   styleUrls: ['./cadastro-parto.component.scss']
 })
-export class CadastroPartoComponent implements OnInit {
+export class CadastroPartoComponent implements OnInit, OnDestroy {
 
   parto!: Parto;
   animal!: Animal;
@@ -25,6 +26,7 @@ export class CadastroPartoComponent implements OnInit {
   sexo: any[] = [{label: 'Fêmea', value: 0}, {label: 'Macho', value: 1}];
   changed: boolean = false;
   vivo: boolean = true;
+  ngUnsubscribe: Subject<any> = new Subject<any>();
 
   constructor(
     public ref: DynamicDialogRef,
@@ -44,7 +46,7 @@ export class CadastroPartoComponent implements OnInit {
     this.setFormValues(this.parto);
     this.parto.id ? this.form.disable() : this.form.enable();
     if(this.parto.id && this.parto.id_cria) {
-      this._animaisService.getAnimalById(this.parto.id_cria).subscribe(res => {
+      this._animaisService.getAnimalById(this.parto.id_cria).pipe(takeUntil(this.ngUnsubscribe)).subscribe(res => {
         this.animal = res.rows[0];
       })
     }
@@ -60,7 +62,7 @@ export class CadastroPartoComponent implements OnInit {
     params.nomeAnimal = event ? event?.query : "";
     params.sexo = sexo.FEMEA;
     params.rebanho = rebanho.SIM;
-    this._animaisService.getAnimais(params).subscribe(res => {
+    this._animaisService.getAnimais(params).pipe(takeUntil(this.ngUnsubscribe)).subscribe(res => {
       this.maesOptions = res.rows;
     })
   }
@@ -69,7 +71,7 @@ export class CadastroPartoComponent implements OnInit {
     let params: any = {};
     params.nomeAnimal = event ? event?.query : "";
     params.sexo = sexo.MACHO;
-    this._animaisService.getAnimais(params).subscribe(res => {
+    this._animaisService.getAnimais(params).pipe(takeUntil(this.ngUnsubscribe)).subscribe(res => {
       this.reprodutoresOptions = res.rows;
     })
   }
@@ -161,7 +163,7 @@ export class CadastroPartoComponent implements OnInit {
     };
     
     if(this.animal?.id) {
-      this._animaisService.updateAnimal(this.animal.id, cria).subscribe(res => {
+      this._animaisService.updateAnimal(this.animal.id, cria).pipe(takeUntil(this.ngUnsubscribe)).subscribe(res => {
         this._messageService.add({severity:'success', detail: res.message});
         this.animal = res.data.rows[0];
         this.saveParto(this.animal);
@@ -171,7 +173,7 @@ export class CadastroPartoComponent implements OnInit {
       })
     }
     else {
-      this._animaisService.saveAnimal(cria).subscribe(res => {
+      this._animaisService.saveAnimal(cria).pipe(takeUntil(this.ngUnsubscribe)).subscribe(res => {
         this._messageService.add({severity:'success', detail: res.message});
         this.animal = res.data.rows[0];
         this.saveParto(this.animal);
@@ -195,7 +197,7 @@ export class CadastroPartoComponent implements OnInit {
       data_parto: this.changed ? formValues.data_parto : strToDate(formValues.data_parto)
     }
     if(this.parto.id) {
-      this._partoService.updateParto(this.parto.id, parto).subscribe(res => {
+      this._partoService.updateParto(this.parto.id, parto).pipe(takeUntil(this.ngUnsubscribe)).subscribe(res => {
         this._messageService.add({severity:'success', detail: res.message});
         this.ref.close(true);
       },
@@ -204,7 +206,7 @@ export class CadastroPartoComponent implements OnInit {
       })
     }
     else {
-      this._partoService.saveParto(parto).subscribe(res => {
+      this._partoService.saveParto(parto).pipe(takeUntil(this.ngUnsubscribe)).subscribe(res => {
         this._messageService.add({severity:'success', detail: res.message});
         this.ref.close(true);
       },
@@ -213,5 +215,15 @@ export class CadastroPartoComponent implements OnInit {
       })
     }
   }
+  
+  onSubscriptionsDestroy(ngUnsubscribe: Subject<any>): void {
+    ngUnsubscribe.next(true);
+	  ngUnsubscribe.complete();
+	  ngUnsubscribe.unsubscribe();
+	}
+
+	ngOnDestroy(): void {
+	  this.onSubscriptionsDestroy(this.ngUnsubscribe);
+	}
 
 }

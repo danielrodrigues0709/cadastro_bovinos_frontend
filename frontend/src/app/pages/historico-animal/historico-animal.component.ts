@@ -1,6 +1,7 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnDestroy, Input, OnInit } from '@angular/core';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { DialogService } from 'primeng/dynamicdialog';
+import { Subject, takeUntil } from 'rxjs';
 import { Animal } from 'src/app/interfaces/animal';
 import { Inseminacao } from 'src/app/interfaces/inseminacao';
 import { Ocorrencia } from 'src/app/interfaces/ocorrencia';
@@ -25,7 +26,7 @@ import { CadastroVacinacaoComponent } from '../cadastro-vacinacao/cadastro-vacin
   styleUrls: ['./historico-animal.component.scss'],
   providers: [DialogService, ConfirmationService, MessageService]
 })
-export class HistoricoAnimalComponent implements OnInit {
+export class HistoricoAnimalComponent implements OnInit, OnDestroy {
 
   @Input() data!: Animal;
   inseminacoes: Inseminacao[] = [];
@@ -33,6 +34,7 @@ export class HistoricoAnimalComponent implements OnInit {
   vacinacoes: VacinacaoVermifugacao[] = [];
   vermifugacoes: VacinacaoVermifugacao[] = [];
   ocorrencias: Ocorrencia[] = [];
+  ngUnsubscribe: Subject<any> = new Subject<any>();
 
   constructor(
     private _inseminacoesService: InseminacoesService,
@@ -60,18 +62,18 @@ export class HistoricoAnimalComponent implements OnInit {
 
   updateData(): void {
     if(this.data.sexo == 0) {
-      this._inseminacoesService.inseminacoesUpdated.pipe().subscribe(() => {
+      this._inseminacoesService.inseminacoesUpdated.pipe(takeUntil(this.ngUnsubscribe)).subscribe(() => {
         this.getInseminacoes(this.data);
       });
-      this._partosService.partosUpdated.pipe().subscribe(() => {
+      this._partosService.partosUpdated.pipe(takeUntil(this.ngUnsubscribe)).subscribe(() => {
         this.getPartos(this.data);
       });
     };
-    this._vacinacoesService.vacinacoesUpdated.pipe().subscribe(() => {
+    this._vacinacoesService.vacinacoesUpdated.pipe(takeUntil(this.ngUnsubscribe)).subscribe(() => {
       this.getVacinacoes(this.data);
       this.getVermifugacoes(this.data);
     });
-    this._ocorrenciasService.ocorrenciasUpdated.pipe().subscribe(() => {
+    this._ocorrenciasService.ocorrenciasUpdated.pipe(takeUntil(this.ngUnsubscribe)).subscribe(() => {
       this.getOcorrencias(this.data);
     });
   }
@@ -80,7 +82,7 @@ export class HistoricoAnimalComponent implements OnInit {
     let params = {
       id_animal: animal.id
     };
-    this._inseminacoesService.getInseminacoes(params).pipe().subscribe(res => {
+    this._inseminacoesService.getInseminacoes(params).pipe(takeUntil(this.ngUnsubscribe)).subscribe(res => {
       this.inseminacoes = res.rows;
       this.getInseminacaoById(res.rows);
     })
@@ -90,7 +92,7 @@ export class HistoricoAnimalComponent implements OnInit {
     let params = {
       id_mae: animal.id
     };
-    this._partosService.getPartos(params).pipe().subscribe(res => {
+    this._partosService.getPartos(params).pipe(takeUntil(this.ngUnsubscribe)).subscribe(res => {
       this.partos = res.rows;
       this.getPartoById(res.rows);
     })
@@ -102,7 +104,7 @@ export class HistoricoAnimalComponent implements OnInit {
       tipo: vacinaVermifugo.Vacina
 
     };
-    this._vacinacoesService.getVacinacoes(params).pipe().subscribe(res => {
+    this._vacinacoesService.getVacinacoes(params).pipe(takeUntil(this.ngUnsubscribe)).subscribe(res => {
       this.vacinacoes = res.rows;
       this.getVacinacaoById(res.rows);
     })
@@ -113,7 +115,7 @@ export class HistoricoAnimalComponent implements OnInit {
       id_animal: animal.id,
       tipo: vacinaVermifugo.Vermifugo
     };
-    this._vacinacoesService.getVacinacoes(params).pipe().subscribe(res => {
+    this._vacinacoesService.getVacinacoes(params).pipe(takeUntil(this.ngUnsubscribe)).subscribe(res => {
       this.vermifugacoes = res.rows;
       this.getVermifugacaoById(res.rows);
     })
@@ -123,7 +125,7 @@ export class HistoricoAnimalComponent implements OnInit {
     let params = {
       id_animal: animal.id
     };
-    this._ocorrenciasService.getOcorrencias(params).pipe().subscribe(res => {
+    this._ocorrenciasService.getOcorrencias(params).pipe(takeUntil(this.ngUnsubscribe)).subscribe(res => {
       this.ocorrencias = res.rows;
       this.getOcorrenciaById(res.rows);
     })
@@ -131,7 +133,7 @@ export class HistoricoAnimalComponent implements OnInit {
 
   getInseminacaoById(inseminacoes: Inseminacao[]): void {
     inseminacoes.forEach((inseminacao, index) => {
-      this._animaisService.getAnimalById(inseminacao.id_reprodutor).subscribe(res => {
+      this._animaisService.getAnimalById(inseminacao.id_reprodutor).pipe(takeUntil(this.ngUnsubscribe)).subscribe(res => {
         inseminacoes[index] = Object.assign(inseminacoes[index], {
           reprodutor: res.rows[0]
         });
@@ -142,7 +144,7 @@ export class HistoricoAnimalComponent implements OnInit {
 
   getPartoById(partos: Parto[]): void {
     partos.forEach((parto, index) => {
-      this._animaisService.getAnimalById(parto.id_reprodutor).subscribe(res => {
+      this._animaisService.getAnimalById(parto.id_reprodutor).pipe(takeUntil(this.ngUnsubscribe)).subscribe(res => {
         partos[index] = Object.assign(partos[index], {
           reprodutor: res.rows[0]
         });
@@ -153,7 +155,7 @@ export class HistoricoAnimalComponent implements OnInit {
 
   getVacinacaoById(vacinacoes: VacinacaoVermifugacao[]): void {
     vacinacoes.forEach((vacinacao, index) => {
-      this._vacinasService.getVacinaById(vacinacao.id_vacina).subscribe(res => {
+      this._vacinasService.getVacinaById(vacinacao.id_vacina).pipe(takeUntil(this.ngUnsubscribe)).subscribe(res => {
         vacinacoes[index] = Object.assign(vacinacoes[index], {
           vacina_vermifugo: res.rows[0],
           doses: res.rows[0].doses ? `de ${res.rows[0].doses}` : null
@@ -165,7 +167,7 @@ export class HistoricoAnimalComponent implements OnInit {
 
   getVermifugacaoById(vermifugacoes: VacinacaoVermifugacao[]): void {
     vermifugacoes.forEach((vermifugacao, index) => {
-      this._vacinasService.getVacinaById(vermifugacao.id_vacina).subscribe(res => {
+      this._vacinasService.getVacinaById(vermifugacao.id_vacina).pipe(takeUntil(this.ngUnsubscribe)).subscribe(res => {
         vermifugacoes[index] = Object.assign(vermifugacoes[index], {
           vacina_vermifugo: res.rows[0],
           doses: res.rows[0].doses ? `de ${res.rows[0].doses}` : null
@@ -178,7 +180,7 @@ export class HistoricoAnimalComponent implements OnInit {
   getOcorrenciaById(ocorrencias: Ocorrencia[]): void {
     ocorrencias.forEach((ocorrencia, index) => {
       if(ocorrencia.id_medicamento) {
-        this._medicamentosService.getMedicamentosById(ocorrencia.id_medicamento).subscribe(res => {
+        this._medicamentosService.getMedicamentosById(ocorrencia.id_medicamento).pipe(takeUntil(this.ngUnsubscribe)).subscribe(res => {
           ocorrencias[index] = Object.assign(ocorrencias[index], {
             medicamento: res.rows[0]
           });
@@ -198,7 +200,7 @@ export class HistoricoAnimalComponent implements OnInit {
       header: `Editar Inseminação`,
       width: '80%'
     })
-    .onClose.subscribe((edited: boolean) => {
+    .onClose.pipe(takeUntil(this.ngUnsubscribe)).subscribe((edited: boolean) => {
       if(edited)
         this._inseminacoesService.triggerInseminacoesUpdate();
     });
@@ -214,7 +216,7 @@ export class HistoricoAnimalComponent implements OnInit {
       header: `Editar Parto`,
       width: '80%'
     })
-    .onClose.subscribe((edited: boolean) => {
+    .onClose.pipe(takeUntil(this.ngUnsubscribe)).subscribe((edited: boolean) => {
       if(edited)
         this._partosService.triggerPartosUpdate();
     });
@@ -230,7 +232,7 @@ export class HistoricoAnimalComponent implements OnInit {
       header: `Editar Vacinação/Vermifugação`,
       width: '80%'
     })
-    .onClose.subscribe((edited: boolean) => {
+    .onClose.pipe(takeUntil(this.ngUnsubscribe)).subscribe((edited: boolean) => {
       if(edited)
         this._vacinacoesService.triggerVacinacoesUpdate();
     });
@@ -246,7 +248,7 @@ export class HistoricoAnimalComponent implements OnInit {
       header: `Editar Ocorrência`,
       width: '80%'
     })
-    .onClose.subscribe((edited: boolean) => {
+    .onClose.pipe(takeUntil(this.ngUnsubscribe)).subscribe((edited: boolean) => {
       if(edited)
         this._ocorrenciasService.triggerOcorrenciasUpdate();
     });
@@ -259,7 +261,7 @@ export class HistoricoAnimalComponent implements OnInit {
       rejectLabel: 'Não',
       rejectButtonStyleClass: 'p-button-outlined',
       accept: () => {
-        this._inseminacoesService.deleteInseminacao(id).subscribe(res => {
+        this._inseminacoesService.deleteInseminacao(id).pipe(takeUntil(this.ngUnsubscribe)).subscribe(res => {
           this._messageService.add({severity:'success', detail: res.message});
           this._inseminacoesService.triggerInseminacoesUpdate();
         },
@@ -275,7 +277,7 @@ export class HistoricoAnimalComponent implements OnInit {
       rejectLabel: 'Não',
       rejectButtonStyleClass: 'p-button-outlined',
       accept: () => {
-        this._partosService.deleteParto(id).subscribe(res => {
+        this._partosService.deleteParto(id).pipe(takeUntil(this.ngUnsubscribe)).subscribe(res => {
           this._messageService.add({severity:'success', detail: res.message});
           this._partosService.triggerPartosUpdate();
         },
@@ -291,7 +293,7 @@ export class HistoricoAnimalComponent implements OnInit {
       rejectLabel: 'Não',
       rejectButtonStyleClass: 'p-button-outlined',
       accept: () => {
-        this._vacinacoesService.deleteVacinacao(id).subscribe(res => {
+        this._vacinacoesService.deleteVacinacao(id).pipe(takeUntil(this.ngUnsubscribe)).subscribe(res => {
           this._messageService.add({severity:'success', detail: res.message});
           this._vacinacoesService.triggerVacinacoesUpdate();
         },
@@ -307,7 +309,7 @@ export class HistoricoAnimalComponent implements OnInit {
       rejectLabel: 'Não',
       rejectButtonStyleClass: 'p-button-outlined',
       accept: () => {
-        this._ocorrenciasService.deleteOcorrencia(id).subscribe(res => {
+        this._ocorrenciasService.deleteOcorrencia(id).pipe(takeUntil(this.ngUnsubscribe)).subscribe(res => {
           this._messageService.add({severity:'success', detail: res.message});
           this._ocorrenciasService.triggerOcorrenciasUpdate();
         },
@@ -315,5 +317,15 @@ export class HistoricoAnimalComponent implements OnInit {
       }
     });
   }
+  
+  onSubscriptionsDestroy(ngUnsubscribe: Subject<any>): void {
+    ngUnsubscribe.next(true);
+	  ngUnsubscribe.complete();
+	  ngUnsubscribe.unsubscribe();
+	}
+
+	ngOnDestroy(): void {
+	  this.onSubscriptionsDestroy(this.ngUnsubscribe);
+	}
 
 }
