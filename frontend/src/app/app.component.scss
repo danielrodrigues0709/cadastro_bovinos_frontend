@@ -13,7 +13,7 @@
 }
 ::ng-deep .p-megamenu {
     width: $menu-width;
-    height: calc($height - $menu-width);
+    min-height: calc($min-height - $menu-width);
     margin: 0;
     background-color: $dark-green;
     border: none;
@@ -28,7 +28,7 @@
     margin: $margin / 2;
 }
 ::ng-deep .p-card {
-    height: calc($height - 2 * $margin);
+    min-height: calc($min-height - 2 * $margin);
     width: calc($pages-width - 2 * $margin);
     margin: $margin;
     .p-menuitem.p-card-content {

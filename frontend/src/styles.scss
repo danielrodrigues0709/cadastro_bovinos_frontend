@@ -1,7 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
 
 // Spacing
-$height: 100vh;
+$min-height: 100vh;
 $menu-width: 260px;
 $pages-width: calc(100vw - $menu-width);
 $margin: 10px;
@@ -31,7 +31,7 @@ body {
     }
 }
 .footer-buttons-bar {
-    position: fixed;
+    position: relative;
     bottom: $margin;
     right: $margin;
     width: calc($pages-width - 2 * $margin);
