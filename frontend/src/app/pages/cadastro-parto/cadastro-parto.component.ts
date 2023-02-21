@@ -7,8 +7,8 @@ import { Animal } from 'src/app/interfaces/animal';
 import { Parto } from 'src/app/interfaces/parto';
 import { AnimaisService } from 'src/app/services/animais.service';
 import { PartosService } from 'src/app/services/partos.service';
-import { rebanho, sexo } from 'src/app/utils/enums';
-import { dateToStr, strToDate } from 'src/app/utils/utils';
+import { messages, rebanho, sexo } from 'src/app/utils/enums';
+import { dateToStr, strToDate, validateFormFields } from 'src/app/utils/utils';
 
 @Component({
   selector: 'app-cadastro-parto',
@@ -136,6 +136,8 @@ export class CadastroPartoComponent implements OnInit, OnDestroy {
 
   submit(): void {
     if(!this.form.valid) {
+      this._messageService.add({severity:'warn', detail: messages.REQUIRED});
+      validateFormFields(this.form);
       return;
     }
     let formValue = this.form.getRawValue();

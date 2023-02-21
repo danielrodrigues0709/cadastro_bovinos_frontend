@@ -2,10 +2,10 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
 import { Animal } from 'src/app/interfaces/animal';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { booleanToNumber, dateToStr, numberToBoolean, strToDate } from 'src/app/utils/utils';
+import { booleanToNumber, dateToStr, numberToBoolean, strToDate, validateFormFields } from 'src/app/utils/utils';
 import { AnimaisService } from 'src/app/services/animais.service';
 import { MessageService } from 'primeng/api';
-import { sexo } from 'src/app/utils/enums';
+import { messages, sexo } from 'src/app/utils/enums';
 import { DialogService } from 'primeng/dynamicdialog';
 import { CadastroInseminacaoComponent } from '../cadastro-inseminacao/cadastro-inseminacao.component';
 import { CadastroPartoComponent } from '../cadastro-parto/cadastro-parto.component';
@@ -204,6 +204,8 @@ export class CadastroAnimalComponent implements OnInit, OnDestroy {
 
   submit(): void {
     if(!this.form.valid) {
+      this._messageService.add({severity:'warn', detail: messages.REQUIRED});
+      validateFormFields(this.form);
       return;
     }
     let formValues = this.form.getRawValue();

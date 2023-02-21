@@ -7,8 +7,8 @@ import { VacinacaoVermifugacao } from 'src/app/interfaces/vacinacao-vermifugacao
 import { AnimaisService } from 'src/app/services/animais.service';
 import { VacinacoesService } from 'src/app/services/vacinacoes.service';
 import { VacinasService } from 'src/app/services/vacinas.service';
-import { rebanho } from 'src/app/utils/enums';
-import { dateToStr, strToDate } from 'src/app/utils/utils';
+import { messages, rebanho } from 'src/app/utils/enums';
+import { dateToStr, strToDate, validateFormFields } from 'src/app/utils/utils';
 
 @Component({
   selector: 'app-cadastro-vacinacao',
@@ -136,6 +136,8 @@ export class CadastroVacinacaoComponent implements OnInit, OnDestroy {
 
   submit(): void {
     if(!this.form.valid) {
+      this._messageService.add({severity:'warn', detail: messages.REQUIRED});
+      validateFormFields(this.form);
       return;
     }
     let formValues = this.form.getRawValue();

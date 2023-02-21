@@ -5,6 +5,8 @@ import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { Subject, takeUntil } from 'rxjs';
 import { VacinaVermifugo } from 'src/app/interfaces/vacina-vermifugo';
 import { VacinasService } from 'src/app/services/vacinas.service';
+import { messages } from 'src/app/utils/enums';
+import { validateFormFields } from 'src/app/utils/utils';
 
 @Component({
   selector: 'app-cadastro-vacina',
@@ -73,6 +75,8 @@ export class CadastroVacinaComponent implements OnInit, OnDestroy {
 
   submit(): void {
     if(!this.form.valid) {
+      this._messageService.add({severity:'warn', detail: messages.REQUIRED});
+      validateFormFields(this.form);
       return;
     }
     let formValue = this.form.getRawValue();

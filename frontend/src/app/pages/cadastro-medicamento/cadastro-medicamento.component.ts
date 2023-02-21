@@ -5,6 +5,8 @@ import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { Subject, takeUntil } from 'rxjs';
 import { Medicamento } from 'src/app/interfaces/Medicamento';
 import { MedicamentosService } from 'src/app/services/medicamentos.service';
+import { messages } from 'src/app/utils/enums';
+import { validateFormFields } from 'src/app/utils/utils';
 
 @Component({
   selector: 'app-cadastro-medicamento',
@@ -70,6 +72,8 @@ export class CadastroMedicamentoComponent implements OnInit, OnDestroy {
 
   submit(): void {
     if(!this.form.valid) {
+      this._messageService.add({severity:'warn', detail: messages.REQUIRED});
+      validateFormFields(this.form);
       return;
     }
     let formValue = this.form.getRawValue();

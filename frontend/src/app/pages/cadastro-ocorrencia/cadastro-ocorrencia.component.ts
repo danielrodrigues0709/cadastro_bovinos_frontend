@@ -7,8 +7,8 @@ import { Ocorrencia } from 'src/app/interfaces/ocorrencia';
 import { AnimaisService } from 'src/app/services/animais.service';
 import { MedicamentosService } from 'src/app/services/medicamentos.service';
 import { OcorrenciasService } from 'src/app/services/ocorrencias.service';
-import { rebanho } from 'src/app/utils/enums';
-import { booleanToNumber, dateToStr, numberToBoolean, strToDate } from 'src/app/utils/utils';
+import { messages, rebanho } from 'src/app/utils/enums';
+import { booleanToNumber, dateToStr, numberToBoolean, strToDate, validateFormFields } from 'src/app/utils/utils';
 
 @Component({
   selector: 'app-cadastro-ocorrencia',
@@ -142,6 +142,8 @@ export class CadastroOcorrenciaComponent implements OnInit, OnDestroy {
 
   submit(): void {
     if(!this.form.valid) {
+      this._messageService.add({severity:'warn', detail: messages.REQUIRED});
+      validateFormFields(this.form);
       return;
     }
     let formValues = this.form.getRawValue();
