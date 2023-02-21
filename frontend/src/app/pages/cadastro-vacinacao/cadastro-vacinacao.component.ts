@@ -112,6 +112,7 @@ export class CadastroVacinacaoComponent implements OnInit, OnDestroy {
       tipo: element?.tipo
     });
     this.onSelectTipo(this.form.get('tipo')?.value, false);
+    this.onSelectVacinaVermifugo(this.form.get('vacina_vermifugo')?.value);
   }
 
   edit(): void {
