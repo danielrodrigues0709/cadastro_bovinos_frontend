@@ -41,6 +41,10 @@ export class CadastroOcorrenciaComponent implements OnInit {
   ngOnInit(): void {
     this.setFormValues(this.ocorrencia);
     this.ocorrencia.id ? this.form.disable() : this.form.enable();
+    if(this.config.data.animal) {
+      this.form.get('numControle')?.disable();
+      this.form.get('animal')?.disable();
+    }
     this.autocompleteAnimal();
     this.autocompleteMedicamento();
   }

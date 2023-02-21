@@ -47,6 +47,9 @@ export class CadastroVacinacaoComponent implements OnInit {
     this.setFormValues(this.vacinacao_vermifugacao);
     this.tipo = this.vacinacao_vermifugacao.tipo;
     this.vacinacao_vermifugacao.id ? this.form.disable() : this.form.enable();
+    if(this.config.data.animal) {
+      this.form.get('animal')?.disable();
+    }
     this.autocompleteAnimal();
     this.autocompleteVacinaVermifugo();
     this.form.get('vacina_vermifugo')?.disable();

@@ -48,6 +48,9 @@ export class CadastroPartoComponent implements OnInit {
         this.animal = res.rows[0];
       })
     }
+    else if(this.config.data.mae) {
+      this.form.get('mae')?.disable();
+    }
     this.autocompleteMae();
     this.autocompleteReprodutor();
   }

@@ -47,6 +47,9 @@ export class CadastroInseminacaoComponent implements OnInit {
         this.animal = res.rows[0];
       })
     }
+    else if(this.config.data.animal) {
+      this.form.get('animal')?.disable();
+    }
     this.autocompleteMae();
     this.autocompleteReprodutor();
   }

@@ -146,7 +146,9 @@ export class CadastroAnimalComponent implements OnInit {
 
   includeInseminacao(): void {
     const ref = this.dialogService.open(CadastroInseminacaoComponent, {
-      data: { },
+      data: {
+        animal: this.animal
+      },
       header: `Nova Inseminacao`,
       width: '80%'
     })
@@ -157,7 +159,9 @@ export class CadastroAnimalComponent implements OnInit {
 
   includeParto(): void {
     const ref = this.dialogService.open(CadastroPartoComponent, {
-      data: { },
+      data: {
+        mae: this.animal
+      },
       header: `Novo Parto`,
       width: '80%'
     })
@@ -168,7 +172,9 @@ export class CadastroAnimalComponent implements OnInit {
 
   includeVacinacao(): void {
     const ref = this.dialogService.open(CadastroVacinacaoComponent, {
-      data: { },
+      data: {
+        animal: this.animal
+      },
       header: `Nova Vacinação/Vermifugação`,
       width: '80%'
     })
@@ -179,7 +185,9 @@ export class CadastroAnimalComponent implements OnInit {
 
   includeOcorrencia(): void {
     const ref = this.dialogService.open(CadastroOcorrenciaComponent, {
-      data: { },
+      data: {
+        animal: this.animal
+      },
       header: `Nova Ocorrência`,
       width: '80%'
     })
