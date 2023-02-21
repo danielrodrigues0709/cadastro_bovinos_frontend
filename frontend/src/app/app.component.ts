@@ -28,7 +28,7 @@ export class AppComponent {
       {label: 'Plantel', icon: 'pi pi-fw pi-angle-right', routerLink: 'animais'},
       {label: 'Medicamentos', icon: 'pi pi-fw pi-angle-right', routerLink: 'medicamentos'},
       {label: 'Vacinas/Vermífugos', icon: 'pi pi-fw pi-angle-right', routerLink: 'vacinas'},
-      {label: 'Vacinações', icon: 'pi pi-fw pi-angle-right', routerLink: 'vacinacoes'},
+      {label: 'Vacinações/Vermifugações', icon: 'pi pi-fw pi-angle-right', routerLink: 'vacinacoes'},
       {label: 'Inseminações', icon: 'pi pi-fw pi-angle-right', routerLink: 'inseminacoes'},
       {label: 'Partos', icon: 'pi pi-fw pi-angle-right', routerLink: 'partos'},
       {label: 'Ocorrências', icon: 'pi pi-fw pi-angle-right', routerLink: 'ocorrencias'},
