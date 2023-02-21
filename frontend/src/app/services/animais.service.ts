@@ -1,5 +1,5 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { EventEmitter, Injectable, Output } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 
@@ -9,6 +9,7 @@ import { environment } from 'src/environments/environment';
 export class AnimaisService {
 
   headers = new HttpHeaders().set("schema", "daniel_rodrigues");
+  @Output() animaisUpdated: EventEmitter<any> = new EventEmitter<any>();
 
   constructor(private http: HttpClient) { }
 
@@ -60,4 +61,9 @@ export class AnimaisService {
       headers: this.headers
     });
   }
+
+  triggerAnimaisUpdate(): void {
+    this.animaisUpdated.emit();
+  }
+
 }

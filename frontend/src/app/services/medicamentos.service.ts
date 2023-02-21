@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { EventEmitter, Injectable, Output } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
@@ -9,6 +9,7 @@ import { Observable } from 'rxjs';
 export class MedicamentosService {
 
   headers = new HttpHeaders().set("schema", "daniel_rodrigues");
+  @Output() medicamentosUpdated: EventEmitter<any> = new EventEmitter<any>();
 
   constructor(private http: HttpClient) { }
 
@@ -54,4 +55,9 @@ export class MedicamentosService {
       headers: this.headers
     });
   }
+
+  triggerMedicamentosUpdate(): void {
+    this.medicamentosUpdated.emit();
+  }
+
 }
