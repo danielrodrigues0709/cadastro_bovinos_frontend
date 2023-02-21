@@ -8,6 +8,7 @@ import { Parto } from 'src/app/interfaces/parto';
 import { VacinacaoVermifugacao } from 'src/app/interfaces/vacinacao-vermifugacao';
 import { AnimaisService } from 'src/app/services/animais.service';
 import { InseminacoesService } from 'src/app/services/inseminacoes.service';
+import { MedicamentosService } from 'src/app/services/medicamentos.service';
 import { OcorrenciasService } from 'src/app/services/ocorrencias.service';
 import { PartosService } from 'src/app/services/partos.service';
 import { VacinacoesService } from 'src/app/services/vacinacoes.service';
@@ -40,6 +41,7 @@ export class HistoricoAnimalComponent implements OnInit {
     private _vacinasService: VacinasService,
     private _ocorrenciasService: OcorrenciasService,
     private _animaisService: AnimaisService,
+    private _medicamentosService: MedicamentosService,
     public dialogService: DialogService,
     private _confirmationService: ConfirmationService,
     private _messageService: MessageService
@@ -52,6 +54,7 @@ export class HistoricoAnimalComponent implements OnInit {
     }
     this.getVacinacoes(this.data);
     this.getVermifugacoes(this.data);
+    this.getOcorrencias(this.data);
   }
 
   getInseminacoes(animal: Animal):void {
@@ -94,6 +97,16 @@ export class HistoricoAnimalComponent implements OnInit {
     this._vacinacoesService.getVacinacoes(params).pipe().subscribe(res => {
       this.vermifugacoes = res.rows;
       this.getVermifugacaoById(res.rows);
+    })
+  }
+
+  getOcorrencias(animal: Animal):void {
+    let params = {
+      id_animal: animal.id
+    };
+    this._ocorrenciasService.getOcorrencias(params).pipe().subscribe(res => {
+      this.ocorrencias = res.rows;
+      this.getOcorrenciaById(res.rows);
     })
   }
 
@@ -143,6 +156,19 @@ export class HistoricoAnimalComponent implements OnInit {
     })
   }
 
+  getOcorrenciaById(ocorrencias: Ocorrencia[]): void {
+    ocorrencias.forEach((ocorrencia, index) => {
+      if(ocorrencia.id_medicamento) {
+        this._medicamentosService.getMedicamentosById(ocorrencia.id_medicamento).subscribe(res => {
+          ocorrencias[index] = Object.assign(ocorrencias[index], {
+            medicamento: res.rows[0]
+          });
+          this.ocorrencias = ocorrencias;
+        });
+      }
+    })
+  }
+
   editInseminacao(element: any): void {
     element = {
       ...element,
@@ -189,6 +215,21 @@ export class HistoricoAnimalComponent implements OnInit {
     });
   }
 
+  editOcorrencia(element: any): void {
+    element = {
+      ...element,
+      animal: this.data
+    }
+    const ref = this.dialogService.open(CadastroOcorrenciaComponent, {
+      data: element,
+      header: `Editar Ocorrência`,
+      width: '80%'
+    })
+    .onClose.subscribe(() => {
+      this.getOcorrencias(this.data)
+    });
+  }
+
   deleteInseminacao(id: number): void {
     this._confirmationService.confirm({
       message: 'Deseja deletar o registro?',
@@ -232,6 +273,22 @@ export class HistoricoAnimalComponent implements OnInit {
           this._messageService.add({severity:'success', detail: res.message});
           this.getVacinacoes(this.data);
           this.getVermifugacoes(this.data);
+        },
+        err => this._messageService.add({severity:'error', detail: err.error.message}))
+      }
+    });
+  }
+
+  deleteOcorrencia(id: number): void {
+    this._confirmationService.confirm({
+      message: 'Deseja deletar o registro?',
+      acceptLabel: 'Sim',
+      rejectLabel: 'Não',
+      rejectButtonStyleClass: 'p-button-outlined',
+      accept: () => {
+        this._ocorrenciasService.deleteOcorrencia(id).subscribe(res => {
+          this._messageService.add({severity:'success', detail: res.message});
+          this.getOcorrencias(this.data);
         },
         err => this._messageService.add({severity:'error', detail: err.error.message}))
       }
