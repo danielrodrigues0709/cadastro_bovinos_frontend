@@ -11,6 +11,10 @@ import { CadastroInseminacaoComponent } from '../cadastro-inseminacao/cadastro-i
 import { CadastroPartoComponent } from '../cadastro-parto/cadastro-parto.component';
 import { CadastroVacinacaoComponent } from '../cadastro-vacinacao/cadastro-vacinacao.component';
 import { CadastroOcorrenciaComponent } from '../cadastro-ocorrencia/cadastro-ocorrencia.component';
+import { InseminacoesService } from 'src/app/services/inseminacoes.service';
+import { PartosService } from 'src/app/services/partos.service';
+import { VacinacoesService } from 'src/app/services/vacinacoes.service';
+import { OcorrenciasService } from 'src/app/services/ocorrencias.service';
 
 @Component({
   selector: 'app-cadastro-animal',
@@ -36,6 +40,10 @@ export class CadastroAnimalComponent implements OnInit {
     private _animaisService: AnimaisService,
     private _messageService: MessageService,
     public dialogService: DialogService,
+    private _inseminacoesService: InseminacoesService,
+    private _partosService: PartosService,
+    private _vacinacoesService: VacinacoesService,
+    private _ocorrenciasService: OcorrenciasService,
   ) {
     this.state = this._location.getState();
     this.animal = this.state.element;
@@ -143,7 +151,7 @@ export class CadastroAnimalComponent implements OnInit {
       width: '80%'
     })
     .onClose.subscribe(() => {
-      // this.getInseminacoes();
+      this._inseminacoesService.triggerInseminacoesUpdate();
     });
   }
 
@@ -154,7 +162,7 @@ export class CadastroAnimalComponent implements OnInit {
       width: '80%'
     })
     .onClose.subscribe(() => {
-      // this.getInseminacoes();
+      this._partosService.triggerPartosUpdate();
     });
   }
 
@@ -165,7 +173,7 @@ export class CadastroAnimalComponent implements OnInit {
       width: '80%'
     })
     .onClose.subscribe(() => {
-      // this.getInseminacoes();
+      this._vacinacoesService.triggerVacinacoesUpdate();
     });
   }
 
@@ -176,7 +184,7 @@ export class CadastroAnimalComponent implements OnInit {
       width: '80%'
     })
     .onClose.subscribe(() => {
-      // this.getInseminacoes();
+      this._ocorrenciasService.triggerOcorrenciasUpdate();
     });
   }
 

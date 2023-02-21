@@ -51,10 +51,29 @@ export class HistoricoAnimalComponent implements OnInit {
     if(this.data.sexo == 0) {
       this.getInseminacoes(this.data);
       this.getPartos(this.data);
-    }
+    };
     this.getVacinacoes(this.data);
     this.getVermifugacoes(this.data);
     this.getOcorrencias(this.data);
+    this.updateData();
+  }
+
+  updateData(): void {
+    if(this.data.sexo == 0) {
+      this._inseminacoesService.inseminacoesUpdated.pipe().subscribe(() => {
+        this.getInseminacoes(this.data);
+      });
+      this._partosService.partosUpdated.pipe().subscribe(() => {
+        this.getPartos(this.data);
+      });
+    };
+    this._vacinacoesService.vacinacoesUpdated.pipe().subscribe(() => {
+      this.getVacinacoes(this.data);
+      this.getVermifugacoes(this.data);
+    });
+    this._ocorrenciasService.ocorrenciasUpdated.pipe().subscribe(() => {
+      this.getOcorrencias(this.data);
+    });
   }
 
   getInseminacoes(animal: Animal):void {
@@ -180,7 +199,7 @@ export class HistoricoAnimalComponent implements OnInit {
       width: '80%'
     })
     .onClose.subscribe(() => {
-      this.getInseminacoes(this.data)
+      this._inseminacoesService.triggerInseminacoesUpdate();
     });
   }
 
@@ -195,7 +214,7 @@ export class HistoricoAnimalComponent implements OnInit {
       width: '80%'
     })
     .onClose.subscribe(() => {
-      this.getPartos(this.data)
+      this._partosService.triggerPartosUpdate();
     });
   }
 
@@ -210,8 +229,7 @@ export class HistoricoAnimalComponent implements OnInit {
       width: '80%'
     })
     .onClose.subscribe(() => {
-      this.getVacinacoes(this.data);
-      this.getVermifugacoes(this.data);
+      this._vacinacoesService.triggerVacinacoesUpdate();
     });
   }
 
@@ -226,7 +244,7 @@ export class HistoricoAnimalComponent implements OnInit {
       width: '80%'
     })
     .onClose.subscribe(() => {
-      this.getOcorrencias(this.data)
+      this._ocorrenciasService.triggerOcorrenciasUpdate();
     });
   }
 
@@ -239,7 +257,7 @@ export class HistoricoAnimalComponent implements OnInit {
       accept: () => {
         this._inseminacoesService.deleteInseminacao(id).subscribe(res => {
           this._messageService.add({severity:'success', detail: res.message});
-          this.getInseminacoes(this.data);
+          this._inseminacoesService.triggerInseminacoesUpdate();
         },
         err => this._messageService.add({severity:'error', detail: err.error.message}))
       }
@@ -255,7 +273,7 @@ export class HistoricoAnimalComponent implements OnInit {
       accept: () => {
         this._partosService.deleteParto(id).subscribe(res => {
           this._messageService.add({severity:'success', detail: res.message});
-          this.getPartos(this.data);
+          this._partosService.triggerPartosUpdate();
         },
         err => this._messageService.add({severity:'error', detail: err.error.message}))
       }
@@ -271,8 +289,7 @@ export class HistoricoAnimalComponent implements OnInit {
       accept: () => {
         this._vacinacoesService.deleteVacinacao(id).subscribe(res => {
           this._messageService.add({severity:'success', detail: res.message});
-          this.getVacinacoes(this.data);
-          this.getVermifugacoes(this.data);
+          this._vacinacoesService.triggerVacinacoesUpdate();
         },
         err => this._messageService.add({severity:'error', detail: err.error.message}))
       }
@@ -288,7 +305,7 @@ export class HistoricoAnimalComponent implements OnInit {
       accept: () => {
         this._ocorrenciasService.deleteOcorrencia(id).subscribe(res => {
           this._messageService.add({severity:'success', detail: res.message});
-          this.getOcorrencias(this.data);
+          this._ocorrenciasService.triggerOcorrenciasUpdate();
         },
         err => this._messageService.add({severity:'error', detail: err.error.message}))
       }
