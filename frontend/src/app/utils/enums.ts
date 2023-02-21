@@ -16,6 +16,9 @@ export enum registrado {
     SIM = 1
 }
 export enum vacinaVermifugo {
-    Vacina = 0,
-    Vermifugo = 1
+    VACINA = 0,
+    VERMIFUGO = 1
+}
+export enum messages {
+    REQUIRED = "Preencha os campos obrigatórios!"
 }

@@ -101,7 +101,7 @@ export class HistoricoAnimalComponent implements OnInit, OnDestroy {
   getVacinacoes(animal: Animal):void {
     let params = {
       id_animal: animal.id,
-      tipo: vacinaVermifugo.Vacina
+      tipo: vacinaVermifugo.VACINA
 
     };
     this._vacinacoesService.getVacinacoes(params).pipe(takeUntil(this.ngUnsubscribe)).subscribe(res => {
@@ -113,7 +113,7 @@ export class HistoricoAnimalComponent implements OnInit, OnDestroy {
   getVermifugacoes(animal: Animal):void {
     let params = {
       id_animal: animal.id,
-      tipo: vacinaVermifugo.Vermifugo
+      tipo: vacinaVermifugo.VERMIFUGO
     };
     this._vacinacoesService.getVacinacoes(params).pipe(takeUntil(this.ngUnsubscribe)).subscribe(res => {
       this.vermifugacoes = res.rows;

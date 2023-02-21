@@ -44,7 +44,7 @@ export class VacinasComponent implements OnInit, OnDestroy {
 
   getVacinas():void {
     let params = {
-      tipo: vacinaVermifugo.Vacina,
+      tipo: vacinaVermifugo.VACINA,
     }
     this._vacinasService.getVacinas(params).pipe(takeUntil(this.ngUnsubscribe)).subscribe(res => {
       this.vacinas = res.rows;
@@ -53,7 +53,7 @@ export class VacinasComponent implements OnInit, OnDestroy {
 
   getVermifugos():void {
     let params = {
-      tipo: vacinaVermifugo.Vermifugo,
+      tipo: vacinaVermifugo.VERMIFUGO,
     }
     this._vacinasService.getVacinas(params).pipe(takeUntil(this.ngUnsubscribe)).subscribe(res => {
       this.vermifugos = res.rows;
