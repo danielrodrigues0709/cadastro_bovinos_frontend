@@ -3,6 +3,24 @@ import { NgModule, LOCALE_ID } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
+import { MegaMenuModule } from 'primeng/megamenu';
+import { ButtonModule } from 'primeng/button';
+import { CardModule } from 'primeng/card';
+import { TableModule } from 'primeng/table';
+import { TabViewModule } from 'primeng/tabview';
+import { DynamicDialogModule } from 'primeng/dynamicdialog';
+import { InputSwitchModule } from 'primeng/inputswitch';
+import { CalendarModule } from 'primeng/calendar';
+import { InputTextModule } from 'primeng/inputtext';
+import { SelectButtonModule } from 'primeng/selectbutton';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { ToastModule } from 'primeng/toast';
+import { AutoCompleteModule } from 'primeng/autocomplete';
+import { InputTextareaModule } from 'primeng/inputtextarea';
+import { registerLocaleData } from '@angular/common';
+import { OrganizationChartModule } from 'primeng/organizationchart';
+import localeBr from '@angular/common/locales/pt';
+registerLocaleData(localeBr);
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -19,28 +37,12 @@ import { CadastroVacinacaoComponent } from './pages/cadastro-vacinacao/cadastro-
 import { CadastroPartoComponent } from './pages/cadastro-parto/cadastro-parto.component';
 import { CadastroUsuarioComponent } from './pages/cadastro-usuario/cadastro-usuario.component';
 import { LoginComponent } from './pages/login/login.component';
-
-import { MegaMenuModule } from 'primeng/megamenu';
-import { ButtonModule } from 'primeng/button';
-import { CardModule } from 'primeng/card';
-import { TableModule } from 'primeng/table';
-import { TabViewModule } from 'primeng/tabview';
-import { DynamicDialogModule } from 'primeng/dynamicdialog';
-import { InputSwitchModule } from 'primeng/inputswitch';
-import { CalendarModule } from 'primeng/calendar';
-import { InputTextModule } from 'primeng/inputtext';
-import { SelectButtonModule } from 'primeng/selectbutton';
-import { ConfirmDialogModule } from 'primeng/confirmdialog';
-import { ToastModule } from 'primeng/toast';
 import { HistoricoAnimalComponent } from './pages/historico-animal/historico-animal.component';
-import { AutoCompleteModule } from 'primeng/autocomplete';
-import { InputTextareaModule } from 'primeng/inputtextarea';
 import { VacinacoesComponent } from './pages/vacinacoes/vacinacoes.component';
 import { InseminacoesComponent } from './pages/inseminacoes/inseminacoes.component';
 import { PartosComponent } from './pages/partos/partos.component';
-import { registerLocaleData } from '@angular/common';
-import localeBr from '@angular/common/locales/pt';
-registerLocaleData(localeBr);
+import { FamilyTreeComponent } from './pages/family-tree/family-tree.component';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -60,7 +62,8 @@ registerLocaleData(localeBr);
     HistoricoAnimalComponent,
     VacinacoesComponent,
     InseminacoesComponent,
-    PartosComponent
+    PartosComponent,
+    FamilyTreeComponent
   ],
   imports: [
     BrowserModule,
@@ -81,7 +84,8 @@ registerLocaleData(localeBr);
     ConfirmDialogModule,
     ToastModule,
     AutoCompleteModule,
-    InputTextareaModule
+    InputTextareaModule,
+    OrganizationChartModule
   ],
   providers: [{ provide: LOCALE_ID, useValue: 'pt-BR' }],
   bootstrap: [AppComponent]

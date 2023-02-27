@@ -16,6 +16,7 @@ import { PartosService } from 'src/app/services/partos.service';
 import { VacinacoesService } from 'src/app/services/vacinacoes.service';
 import { OcorrenciasService } from 'src/app/services/ocorrencias.service';
 import { Subject, takeUntil } from 'rxjs';
+import { FamilyTreeComponent } from '../family-tree/family-tree.component';
 
 @Component({
   selector: 'app-cadastro-animal',
@@ -116,7 +117,13 @@ export class CadastroAnimalComponent implements OnInit, OnDestroy {
       mae: formValue.mae,
       reprodutor: formValue.reprodutor,
     };
-    console.log(family)
+    const ref = this.dialogService.open(FamilyTreeComponent, {
+      data: {
+        animal: this.animal,
+        family: family
+      },
+      header: `Árvore Genealógica`
+    });
   }
 
   disableInput(): boolean {
