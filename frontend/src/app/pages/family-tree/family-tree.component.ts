@@ -46,6 +46,7 @@ export class FamilyTreeComponent implements OnInit {
       data: this.config.data.animal,
       expanded: true,
       type: 'animal',
+      styleClass: 'animal-card',
 
       children: 
       this.reprodutor || this.mae ? [
@@ -53,6 +54,7 @@ export class FamilyTreeComponent implements OnInit {
         data: this.reprodutor,
         expanded: true,
         type: 'animal',
+        styleClass: 'animal-card',
 
         children: 
         this.avo_paterno || this.avo_paterna ? [
@@ -60,6 +62,7 @@ export class FamilyTreeComponent implements OnInit {
           data: this.avo_paterno,
           expanded: true,
           type: 'animal',
+          styleClass: 'animal-card',
 
           children: 
           this.bisavo_paterno1 || this.bisavo_paterna1 ? [
@@ -67,11 +70,13 @@ export class FamilyTreeComponent implements OnInit {
             data: this.bisavo_paterno1,
             expanded: true,
             type: 'animal',
+            styleClass: 'animal-card',
           } : {},
           this.bisavo_paterna1 ? {
             data: this.bisavo_paterna1,
             expanded: true,
             type: 'animal',
+            styleClass: 'animal-card',
           } : {}
           ] : []
         } : {},
@@ -79,16 +84,19 @@ export class FamilyTreeComponent implements OnInit {
           data: this.avo_paterna,
           expanded: true,
           type: 'animal',
+          styleClass: 'animal-card',
 
           children: 
           this.bisavo_paterno2 || this.bisavo_paterna2 ? [{
             data: this.bisavo_paterno2,
             expanded: true,
             type: 'animal',
+            styleClass: 'animal-card',
           },{
             data: this.bisavo_paterna2,
             expanded: true,
             type: 'animal',
+            styleClass: 'animal-card',
           }] : []
         } : {}
         ] : []
@@ -97,37 +105,44 @@ export class FamilyTreeComponent implements OnInit {
         data: this.mae,
         expanded: true,
         type: 'animal',
+        styleClass: 'animal-card',
 
         children: 
         this.avo_materno || this.avo_materna ? [{
           data: this.avo_materno,
           expanded: true,
           type: 'animal',
+          styleClass: 'animal-card',
 
           children: 
           this.bisavo_materno1 || this.bisavo_materna1 ? [{
             data: this.bisavo_materno1,
             expanded: true,
             type: 'animal',
+            styleClass: 'animal-card',
           },{
             data: this.bisavo_materna1,
             expanded: true,
             type: 'animal',
+            styleClass: 'animal-card',
           }] : []
         },{
           data: this.avo_materna,
           expanded: true,
           type: 'animal',
+          styleClass: 'animal-card',
 
           children: 
           this.bisavo_materno2 || this.bisavo_materna2 ? [{
             data: this.bisavo_materno2,
             expanded: true,
             type: 'animal',
+            styleClass: 'animal-card',
           },{
             data: this.bisavo_materna2,
             expanded: true,
             type: 'animal',
+            styleClass: 'animal-card',
           }] : []
         }] : []
       } : {}] : []

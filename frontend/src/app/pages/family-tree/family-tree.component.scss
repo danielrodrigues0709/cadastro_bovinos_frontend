@@ -1,0 +1,8 @@
+@import '../../../styles.scss';
+
+:host ::ng-deep .p-organizationchart {
+    .animal-card {
+        background-color: $medium-green !important;
+        color: white;
+    }
+}
