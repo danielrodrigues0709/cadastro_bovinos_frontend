@@ -4,7 +4,12 @@
         <p-megaMenu [model]="items"></p-megaMenu>
     </div>
     
-    <div>
+    <div class="menubar-card">
+        <p-menubar [model]="userOptions">
+            <ng-template pTemplate="end">
+                
+            </ng-template>
+        </p-menubar>
         <p-card>
             <router-outlet></router-outlet>
         </p-card>

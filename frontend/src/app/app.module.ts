@@ -19,6 +19,7 @@ import { AutoCompleteModule } from 'primeng/autocomplete';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { registerLocaleData } from '@angular/common';
 import { OrganizationChartModule } from 'primeng/organizationchart';
+import { MenubarModule } from 'primeng/menubar';
 import localeBr from '@angular/common/locales/pt';
 registerLocaleData(localeBr);
 
@@ -85,7 +86,8 @@ import { FamilyTreeComponent } from './pages/family-tree/family-tree.component';
     ToastModule,
     AutoCompleteModule,
     InputTextareaModule,
-    OrganizationChartModule
+    OrganizationChartModule,
+    MenubarModule
   ],
   providers: [{ provide: LOCALE_ID, useValue: 'pt-BR' }],
   bootstrap: [AppComponent]

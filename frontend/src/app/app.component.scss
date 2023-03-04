@@ -1,6 +1,13 @@
 @import '../styles.scss';
+
+$header-menu-height: 50px;
+
 .content {
     display: flex;
+    .menubar-card {
+        max-width: calc(100% - $menu-width);
+        width: 100%;
+    }
 }
 .menu {
     width: $menu-width;
@@ -28,8 +35,7 @@
     margin: $margin / 2;
 }
 ::ng-deep .p-card {
-    min-height: calc($min-height - 2 * $margin);
-    width: calc($pages-width - 2 * $margin);
+    min-height: calc($min-height - 2 * $margin - $header-menu-height);
     margin: $margin;
     .p-card-content, &.p-menuitem {
         padding: 0;
@@ -68,4 +74,13 @@
 }
 :host ::ng-deep .p-datepicker-trigger {
     margin: 0;
+}
+:host ::ng-deep .p-menubar {
+    height: $header-menu-height;
+    border: none;
+    border-radius: 0;
+    background-color: $dark-green;
+}
+.user-button {
+    margin-right: $margin / 2;
 }

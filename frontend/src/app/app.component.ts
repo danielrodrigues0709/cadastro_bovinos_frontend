@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { MegaMenuItem, PrimeNGConfig } from 'primeng/api';
+import { MegaMenuItem, MenuItem, PrimeNGConfig } from 'primeng/api';
 
 @Component({
   selector: 'app-root',
@@ -9,6 +9,7 @@ import { MegaMenuItem, PrimeNGConfig } from 'primeng/api';
 export class AppComponent {
   title = 'frontend';
   items: MegaMenuItem[] = [];
+  userOptions: MenuItem[] = [];
 
   constructor(private config: PrimeNGConfig) {}
 
@@ -33,5 +34,9 @@ export class AppComponent {
       {label: 'Partos', icon: 'pi pi-fw pi-angle-right', routerLink: 'partos'},
       {label: 'Ocorrências', icon: 'pi pi-fw pi-angle-right', routerLink: 'ocorrencias'},
     ];
+
+    this.userOptions = [
+      
+    ]
   }
 }
