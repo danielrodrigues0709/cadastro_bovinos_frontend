@@ -1,10 +1,15 @@
 <p-organizationChart
     [value]="familyTree"
-    selectionMode="single"
-    [(selection)]="selectedNode"
-    (onNodeSelect)="onNodeSelect($event)">
+    selectionMode="single">
     <ng-template let-node pTemplate="animal">
-        <div class="node-header" *ngIf="node.data">{{node.data.nome_animal}}</div>
-        <div class="node-content" *ngIf="node.data">{{node.data.nro_controle}}</div>
+        <div class="node-header" *ngIf="node.data">
+            <strong>{{node.data.nome_animal}}</strong>
+        </div>
+        <div>
+            <small class="node-content" *ngIf="node.data">Nº Controle: {{node.data.nro_controle}}</small>
+        </div>
+        <div>
+            <small class="node-content" *ngIf="node.data && node.data.matriz">Nº Matriz: {{node.data.matriz}}</small>
+        </div>
     </ng-template>
 </p-organizationChart>

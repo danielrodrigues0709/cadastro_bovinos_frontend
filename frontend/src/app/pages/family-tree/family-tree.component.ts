@@ -13,7 +13,6 @@ import { AnimaisService } from 'src/app/services/animais.service';
 export class FamilyTreeComponent implements OnInit {
 
   familyTree!: TreeNode[];
-  selectedNode!: TreeNode;
   reprodutor!: Animal;
   mae!: Animal;
   avo_paterno!: Animal;
@@ -49,7 +48,8 @@ export class FamilyTreeComponent implements OnInit {
       type: 'animal',
 
       children: 
-      this.reprodutor || this.mae ? [{
+      this.reprodutor || this.mae ? [
+        this.reprodutor ? {
         data: this.reprodutor,
         expanded: true,
         type: 'animal',
@@ -92,7 +92,8 @@ export class FamilyTreeComponent implements OnInit {
           }] : []
         } : {}
         ] : []
-      },{
+      } : {},
+      this.mae ? {
         data: this.mae,
         expanded: true,
         type: 'animal',
@@ -129,7 +130,7 @@ export class FamilyTreeComponent implements OnInit {
             type: 'animal',
           }] : []
         }] : []
-      }] : []
+      } : {}] : []
     }];
   }
 
@@ -205,11 +206,6 @@ export class FamilyTreeComponent implements OnInit {
     this.familyTreeUpdate.pipe(takeUntil(this.ngUnsubscribe)).subscribe(res => {
       this.fillOutFamilyTree();
     })
-  }
-
-  onNodeSelect(event: any): void {
-    console.log(event);
-    
   }
   
   onSubscriptionsDestroy(ngUnsubscribe: Subject<any>): void {

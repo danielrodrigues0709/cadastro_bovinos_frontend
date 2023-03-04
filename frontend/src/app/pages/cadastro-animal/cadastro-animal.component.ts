@@ -92,8 +92,8 @@ export class CadastroAnimalComponent implements OnInit, OnDestroy {
       data_nascimento: [''],
       rebanho: ['', Validators.required],
       producao: ['', Validators.required],
-      mae: ['', Validators.required],
-      reprodutor: ['', Validators.required],
+      mae: [''],
+      reprodutor: [''],
     })
   }
 
@@ -117,13 +117,19 @@ export class CadastroAnimalComponent implements OnInit, OnDestroy {
       mae: formValue.mae,
       reprodutor: formValue.reprodutor,
     };
-    const ref = this.dialogService.open(FamilyTreeComponent, {
-      data: {
-        animal: this.animal,
-        family: family
-      },
-      header: `Árvore Genealógica`
-    });
+    if(family.mae || family.reprodutor) {
+      const ref = this.dialogService.open(FamilyTreeComponent, {
+        data: {
+          animal: this.animal,
+          family: family
+        },
+        dismissableMask: true,
+        header: `Árvore Genealógica`
+      });
+    }
+    else {
+      this._messageService.add({severity:'warn', detail: "Não há dados a serem exibidos."});
+    }
   }
 
   disableInput(): boolean {
@@ -222,8 +228,8 @@ export class CadastroAnimalComponent implements OnInit, OnDestroy {
       rebanho: booleanToNumber(!!formValues.rebanho),
       registrado: formValues.matriz ? 1 : 0,
       producao: booleanToNumber(!!formValues.producao),
-      id_mae: formValues.mae.id,
-      id_reprodutor: formValues.reprodutor.id
+      id_mae: formValues.mae?.id,
+      id_reprodutor: formValues.reprodutor?.id
     }
     this.animal = params;
     
