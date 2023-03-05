@@ -1,1 +1,32 @@
-<p>login works!</p>
+<div class="login-page">
+    <div class="login-form">
+        <p-card class="card">
+            <form [formGroup]="form" (ngSubmit)="submit()">
+                <div class="formgrid">
+                    <div class="p-float-label field col-auto">
+                        <input id="username" pInputText type="text" formControlName="username">
+                        <label for="username">Usuário</label>
+                    </div>
+
+                    <div class="p-float-label field col-auto">
+                        <input id="password" pInputText type="password" formControlName="password">
+                        <label for="password">Senha</label>
+                    </div>
+                </div>
+                
+                <div class="buttons">
+                    <button pButton type="submit" label="Login" class="p-button submit"></button>
+                    <button pButton type="button" (click)="cadastrar()" label="Não tenho cadastro" class="p-button-outlined"></button>
+                    <br>
+                    <a href="http://google.com" target="_blank">Esqueci minha senha</a>
+                </div>
+            </form>
+        </p-card>
+    </div>
+
+    <div class="img">
+        <img src="../assets//fazenda.jpg" alt="fazenda" class="image">
+    </div>
+    
+    <p-toast></p-toast>
+</div>

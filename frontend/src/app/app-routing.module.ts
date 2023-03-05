@@ -94,15 +94,6 @@ const routes: Routes = [
     path: 'inseminacoes/cadastro',
     component: CadastroInseminacaoComponent,
   },
-  {
-    path: 'login',
-    component: LoginComponent,
-    children: []
-  },
-  {
-    path: 'login/cadastro',
-    component: CadastroUsuarioComponent,
-  },
 ];
 
 @NgModule({

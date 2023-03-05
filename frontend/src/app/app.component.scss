@@ -81,6 +81,13 @@ $header-menu-height: 50px;
     border-radius: 0;
     background-color: $dark-green;
 }
-.user-button {
-    margin-right: $margin / 2;
+.user-info {
+    display: flex;
+    justify-content: end;
+    align-items: center;
+
+    h3 {
+        padding-right: 20px;
+        color: white
+    }
 }

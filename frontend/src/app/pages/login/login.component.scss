@@ -1,0 +1,37 @@
+.login-page {
+    display: flex;
+    height: 100vh;
+    overflow: hidden;
+    
+    .img {
+        img {
+            height: 100%;
+        }
+    }
+
+    .login-form {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 3;
+        min-width: 500px;
+        background-color: white;
+
+        .buttons {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+
+            button {
+                width: 100%;
+            }
+        }
+    }
+}
+
+:host ::ng-deep .p-card {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 50px;
+}

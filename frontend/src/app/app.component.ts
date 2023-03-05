@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { MegaMenuItem, MenuItem, PrimeNGConfig } from 'primeng/api';
+import { AuthService } from './services/auth.service';
 
 @Component({
   selector: 'app-root',
@@ -10,8 +11,18 @@ export class AppComponent {
   title = 'frontend';
   items: MegaMenuItem[] = [];
   userOptions: MenuItem[] = [];
+  loggedIn!: boolean;
+  isLoggedInStr = localStorage.getItem('isLoggedIn');
+  userName: string = "Daniel Rodrigues"
 
-  constructor(private config: PrimeNGConfig) {}
+  constructor(
+    private config: PrimeNGConfig,
+    private _authService: AuthService
+  ) {
+    if(this.isLoggedInStr) {
+      this.loggedIn = JSON.parse(this.isLoggedInStr);
+    }
+  }
 
   ngOnInit() {
     this.config.setTranslation({
@@ -34,9 +45,10 @@ export class AppComponent {
       {label: 'Partos', icon: 'pi pi-fw pi-angle-right', routerLink: 'partos'},
       {label: 'Ocorrências', icon: 'pi pi-fw pi-angle-right', routerLink: 'ocorrencias'},
     ];
+  }
 
-    this.userOptions = [
-      
-    ]
+  logOut(): void {
+    this._authService.logOut();
+    window.location.reload();
   }
 }
