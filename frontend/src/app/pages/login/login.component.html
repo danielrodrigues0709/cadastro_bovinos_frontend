@@ -3,12 +3,12 @@
         <p-card class="card">
             <form [formGroup]="form" (ngSubmit)="submit()">
                 <div class="formgrid">
-                    <div class="p-float-label field col-auto">
+                    <div class="p-float-label field col-12">
                         <input id="username" pInputText type="text" formControlName="username">
-                        <label for="username">Usuário</label>
+                        <label for="username">E-mail ou Nome de Usuário</label>
                     </div>
 
-                    <div class="p-float-label field col-auto">
+                    <div class="p-float-label field col-12">
                         <input id="password" pInputText type="password" formControlName="password">
                         <label for="password">Senha</label>
                     </div>
