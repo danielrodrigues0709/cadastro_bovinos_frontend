@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { DialogService } from 'primeng/dynamicdialog';
-import { Subject } from 'rxjs';
+import { Subject, takeUntil } from 'rxjs';
 import { AuthService } from 'src/app/services/auth.service';
 import { UsuariosService } from 'src/app/services/usuarios.service';
 import { messages } from 'src/app/utils/enums';
@@ -48,14 +48,21 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   submit(): void {
-    // if(!this.form.valid) {
-    //   this._messageService.add({severity:'warn', detail: messages.REQUIRED});
-    //   validateFormFields(this.form);
-    //   return;
-    // }
+    if(!this.form.valid) {
+      this._messageService.add({severity:'warn', detail: messages.REQUIRED});
+      validateFormFields(this.form);
+      return;
+    }
     let formValues = this.form.getRawValue();
-    this._authService.logIn();
-    window.location.reload();
+    this._usuariosService.getUsuario(formValues.username, formValues.password).pipe(takeUntil(this.ngUnsubscribe)).subscribe(res => {
+      console.log(res);
+      
+      this._authService.logIn(res.rows[0]);
+      window.location.reload();
+    },
+    err => {
+      this._messageService.add({severity:'error', detail: err.error.message});
+    })
   }
   
   onSubscriptionsDestroy(ngUnsubscribe: Subject<any>): void {

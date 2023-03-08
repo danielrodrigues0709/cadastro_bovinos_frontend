@@ -13,14 +13,16 @@ export class AppComponent {
   userOptions: MenuItem[] = [];
   loggedIn!: boolean;
   isLoggedInStr = localStorage.getItem('isLoggedIn');
-  userName: string = "Daniel Rodrigues"
+  userName!: string;
+  userStr = localStorage.getItem('user');
 
   constructor(
     private config: PrimeNGConfig,
     private _authService: AuthService
   ) {
-    if(this.isLoggedInStr) {
+    if(this.isLoggedInStr && this.userStr) {
       this.loggedIn = JSON.parse(this.isLoggedInStr);
+      this.userName = JSON.parse(this.userStr).nome_usuario;
     }
   }
 

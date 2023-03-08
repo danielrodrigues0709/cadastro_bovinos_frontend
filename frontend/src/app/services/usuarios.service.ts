@@ -14,6 +14,11 @@ export class UsuariosService {
     const href = `${environment.api}usuarios/`;
     return this.http.get(href);
   }
+
+  getUsuario(username: string, senha: string): Observable<any> {
+    const href = `${environment.api}usuarios/login/${username}/${senha}`;
+    return this.http.get(href);
+  }
   
   saveUsuario(usuario: any): Observable<any> {
     const href = `${environment.api}usuarios/`;

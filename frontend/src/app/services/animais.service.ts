@@ -8,10 +8,17 @@ import { environment } from 'src/environments/environment';
 })
 export class AnimaisService {
 
-  headers = new HttpHeaders().set("schema", "daniel_rodrigues");
+  headers: HttpHeaders;
+  schema!: string;
+  userStr = localStorage.getItem('user');
   @Output() animaisUpdated: EventEmitter<any> = new EventEmitter<any>();
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {
+    if(this.userStr) {
+      this.schema = JSON.parse(this.userStr).username;
+    }
+    this.headers = new HttpHeaders().set("schema", this.schema); 
+  }
 
   getAnimais(params: any): Observable<any> {
     let nomeAnimal = params.nomeAnimal != undefined ? params.nomeAnimal : '';

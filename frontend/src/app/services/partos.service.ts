@@ -8,10 +8,17 @@ import { environment } from 'src/environments/environment';
 })
 export class PartosService {
 
-  headers = new HttpHeaders().set("schema", "daniel_rodrigues");
+  headers: HttpHeaders;
+  schema!: string;
+  userStr = localStorage.getItem('user');
   @Output() partosUpdated: EventEmitter<any> = new EventEmitter<any>();
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {
+    if(this.userStr) {
+      this.schema = JSON.parse(this.userStr).username;
+    }
+    this.headers = new HttpHeaders().set("schema", this.schema); 
+  }
 
   getPartos(params?: any): Observable<any> {
     let nro_controle_cria = params.nro_controle_cria != undefined ? params.nro_controle_cria : '';

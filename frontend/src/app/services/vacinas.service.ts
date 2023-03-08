@@ -8,10 +8,17 @@ import { environment } from 'src/environments/environment';
 })
 export class VacinasService {
 
-  headers = new HttpHeaders().set("schema", "daniel_rodrigues");
+  headers: HttpHeaders;
+  schema!: string;
+  userStr = localStorage.getItem('user');
   @Output() vacinasUpdated: EventEmitter<any> = new EventEmitter<any>();
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {
+    if(this.userStr) {
+      this.schema = JSON.parse(this.userStr).username;
+    }
+    this.headers = new HttpHeaders().set("schema", this.schema); 
+  }
 
   getVacinas(params?: any): Observable<any> {
     let vacina_vermifugo = params.vacina_vermifugo != undefined ? params.vacina_vermifugo : '';

@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { Subject, takeUntil } from 'rxjs';
-import { Medicamento } from 'src/app/interfaces/Medicamento';
+import { Medicamento } from 'src/app/interfaces/medicamento';
 import { MedicamentosService } from 'src/app/services/medicamentos.service';
 import { messages } from 'src/app/utils/enums';
 import { validateFormFields } from 'src/app/utils/utils';

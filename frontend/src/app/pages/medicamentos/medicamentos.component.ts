@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { DialogService } from 'primeng/dynamicdialog';
 import { Subject, takeUntil } from 'rxjs';
-import { Medicamento } from 'src/app/interfaces/Medicamento';
+import { Medicamento } from 'src/app/interfaces/medicamento';
 import { MedicamentosService } from 'src/app/services/medicamentos.service';
 import { CadastroMedicamentoComponent } from '../cadastro-medicamento/cadastro-medicamento.component';
 

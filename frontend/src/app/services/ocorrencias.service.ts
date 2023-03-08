@@ -8,10 +8,17 @@ import { environment } from 'src/environments/environment';
 })
 export class OcorrenciasService {
 
-  headers = new HttpHeaders().set("schema", "daniel_rodrigues");
+  headers: HttpHeaders;
+  schema!: string;
+  userStr = localStorage.getItem('user');
   @Output() ocorrenciasUpdated: EventEmitter<any> = new EventEmitter<any>();
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {
+    if(this.userStr) {
+      this.schema = JSON.parse(this.userStr).username;
+    }
+    this.headers = new HttpHeaders().set("schema", this.schema); 
+  }
 
   getOcorrencias(params?: any): Observable<any> {
     let id_animal = params.id_animal != undefined ? params.id_animal : '';

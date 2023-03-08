@@ -8,10 +8,17 @@ import { Observable } from 'rxjs';
 })
 export class MedicamentosService {
 
-  headers = new HttpHeaders().set("schema", "daniel_rodrigues");
+  headers: HttpHeaders;
+  schema!: string;
+  userStr = localStorage.getItem('user');
   @Output() medicamentosUpdated: EventEmitter<any> = new EventEmitter<any>();
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {
+    if(this.userStr) {
+      this.schema = JSON.parse(this.userStr).username;
+    }
+    this.headers = new HttpHeaders().set("schema", this.schema); 
+  }
 
   getMedicamentos(params: any): Observable<any> {
     let medicamento = params.medicamento != undefined ? params.medicamento : '';

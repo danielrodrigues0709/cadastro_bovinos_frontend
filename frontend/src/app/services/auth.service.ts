@@ -10,15 +10,17 @@ export class AuthService {
 
   constructor() { }
 
-  logIn(): void {
+  logIn(user: any): void {
     this.isLoggedIn = true;
     localStorage.setItem('isLoggedIn', this.isLoggedIn.toString());
+    localStorage.setItem('user', JSON.stringify(user));
     this.loggedIn.emit(this.isLoggedIn);
   }
 
   logOut(): void {
     this.isLoggedIn = false;
     localStorage.removeItem('isLoggedIn');
+    localStorage.removeItem('user');
     this.loggedIn.emit(this.isLoggedIn);
   }
 }
