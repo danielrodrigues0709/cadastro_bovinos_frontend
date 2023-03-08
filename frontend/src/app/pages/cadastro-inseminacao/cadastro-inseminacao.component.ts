@@ -7,8 +7,8 @@ import { Animal } from 'src/app/interfaces/animal';
 import { Inseminacao } from 'src/app/interfaces/inseminacao';
 import { AnimaisService } from 'src/app/services/animais.service';
 import { InseminacoesService } from 'src/app/services/inseminacoes.service';
-import { rebanho, sexo } from 'src/app/utils/enums';
-import { dateToStr, strToDate } from 'src/app/utils/utils';
+import { messages, rebanho, sexo } from 'src/app/utils/enums';
+import { dateToStr, strToDate, validateFormFields } from 'src/app/utils/utils';
 
 @Component({
   selector: 'app-cadastro-inseminacao',
@@ -115,6 +115,11 @@ export class CadastroInseminacaoComponent implements OnInit, OnDestroy {
   }
 
   submit(): void {
+    if(!this.form.valid) {
+      this._messageService.add({severity:'warn', detail: messages.REQUIRED});
+      validateFormFields(this.form);
+      return;
+    }
     let formValues = this.form.getRawValue();
     let params = {
       ...formValues,

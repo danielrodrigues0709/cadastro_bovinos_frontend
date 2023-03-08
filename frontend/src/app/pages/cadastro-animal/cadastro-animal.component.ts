@@ -228,8 +228,8 @@ export class CadastroAnimalComponent implements OnInit, OnDestroy {
       rebanho: booleanToNumber(!!formValues.rebanho),
       registrado: formValues.matriz ? 1 : 0,
       producao: booleanToNumber(!!formValues.producao),
-      id_mae: formValues.mae?.id,
-      id_reprodutor: formValues.reprodutor?.id
+      id_mae: formValues.mae ? formValues.mae.id : null,
+      id_reprodutor: formValues.reprodutor ? formValues.reprodutor.id : null
     }
     this.animal = params;
     
