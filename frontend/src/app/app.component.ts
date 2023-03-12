@@ -1,11 +1,15 @@
 import { Component } from '@angular/core';
-import { MegaMenuItem, MenuItem, PrimeNGConfig } from 'primeng/api';
+import { MegaMenuItem, MenuItem, MessageService, PrimeNGConfig } from 'primeng/api';
+import { DialogService } from 'primeng/dynamicdialog';
+import { Usuario } from './interfaces/usuario';
+import { CadastroUsuarioComponent } from './pages/cadastro-usuario/cadastro-usuario.component';
 import { AuthService } from './services/auth.service';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  styleUrls: ['./app.component.scss'],
+  providers: [DialogService, MessageService]
 })
 export class AppComponent {
   title = 'frontend';
@@ -14,15 +18,18 @@ export class AppComponent {
   loggedIn!: boolean;
   isLoggedInStr = localStorage.getItem('isLoggedIn');
   userName!: string;
+  user!: Usuario;
   userStr = localStorage.getItem('user');
 
   constructor(
     private config: PrimeNGConfig,
+    public dialogService: DialogService,
     private _authService: AuthService
   ) {
     if(this.isLoggedInStr && this.userStr) {
       this.loggedIn = JSON.parse(this.isLoggedInStr);
-      this.userName = JSON.parse(this.userStr).nome_usuario;
+      this.user = JSON.parse(this.userStr);
+      this.userName = this.user.nome_usuario;
     }
   }
 
@@ -47,6 +54,23 @@ export class AppComponent {
       {label: 'Partos', icon: 'pi pi-fw pi-angle-right', routerLink: 'partos'},
       {label: 'Ocorrências', icon: 'pi pi-fw pi-angle-right', routerLink: 'ocorrencias'},
     ];
+  }
+
+  myAccont(): void {
+    const ref = this.dialogService.open(CadastroUsuarioComponent, {
+      data: this.user,
+      header: `Cadastrar Novo Usuário`,
+      width: '80%'
+    })
+    .onClose.pipe().subscribe((edited: boolean) => {
+      if(edited) {
+        let userStr = localStorage.getItem('user');
+        if(userStr) {
+          this.user = JSON.parse(userStr);
+          this.userName = this.user.nome_usuario;
+        }
+      }
+    });
   }
 
   logOut(): void {

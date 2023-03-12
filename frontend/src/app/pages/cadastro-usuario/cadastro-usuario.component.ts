@@ -4,6 +4,7 @@ import { MessageService } from 'primeng/api';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { Subject, takeUntil } from 'rxjs';
 import { Usuario } from 'src/app/interfaces/usuario';
+import { AuthService } from 'src/app/services/auth.service';
 import { UsuariosService } from 'src/app/services/usuarios.service';
 import { messages } from 'src/app/utils/enums';
 import { findSpecialCharacters, snakeCase, validateFormFields } from 'src/app/utils/utils';
@@ -25,7 +26,8 @@ export class CadastroUsuarioComponent implements OnInit, OnDestroy {
     public config: DynamicDialogConfig,
     private _fb: FormBuilder,
     private _messageService: MessageService,
-    private _usuariosService: UsuariosService
+    private _usuariosService: UsuariosService,
+    private _authService: AuthService
   ) {
     this.usuario = this.config.data;
     this.editMode = this.usuario.id ? false : true;
@@ -59,13 +61,17 @@ export class CadastroUsuarioComponent implements OnInit, OnDestroy {
   }
 
   setUsername(event: any): void {
-    let value = event.target.value;
-    this.form.get('username')?.patchValue(snakeCase(value));
+    if(!this.usuario.id) {
+      let value = event.target.value;
+      this.form.get('username')?.patchValue(snakeCase(value));
+    }
   }
 
   edit(): void {
     this.editMode = true;
     this.form.enable();
+    this.form.controls['username'].disable();
+    this.form.controls['email'].disable();
   }
 
   cancel(goBack: boolean): void {
@@ -73,9 +79,7 @@ export class CadastroUsuarioComponent implements OnInit, OnDestroy {
       this.ref.close(false);
     }
     else {
-      this.form.patchValue({
-        ...this.usuario
-      });
+      this.setFormValues(this.usuario);
       this.editMode = false;
       this.form.disable();
     }
@@ -86,7 +90,7 @@ export class CadastroUsuarioComponent implements OnInit, OnDestroy {
       this._messageService.add({severity:'warn', detail: messages.USERNAME});
       return;
     }
-    else if(!this.form.controls['email'].valid) {
+    else if(!this.form.controls['email'].disabled && !this.form.controls['email'].valid) {
       this._messageService.add({severity:'warn', detail: messages.EMAIL});
       validateFormFields(this.form);
       return;
@@ -104,7 +108,8 @@ export class CadastroUsuarioComponent implements OnInit, OnDestroy {
     
     if(this.usuario.id) {
       this._usuariosService.updateUsuario(this.usuario.id, formValue).pipe(takeUntil(this.ngUnsubscribe)).subscribe(res => {
-
+        localStorage.removeItem('user');
+        this._authService.logIn(res.data.rows[0]);
         this._messageService.add({severity:'success', detail: res.message});
         this.ref.close(true);
       },
@@ -114,6 +119,8 @@ export class CadastroUsuarioComponent implements OnInit, OnDestroy {
     }
     else {
       this._usuariosService.saveUsuario(formValue).pipe(takeUntil(this.ngUnsubscribe)).subscribe(res => {
+        localStorage.removeItem('user');
+        this._authService.logIn(res.data.rows[0]);
         this._messageService.add({severity:'success', detail: res.message});
         this.ref.close(true);
       },

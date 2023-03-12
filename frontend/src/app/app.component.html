@@ -9,7 +9,10 @@
             <ng-template pTemplate="end">
                 <div class="user-info">
                     <h3>{{ userName }}</h3>
+                    <button pButton (click)="myAccont()" class="p-button-rounded" icon="pi pi-user" pTooltip="Minha conta" tooltipPosition="bottom"></button>
                     <button pButton (click)="logOut()" class="p-button-rounded" icon="pi pi-sign-out" pTooltip="Sair" tooltipPosition="bottom"></button>
+    
+                    <p-toast></p-toast>
                 </div>
             </ng-template>
         </p-menubar>
