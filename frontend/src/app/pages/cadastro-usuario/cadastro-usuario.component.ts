@@ -16,7 +16,6 @@ import { findSpecialCharacters, snakeCase, validateFormFields } from 'src/app/ut
 })
 export class CadastroUsuarioComponent implements OnInit, OnDestroy {
 
-  usuario!: Usuario;
   editMode!: boolean;
   form!: FormGroup;
   ngUnsubscribe: Subject<any> = new Subject<any>();
@@ -29,15 +28,10 @@ export class CadastroUsuarioComponent implements OnInit, OnDestroy {
     private _usuariosService: UsuariosService,
     private _authService: AuthService
   ) {
-    this.usuario = this.config.data;
-    this.editMode = this.usuario.id ? false : true;
-
     this.createform();
   }
 
   ngOnInit(): void {
-    this.setFormValues(this.usuario);
-    this.usuario.id ? this.form.disable() : this.form.enable();
   }
 
   createform(): void {
@@ -51,20 +45,9 @@ export class CadastroUsuarioComponent implements OnInit, OnDestroy {
     })
   }
 
-  setFormValues(element: any): void {
-    this.form.patchValue({
-      nome_usuario: element?.nome_usuario,
-      username: element?.username,
-      email: element?.email,
-      telefone: element?.telefone
-    })
-  }
-
   setUsername(event: any): void {
-    if(!this.usuario.id) {
-      let value = event.target.value;
-      this.form.get('username')?.patchValue(snakeCase(value));
-    }
+    let value = event.target.value;
+    this.form.get('username')?.patchValue(snakeCase(value));
   }
 
   edit(): void {
@@ -74,15 +57,8 @@ export class CadastroUsuarioComponent implements OnInit, OnDestroy {
     this.form.controls['email'].disable();
   }
 
-  cancel(goBack: boolean): void {
-    if(goBack) {
-      this.ref.close(false);
-    }
-    else {
-      this.setFormValues(this.usuario);
-      this.editMode = false;
-      this.form.disable();
-    }
+  cancel(): void {
+    this.ref.close(false);
   }
 
   submit(): void {
@@ -106,28 +82,15 @@ export class CadastroUsuarioComponent implements OnInit, OnDestroy {
     }
     let formValue = this.form.getRawValue();
     
-    if(this.usuario.id) {
-      this._usuariosService.updateUsuario(this.usuario.id, formValue).pipe(takeUntil(this.ngUnsubscribe)).subscribe(res => {
-        localStorage.removeItem('user');
-        this._authService.logIn(res.data.rows[0]);
-        this._messageService.add({severity:'success', detail: res.message});
-        this.ref.close(true);
-      },
-      err => {
-        this._messageService.add({severity:'error', detail: err.error.message});
-      })
-    }
-    else {
-      this._usuariosService.saveUsuario(formValue).pipe(takeUntil(this.ngUnsubscribe)).subscribe(res => {
-        localStorage.removeItem('user');
-        this._authService.logIn(res.data.rows[0]);
-        this._messageService.add({severity:'success', detail: res.message});
-        this.ref.close(true);
-      },
-      err => {
-        this._messageService.add({severity:'error', detail: err.error.message});
-      })
-    }
+    this._usuariosService.saveUsuario(formValue).pipe(takeUntil(this.ngUnsubscribe)).subscribe(res => {
+      localStorage.removeItem('user');
+      this._authService.logIn(res.data.rows[0]);
+      this._messageService.add({severity:'success', detail: res.message});
+      this.ref.close(true);
+    },
+    err => {
+      this._messageService.add({severity:'error', detail: err.error.message});
+    })
   }
   
   onSubscriptionsDestroy(ngUnsubscribe: Subject<any>): void {

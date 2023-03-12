@@ -33,11 +33,8 @@
 
     <div class="modal-buttons-bar">
         <div class="buttons">
-            <button *ngIf="editMode" pButton type="submit" label="Salvar" class="p-button-raised"></button>
-            <button *ngIf="!editMode" pButton type="button" (click)="edit()" label="Editar" class="p-button-raised"></button>
-
-            <button *ngIf="editMode" pButton type="button" (click)="cancel(!usuario.id)" label="Cancelar" class="p-button-outlined"></button>
-            <button *ngIf="!editMode" pButton type="button" (click)="cancel(true)" label="Voltar" class="p-button-outlined"></button>
+            <button pButton type="submit" label="Salvar" class="p-button-raised"></button>
+            <button pButton type="button" (click)="cancel()" label="Voltar" class="p-button-outlined"></button>
         </div>
     </div>
 </form>
