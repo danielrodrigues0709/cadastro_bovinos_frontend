@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { MegaMenuItem, MenuItem, MessageService, PrimeNGConfig } from 'primeng/api';
 import { DialogService } from 'primeng/dynamicdialog';
 import { Usuario } from './interfaces/usuario';
-import { CadastroUsuarioComponent } from './pages/cadastro-usuario/cadastro-usuario.component';
+import { EdicaoUsuarioComponent } from './pages/edicao-usuario/edicao-usuario.component';
 import { AuthService } from './services/auth.service';
 
 @Component({
@@ -57,9 +57,9 @@ export class AppComponent {
   }
 
   myAccont(): void {
-    const ref = this.dialogService.open(CadastroUsuarioComponent, {
+    const ref = this.dialogService.open(EdicaoUsuarioComponent, {
       data: this.user,
-      header: `Cadastrar Novo Usuário`,
+      header: `Editar Dados Usuário`,
       width: '80%'
     })
     .onClose.pipe().subscribe((edited: boolean) => {

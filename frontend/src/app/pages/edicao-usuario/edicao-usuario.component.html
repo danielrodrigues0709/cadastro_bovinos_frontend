@@ -1,0 +1,68 @@
+<form [formGroup]="formUser" (ngSubmit)="submitFormUser()">
+    <div class="p-fluid grid formgrid">
+        <div class="p-float-label field col-6">
+            <input id="nome_usuario" type="text" pInputText formControlName="nome_usuario" (keyup)="setUsername($event)">
+            <label for="nome_usuario">Nome Usuário</label>
+        </div>
+        
+        <div class="p-float-label field col-6">
+            <input id="username" type="text" pInputText formControlName="username">
+            <label for="username">Nome Conta Usuário</label>
+        </div>
+        
+        <div class="p-float-label field col-4">
+            <input id="email" type="email" pInputText formControlName="email">
+            <label for="email">E-mail</label>
+        </div>
+        
+        <div class="p-float-label field col-4">
+            <p-inputMask  id="telefone" formControlName="telefone" mask="99 99999-9999"></p-inputMask>
+            <label for="telefone">Telefone</label>
+        </div>
+        
+        <div class="p-float-label field col-4">
+            <input id="senha1" type="password" pInputText formControlName="senha">
+            <label for="senha1">Senha</label>
+        </div>
+    </div>
+
+    <div class="modal-buttons-bar">
+        <div class="buttons">
+            <button *ngIf="editModeUser" pButton type="submit" label="Salvar" class="p-button-raised"></button>
+            <button *ngIf="!editModeUser" pButton type="button" (click)="editUser()" label="Editar" class="p-button-raised"></button>
+
+            <button *ngIf="editModeUser" pButton type="button" (click)="cancel(true)" label="Cancelar" class="p-button-outlined"></button>
+        </div>
+    </div>
+</form>
+
+<form [formGroup]="formPassword" (ngSubmit)="submitFormPassword()">
+    <h3>Alterar senha</h3>
+    
+    <div class="p-fluid grid formgrid">
+        <div class="p-float-label field col-6">
+            <input id="senha" type="password" pInputText formControlName="senha">
+            <label for="senha">Senha</label>
+        </div>
+
+        <div class="p-float-label field col-6">
+            <input id="conf_senha" type="password" pInputText formControlName="conf_senha">
+            <label for="conf_senha">Confirmação de Senha</label>
+        </div>
+    </div>
+
+    <div class="modal-buttons-bar">
+        <div class="buttons">
+            <button *ngIf="editModePassword" pButton type="submit" label="Salvar" class="p-button-raised"></button>
+            <button *ngIf="!editModePassword" pButton type="button" (click)="editPassword()" label="Editar" class="p-button-raised"></button>
+
+            <button *ngIf="editModePassword" pButton type="button" (click)="cancel(false)" label="Cancelar" class="p-button-outlined"></button>
+        </div>
+    </div>
+</form>
+
+<div class="modal-buttons-bar">
+    <div class="buttons">
+        <button pButton type="button" (click)="goBack()" label="Voltar" class="p-button-outlined"  [disabled]="editModeUser || editModePassword"></button>
+    </div>
+</div>
