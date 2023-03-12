@@ -20,5 +20,8 @@ export enum vacinaVermifugo {
     VERMIFUGO = 1
 }
 export enum messages {
-    REQUIRED = "Preencha os campos obrigatórios!"
+    REQUIRED = "Preencha os campos obrigatórios!",
+    USERNAME = "Nome de conta de usuário não deve haver espaços, nem acentuação, nem caracteres especiais!",
+    EMAIL = "Campo de e-mail inválido!",
+    PASSWORD = "Senhas não conferem!",
 }

@@ -42,6 +42,7 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   cadastrar(): void {
     const ref = this.dialogService.open(CadastroUsuarioComponent, {
+      data: {},
       header: `Cadastrar Novo Usuário`,
       width: '80%'
     })

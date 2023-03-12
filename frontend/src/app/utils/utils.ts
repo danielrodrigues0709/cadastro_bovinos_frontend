@@ -19,10 +19,22 @@ export function strToDate(dateStr: string): Date {
     return new Date(Number(dateSplit[2]), Number(dateSplit[1])-1, Number(dateSplit[0]));
 }
 
-export function validateFormFields(form: FormGroup) {
+export function validateFormFields(form: FormGroup): void {
     Object.keys(form.controls).forEach(field => {
         const control = form.get(field);
         control?.markAsDirty();
         control?.markAsTouched();
     });
 }
+
+export function snakeCase(string: string): string {
+    return string.replace(/\d+/g, ' ')
+      .split(/ |\B(?=[A-Z])/)
+      .map((word) => word.toLowerCase())
+      .join('_');
+};
+
+export function findSpecialCharacters(string: string): boolean {
+    const regex = /\W|\0/;
+    return regex.test(string);
+};
