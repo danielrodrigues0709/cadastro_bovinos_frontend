@@ -17,7 +17,7 @@ export class VacinasService {
     if(this.userStr) {
       this.schema = JSON.parse(this.userStr).username;
     }
-    this.headers = new HttpHeaders().set("schema", this.schema); 
+    this.headers = new HttpHeaders().set("schema", this.schema).set("authorization", `Barear ${localStorage.getItem('token')}`); 
   }
 
   getVacinas(params?: any): Observable<any> {

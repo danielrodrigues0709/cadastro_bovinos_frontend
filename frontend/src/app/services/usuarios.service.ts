@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
@@ -8,7 +8,11 @@ import { environment } from 'src/environments/environment';
 })
 export class UsuariosService {
 
-  constructor(private http: HttpClient) { }
+  headers: HttpHeaders;
+
+  constructor(private http: HttpClient) {
+    this.headers = new HttpHeaders().set("authorization", `Barear ${localStorage.getItem('token')}`);
+  }
 
   getUsuarios(): Observable<any> {
     const href = `${environment.api}usuarios/`;
@@ -31,11 +35,15 @@ export class UsuariosService {
   
   updateUsuario(id: number, usuario: any): Observable<any> {
     const href = `${environment.api}usuarios/${id}`;
-    return this.http.patch(href, usuario);
+    return this.http.patch(href, usuario, {
+      headers: this.headers
+    });
   }
   
   deleteUsuario(id: number): Observable<any> {
     const href = `${environment.api}usuarios/${id}`;
-    return this.http.delete(href);
+    return this.http.delete(href, {
+      headers: this.headers
+    });
   }
 }
