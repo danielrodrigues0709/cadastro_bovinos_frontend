@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { MegaMenuItem, MenuItem, MessageService, PrimeNGConfig } from 'primeng/api';
 import { DialogService } from 'primeng/dynamicdialog';
+import { Subject, takeUntil } from 'rxjs';
 import { Usuario } from './interfaces/usuario';
 import { EdicaoUsuarioComponent } from './pages/edicao-usuario/edicao-usuario.component';
 import { AuthService } from './services/auth.service';
@@ -12,22 +13,24 @@ import { AuthService } from './services/auth.service';
   providers: [DialogService, MessageService]
 })
 export class AppComponent {
+
   title = 'frontend';
   items: MegaMenuItem[] = [];
   userOptions: MenuItem[] = [];
   loggedIn!: boolean;
-  isLoggedInStr = localStorage.getItem('isLoggedIn');
+  tokenStr = localStorage.getItem('token');
   userName!: string;
   user!: Usuario;
   userStr = localStorage.getItem('user');
+  ngUnsubscribe: Subject<any> = new Subject<any>();
 
   constructor(
     private config: PrimeNGConfig,
     public dialogService: DialogService,
     private _authService: AuthService
   ) {
-    if(this.isLoggedInStr && this.userStr) {
-      this.loggedIn = JSON.parse(this.isLoggedInStr);
+    if(this.tokenStr && this.userStr) {
+      this.loggedIn = this.tokenStr ? true : false;
       this.user = JSON.parse(this.userStr);
       this.userName = this.user.nome_usuario;
     }
@@ -54,6 +57,14 @@ export class AppComponent {
       {label: 'Partos', icon: 'pi pi-fw pi-angle-right', routerLink: 'partos'},
       {label: 'Ocorrências', icon: 'pi pi-fw pi-angle-right', routerLink: 'ocorrencias'},
     ];
+    this.updateUser();
+  }
+
+  updateUser(): void {
+    this._authService.user.pipe(takeUntil(this.ngUnsubscribe)).subscribe(res => {
+      this.user = res;
+      this.userName = res.nome_usuario;
+    });
   }
 
   myAccont(): void {
@@ -61,15 +72,6 @@ export class AppComponent {
       data: this.user,
       header: `Editar Dados Usuário`,
       width: '80%'
-    })
-    .onClose.pipe().subscribe((edited: boolean) => {
-      if(edited) {
-        let userStr = localStorage.getItem('user');
-        if(userStr) {
-          this.user = JSON.parse(userStr);
-          this.userName = this.user.nome_usuario;
-        }
-      }
     });
   }
 
@@ -77,4 +79,14 @@ export class AppComponent {
     this._authService.logOut();
     window.location.reload();
   }
+  
+  onSubscriptionsDestroy(ngUnsubscribe: Subject<any>): void {
+    ngUnsubscribe.next(true);
+	  ngUnsubscribe.complete();
+	  ngUnsubscribe.unsubscribe();
+	}
+
+	ngOnDestroy(): void {
+	  this.onSubscriptionsDestroy(this.ngUnsubscribe);
+	}
 }

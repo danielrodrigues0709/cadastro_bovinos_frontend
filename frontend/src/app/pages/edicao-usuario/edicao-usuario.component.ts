@@ -59,6 +59,7 @@ export class EdicaoUsuarioComponent implements OnInit {
     })
 
     this.formPassword = this._fb.group({
+      senha_atual: ['', Validators.required],
       senha: ['', Validators.required],
       conf_senha: ['', Validators.required]
     })
@@ -127,8 +128,7 @@ export class EdicaoUsuarioComponent implements OnInit {
 
     this._usuariosService.getUsuario(formValue.username, formValue.senha).pipe(takeUntil(this.ngUnsubscribe)).subscribe(() => {
       this._usuariosService.updateUsuario(this.usuario.id, formValue).pipe(takeUntil(this.ngUnsubscribe)).subscribe(res => {
-        localStorage.removeItem('user');
-        this._authService.logIn(res.data.rows[0]);
+        this._authService.updateUserData(res.data.rows[0]);
         this._messageService.add({severity:'success', detail: res.message});
         this.ref.close(true);
       },
@@ -157,13 +157,18 @@ export class EdicaoUsuarioComponent implements OnInit {
       senha: formValue.senha
     }
     
-    this._usuariosService.updateUsuario(this.usuario.id, user).pipe(takeUntil(this.ngUnsubscribe)).subscribe(res => {
-      this._messageService.add({severity:'success', detail: res.message});
-      this.ref.close(true);
+    this._usuariosService.getUsuario(this.usuario.username, formValue.senha_atual).pipe(takeUntil(this.ngUnsubscribe)).subscribe(res1 => {
+      this._usuariosService.updateUsuario(this.usuario.id, user).pipe(takeUntil(this.ngUnsubscribe)).subscribe(res2 => {
+        this._messageService.add({severity:'success', detail: res2.message});
+        this.ref.close(true);
+      },
+      err => {
+        this._messageService.add({severity:'error', detail: err.error.message});
+      })
     },
     err => {
-      this._messageService.add({severity:'error', detail: err.error.message});
-    })
+      this._messageService.add({severity:'error', detail: 'Senha inválida!'});
+    });
   }
   
   onSubscriptionsDestroy(ngUnsubscribe: Subject<any>): void {

@@ -83,10 +83,14 @@ export class CadastroUsuarioComponent implements OnInit, OnDestroy {
     let formValue = this.form.getRawValue();
     
     this._usuariosService.saveUsuario(formValue).pipe(takeUntil(this.ngUnsubscribe)).subscribe(res => {
-      localStorage.removeItem('user');
-      this._authService.logIn(res.data.rows[0]);
-      this._messageService.add({severity:'success', detail: res.message});
-      this.ref.close(true);
+      this._usuariosService.getUsuario(formValue.username, formValue.senha).pipe(takeUntil(this.ngUnsubscribe)).subscribe(res => {
+        this._authService.logIn(res);
+        this._messageService.add({severity:'success', detail: res.message});
+        this.ref.close(true);
+      },
+      err => {
+        this._messageService.add({severity:'error', detail: err.error.message});
+      })
     },
     err => {
       this._messageService.add({severity:'error', detail: err.error.message});

@@ -56,7 +56,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     }
     let formValues = this.form.getRawValue();
     this._usuariosService.getUsuario(formValues.username, formValues.password).pipe(takeUntil(this.ngUnsubscribe)).subscribe(res => {
-      this._authService.logIn(res.rows[0]);
+      this._authService.logIn(res);
       window.location.reload();
     },
     err => {

@@ -40,12 +40,17 @@
     <h3>Alterar senha</h3>
     
     <div class="p-fluid grid formgrid">
-        <div class="p-float-label field col-6">
-            <input id="senha" type="password" pInputText formControlName="senha">
-            <label for="senha">Senha</label>
+        <div class="p-float-label field col-4">
+            <input id="senha_atual" type="password" pInputText formControlName="senha_atual">
+            <label for="senha_atual">Senha Atual</label>
         </div>
 
-        <div class="p-float-label field col-6">
+        <div class="p-float-label field col-4">
+            <input id="senha" type="password" pInputText formControlName="senha">
+            <label for="senha">Nova Senha</label>
+        </div>
+
+        <div class="p-float-label field col-4">
             <input id="conf_senha" type="password" pInputText formControlName="conf_senha">
             <label for="conf_senha">Confirmação de Senha</label>
         </div>

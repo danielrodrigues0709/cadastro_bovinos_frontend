@@ -5,22 +5,27 @@ import { EventEmitter, Injectable, Output } from '@angular/core';
 })
 export class AuthService {
   
-  @Output() loggedIn: EventEmitter<any> = new EventEmitter<any>();
-  public isLoggedIn!: boolean;
+  @Output() user: EventEmitter<any> = new EventEmitter<any>();
 
   constructor() { }
 
-  logIn(user: any): void {
-    this.isLoggedIn = true;
-    localStorage.setItem('isLoggedIn', this.isLoggedIn.toString());
-    localStorage.setItem('user', JSON.stringify(user));
-    this.loggedIn.emit(this.isLoggedIn);
+  logIn(token: string): void {
+    let parsedToken = JSON.parse(atob(token.split('.')[1]));
+    localStorage.setItem('token', token);
+    localStorage.setItem('user', JSON.stringify(parsedToken.usuario));
+    this.user.emit(parsedToken.usuario);
   }
 
   logOut(): void {
-    this.isLoggedIn = false;
-    localStorage.removeItem('isLoggedIn');
+    localStorage.removeItem('token');
     localStorage.removeItem('user');
-    this.loggedIn.emit(this.isLoggedIn);
+    this.user.emit(null);
   }
+
+  updateUserData(usuario: any): void {
+    localStorage.removeItem('user');
+    localStorage.setItem('user', JSON.stringify(usuario));
+    this.user.emit(usuario);
+  }
+  
 }
