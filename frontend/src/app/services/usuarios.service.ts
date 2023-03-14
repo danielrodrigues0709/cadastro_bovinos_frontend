@@ -16,8 +16,12 @@ export class UsuariosService {
   }
 
   getUsuario(username: string, senha: string): Observable<any> {
-    const href = `${environment.api}usuarios/login/${username}/${senha}`;
-    return this.http.get(href);
+    let body = {
+      username: username,
+      senha: senha
+    }
+    const href = `${environment.api}usuarios/login/`;
+    return this.http.post(href, body);
   }
   
   saveUsuario(usuario: any): Observable<any> {
