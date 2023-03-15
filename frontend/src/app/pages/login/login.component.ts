@@ -7,6 +7,7 @@ import { AuthService } from 'src/app/services/auth.service';
 import { UsuariosService } from 'src/app/services/usuarios.service';
 import { messages } from 'src/app/utils/enums';
 import { validateFormFields } from 'src/app/utils/utils';
+import { environment } from 'src/environments/environment';
 import { CadastroUsuarioComponent } from '../cadastro-usuario/cadastro-usuario.component';
 
 @Component({
@@ -19,6 +20,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   
   form!: FormGroup;
   ngUnsubscribe: Subject<any> = new Subject<any>();
+  recover_password: string = environment.api;
 
   constructor(
     private _fb: FormBuilder,
