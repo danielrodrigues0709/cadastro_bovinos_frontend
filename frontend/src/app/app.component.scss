@@ -5,7 +5,6 @@ $header-menu-height: 50px;
 .content {
     display: flex;
     .menubar-card {
-        max-width: calc(100% - $menu-width);
         width: 100%;
     }
 }
@@ -28,7 +27,7 @@ $header-menu-height: 50px;
 :host ::ng-deep .p-menuitem {
     width: $menu-width;
 }
-:host ::ng-deep .p-menuitem-icon, :host ::ng-deep .p-menuitem-text {
+:host ::ng-deep .p-button-text .p-button-icon, :host ::ng-deep .p-menuitem-text {
     color: white !important;
 }
 :host ::ng-deep .p-button{
@@ -75,10 +74,11 @@ $header-menu-height: 50px;
 :host ::ng-deep .p-datepicker-trigger {
     margin: 0;
 }
-:host ::ng-deep .p-menubar {
+.header {
+    display: flex;
+    justify-content: space-between;
+    padding: $margin;
     height: $header-menu-height;
-    border: none;
-    border-radius: 0;
     background-color: $dark-green;
 }
 .user-info {

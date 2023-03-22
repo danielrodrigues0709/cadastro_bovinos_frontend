@@ -1,21 +1,28 @@
-<div class="content">
-    <div class="menu" *ngIf="loggedIn">
-        <img src="../assets//fazenda.jpg" alt="fazenda" class="image">
+<div class="content" *ngIf="loggedIn">
+    <div class="menu" *ngIf="toggle">
+        <img src="../assets/fazenda.jpg" alt="fazenda" class="image">
         <p-megaMenu [model]="items"></p-megaMenu>
     </div>
     
-    <div class="menubar-card" *ngIf="loggedIn">
-        <p-menubar>
-            <ng-template pTemplate="end">
-                <div class="user-info">
-                    <h3>{{ userName }}</h3>
-                    <button pButton (click)="myAccont()" class="p-button-rounded" icon="pi pi-user" pTooltip="Minha conta" tooltipPosition="bottom"></button>
-                    <button pButton (click)="logOut()" class="p-button-rounded" icon="pi pi-sign-out" pTooltip="Sair" tooltipPosition="bottom"></button>
-    
-                    <p-toast></p-toast>
-                </div>
-            </ng-template>
-        </p-menubar>
+    <div class="menubar-card">
+        <div class="header">
+            <div class="button-toggle">
+                <button pButton
+                    (click)="toggle = !toggle"
+                    class="p-button-rounded p-button-text"
+                    icon="pi pi-bars"
+                    [pTooltip]="toggle ? 'Esconder menu lateral' : 'Exibir menu lateral'"
+                    tooltipPosition="right">
+                </button>
+            </div>
+            <div class="user-info">
+                <h3>{{ userName }}</h3>
+                <button pButton (click)="myAccont()" class="p-button-rounded" icon="pi pi-user" pTooltip="Minha conta" tooltipPosition="bottom"></button>
+                <button pButton (click)="logOut()" class="p-button-rounded" icon="pi pi-sign-out" pTooltip="Sair" tooltipPosition="bottom"></button>
+
+                <p-toast></p-toast>
+            </div>
+        </div>
         <p-card>
             <router-outlet></router-outlet>
         </p-card>
