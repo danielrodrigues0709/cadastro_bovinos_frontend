@@ -34,7 +34,6 @@ body {
     position: relative;
     bottom: $margin;
     right: $margin;
-    width: calc($pages-width - 2 * $margin);
     .buttons {
         padding: $margin;
     }
