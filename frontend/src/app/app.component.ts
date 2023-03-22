@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 import { MegaMenuItem, MenuItem, MessageService, PrimeNGConfig } from 'primeng/api';
 import { DialogService } from 'primeng/dynamicdialog';
 import { Subject, takeUntil } from 'rxjs';
@@ -18,6 +19,7 @@ export class AppComponent {
   items: MegaMenuItem[] = [];
   userOptions: MenuItem[] = [];
   loggedIn!: boolean;
+  toggle: boolean = true;
   tokenStr = localStorage.getItem('token');
   userName!: string;
   user!: Usuario;
@@ -27,7 +29,8 @@ export class AppComponent {
   constructor(
     private config: PrimeNGConfig,
     public dialogService: DialogService,
-    private _authService: AuthService
+    private _authService: AuthService,
+    public router: Router,
   ) {
     if(this.tokenStr && this.userStr) {
       this.loggedIn = this.tokenStr ? true : false;
@@ -58,12 +61,20 @@ export class AppComponent {
       {label: 'Ocorrências', icon: 'pi pi-fw pi-angle-right', routerLink: 'ocorrencias'},
     ];
     this.updateUser();
+    this.isLoggedIn();
+  }
+
+  isLoggedIn(): void {
+    this._authService.loggedIn.pipe(takeUntil(this.ngUnsubscribe)).subscribe((res: boolean) => {
+      this.loggedIn = res;
+    });
   }
 
   updateUser(): void {
-    this._authService.user.pipe(takeUntil(this.ngUnsubscribe)).subscribe(res => {
+    this._authService.user.pipe(takeUntil(this.ngUnsubscribe)).subscribe((res: Usuario) => {
       this.user = res;
       this.userName = res.nome_usuario;
+      this.loggedIn = res ? true: false;
     });
   }
 
@@ -77,7 +88,8 @@ export class AppComponent {
 
   logOut(): void {
     this._authService.logOut();
-    window.location.reload();
+    this.router.navigate(['login']);
+    
   }
   
   onSubscriptionsDestroy(ngUnsubscribe: Subject<any>): void {

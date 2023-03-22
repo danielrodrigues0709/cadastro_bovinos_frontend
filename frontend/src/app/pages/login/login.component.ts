@@ -1,5 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { DialogService } from 'primeng/dynamicdialog';
 import { Subject, takeUntil } from 'rxjs';
@@ -28,6 +29,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     private _authService: AuthService,
     public dialogService: DialogService,
     private _messageService: MessageService,
+    public router: Router,
   ) {
     this.createform();
   }
@@ -57,9 +59,9 @@ export class LoginComponent implements OnInit, OnDestroy {
       return;
     }
     let formValues = this.form.getRawValue();
-    this._usuariosService.getUsuario(formValues.username, formValues.password).pipe(takeUntil(this.ngUnsubscribe)).subscribe(res => {
+    this._usuariosService.getUsuario(formValues.username, formValues.password).pipe(takeUntil(this.ngUnsubscribe)).subscribe((res: string) => {
       this._authService.logIn(res);
-      window.location.reload();
+      this.router.navigate(['home']);
     },
     err => {
       this._messageService.add({severity:'error', detail: err.error.message});

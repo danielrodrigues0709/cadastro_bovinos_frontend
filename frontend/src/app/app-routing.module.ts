@@ -20,6 +20,7 @@ import { InseminacoesComponent } from './pages/inseminacoes/inseminacoes.compone
 
 const routes: Routes = [
   { path: '', redirectTo: 'animais', pathMatch: 'full' },
+  { path: 'home', redirectTo: 'animais', pathMatch: 'full' },
   {
     path: 'animais',
     component: PlantelComponent,
@@ -93,6 +94,10 @@ const routes: Routes = [
   {
     path: 'inseminacoes/cadastro',
     component: CadastroInseminacaoComponent,
+  },
+  {
+    path: 'login',
+    component: LoginComponent,
   },
 ];
 
