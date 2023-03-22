@@ -150,39 +150,41 @@ export class FamilyTreeComponent implements OnInit {
   }
 
   getAnimalById(): void {
-    if(this.config.data.animal.reprodutor) {
-      this.reprodutor = this.config.data.animal.reprodutor;
-      if(this.reprodutor.id_reprodutor) {
-        this._animaisService.getAnimalById(this.reprodutor.id_reprodutor).pipe(takeUntil(this.ngUnsubscribe)).subscribe(res => {this.avo_paterno = res.rows[0];
-          this.onFamilyTreeUpdate$.next(this.avo_paterno);
-          if(this.avo_paterno.id_reprodutor) {
-            this._animaisService.getAnimalById(this.avo_paterno.id_reprodutor).pipe(takeUntil(this.ngUnsubscribe)).subscribe(res => {this.bisavo_paterno1 = res.rows[0];
-              this.onFamilyTreeUpdate$.next(this.bisavo_paterno1);
-            });
-          }
-          if(this.avo_paterno.id_mae) {
-            this._animaisService.getAnimalById(this.avo_paterno.id_mae).pipe(takeUntil(this.ngUnsubscribe)).subscribe(res => {this.bisavo_paterna1 = res.rows[0];
-              this.onFamilyTreeUpdate$.next(this.bisavo_paterna1);
-            });
-          }
-        });
+    if(this.config.data.animal.id_reprodutor) {
+      this._animaisService.getAnimalById(this.config.data.animal.id_reprodutor).pipe(takeUntil(this.ngUnsubscribe)).subscribe(res => {this.reprodutor = res.rows[0];
+        this.onFamilyTreeUpdate$.next(this.reprodutor);
+        if(this.reprodutor.id_reprodutor) {
+          this._animaisService.getAnimalById(this.reprodutor.id_reprodutor).pipe(takeUntil(this.ngUnsubscribe)).subscribe(res => {this.avo_paterno = res.rows[0];
+            this.onFamilyTreeUpdate$.next(this.avo_paterno);
+            if(this.avo_paterno.id_reprodutor) {
+              this._animaisService.getAnimalById(this.avo_paterno.id_reprodutor).pipe(takeUntil(this.ngUnsubscribe)).subscribe(res => {this.bisavo_paterno1 = res.rows[0];
+                this.onFamilyTreeUpdate$.next(this.bisavo_paterno1);
+              });
+            }
+            if(this.avo_paterno.id_mae) {
+              this._animaisService.getAnimalById(this.avo_paterno.id_mae).pipe(takeUntil(this.ngUnsubscribe)).subscribe(res => {this.bisavo_paterna1 = res.rows[0];
+                this.onFamilyTreeUpdate$.next(this.bisavo_paterna1);
+              });
+            }
+          });
+        }
+        if(this.reprodutor.id_mae) {
+          this._animaisService.getAnimalById(this.reprodutor.id_mae).pipe(takeUntil(this.ngUnsubscribe)).subscribe(res => {this.avo_paterna = res.rows[0];
+            this.onFamilyTreeUpdate$.next(this.avo_paterna);
+            if(this.avo_paterna.id_reprodutor) {
+              this._animaisService.getAnimalById(this.avo_paterna.id_reprodutor).pipe(takeUntil(this.ngUnsubscribe)).subscribe(res => {this.bisavo_paterno2 = res.rows[0];
+                this.onFamilyTreeUpdate$.next(this.bisavo_paterno2);
+              });
+            }
+            if(this.avo_paterna.id_mae) {
+              this._animaisService.getAnimalById(this.avo_paterna.id_mae).pipe(takeUntil(this.ngUnsubscribe)).subscribe(res => {this.bisavo_paterna2 = res.rows[0];
+                this.onFamilyTreeUpdate$.next(this.bisavo_paterna2);
+              });
+            }
+          });
+        }
       }
-      if(this.reprodutor.id_mae) {
-        this._animaisService.getAnimalById(this.reprodutor.id_mae).pipe(takeUntil(this.ngUnsubscribe)).subscribe(res => {this.avo_paterna = res.rows[0];
-          this.onFamilyTreeUpdate$.next(this.avo_paterna);
-          if(this.avo_paterna.id_reprodutor) {
-            this._animaisService.getAnimalById(this.avo_paterna.id_reprodutor).pipe(takeUntil(this.ngUnsubscribe)).subscribe(res => {this.bisavo_paterno2 = res.rows[0];
-              this.onFamilyTreeUpdate$.next(this.bisavo_paterno2);
-            });
-          }
-          if(this.avo_paterna.id_mae) {
-            this._animaisService.getAnimalById(this.avo_paterna.id_mae).pipe(takeUntil(this.ngUnsubscribe)).subscribe(res => {this.bisavo_paterna2 = res.rows[0];
-              this.onFamilyTreeUpdate$.next(this.bisavo_paterna2);
-            });
-          }
-        });
-      }
-    }
+    )};
     if(this.config.data.animal.mae) {
       
       this.mae = this.config.data.animal.mae;
