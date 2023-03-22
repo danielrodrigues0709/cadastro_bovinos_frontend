@@ -1,12 +1,15 @@
 const { app, BrowserWindow } = require('electron')
+const url = require("url");
 
 const createWindow = () => {
     const win = new BrowserWindow({
-      width: 800,
-      height: 600
+        show: false,
+        // autoHideMenuBar: true,
     })
-  
-    win.loadFile('./frontend/dist/frontend/index.html');
+    win.maximize();
+    win.show();
+
+    win.loadFile(`${ __dirname}/frontend/dist/frontend/index.html`)
 }
 
 app.whenReady().then(() => {
