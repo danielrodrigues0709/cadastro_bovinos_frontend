@@ -84,8 +84,9 @@ export class CadastroUsuarioComponent implements OnInit, OnDestroy {
     
     this._usuariosService.saveUsuario(formValue).pipe(takeUntil(this.ngUnsubscribe)).subscribe(res => {
       this._usuariosService.getUsuario(formValue.username, formValue.senha).pipe(takeUntil(this.ngUnsubscribe)).subscribe(res => {
-        this._authService.logIn(res);
-        this._messageService.add({severity:'success', detail: res.message});
+        // this._authService.logIn(res); // Retirado pois monta página de login dentro da home
+        this._messageService.add({severity:'success', detail: "Usuário criado com sucesso!"});
+        // TODO Alterar msg para res.message
         this.ref.close(true);
       },
       err => {
