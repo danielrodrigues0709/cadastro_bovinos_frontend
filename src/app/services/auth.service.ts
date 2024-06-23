@@ -19,8 +19,7 @@ export class AuthService {
   }
 
   logOut(): void {
-    localStorage.removeItem('token');
-    localStorage.removeItem('user');
+    localStorage.clear();
     this.user.emit(null);
     this.loggedIn.emit(false);
   }

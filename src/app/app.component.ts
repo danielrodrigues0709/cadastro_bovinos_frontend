@@ -73,7 +73,7 @@ export class AppComponent {
   updateUser(): void {
     this._authService.user.pipe(takeUntil(this.ngUnsubscribe)).subscribe((res: Usuario) => {
       this.user = res;
-      this.userName = res.nome_usuario;
+      this.userName = res?.nome_usuario;
       this.loggedIn = res ? true: false;
     });
   }
