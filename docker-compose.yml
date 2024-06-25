@@ -1,0 +1,8 @@
+version: '3.4'
+
+services:
+  cadastro-bovinos-frontend:
+    image: cadastro-bovinos-frontend
+    build: .
+    ports:
+      - 8081:80
