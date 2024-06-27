@@ -56,6 +56,7 @@ export class CadastroAnimalComponent implements OnInit, OnDestroy {
     this.createform();
   }
 
+  // Ciclo de vida do Angular responsável por iniciar o componente
   ngOnInit(): void {
     this.setFormValues(this.animal);
     this.animal ? this.form.disable() : this.form.enable();
@@ -63,26 +64,31 @@ export class CadastroAnimalComponent implements OnInit, OnDestroy {
     this.autocompleteReprodutor();
   }
 
+  // Recupera nomes de animais para seleção
   autocompleteMae(event?: any): void {
     let params: any = {};
     params.nomeAnimal = event ? event?.query : "";
     params.sexo = sexo.FEMEA;
+    // Chama serviço para recuperar animais (GET)
     this._animaisService.getAnimais(params).pipe(takeUntil(this.ngUnsubscribe)).subscribe(res => {
       let notItself = res.rows.filter((res: any) => this.animal?.id != res.id);
       this.maesOptions = notItself;
     })
   }
 
+  // Recupera nomes de animais para seleção
   autocompleteReprodutor(event?: any): void {
     let params: any = {};
     params.nomeAnimal = event ? event?.query : "";
     params.sexo = sexo.MACHO;
+    // Chama serviço para recuperar animais (GET)
     this._animaisService.getAnimais(params).pipe(takeUntil(this.ngUnsubscribe)).subscribe(res => {
       let notItself = res.rows.filter((res: any) => this.animal?.id != res.id);
       this.reprodutoresOptions = notItself;
     })
   }
 
+  // Construção do formulário
   createform(): void {
     this.form = this._fb.group({
       nro_controle: ['', Validators.required],
@@ -97,6 +103,7 @@ export class CadastroAnimalComponent implements OnInit, OnDestroy {
     })
   }
 
+  // Preenche campos do formulário
   setFormValues(element: any): void {
     this.form.patchValue({
       nro_controle: element?.nro_controle,
@@ -111,6 +118,7 @@ export class CadastroAnimalComponent implements OnInit, OnDestroy {
     })
   }
 
+  // Monta árvore genealógica
   familyTree(): void {
     let formValue = this.form.getRawValue();
     let family = {
@@ -132,21 +140,25 @@ export class CadastroAnimalComponent implements OnInit, OnDestroy {
     }
   }
 
+  // Desabilita / habilita campo
   disableInput(): boolean {
     return this.form.controls['sexo'].value !== 0
   }
 
+  // Habilita modo de edição de formulário
   edit(): void {
     this.editMode = true;
     this.form.enable();
     this.disableInput() ? this.form.get('producao')?.disable() : null;
   }
 
+  // Cancela modo de edição ou sai da página
   cancel(goBack: boolean): void {
     if(goBack) {
       history.back();
     }
     else {
+      // Reseta formulário
       this.form.patchValue({
         ...this.animal,
         data_nascimento: dateToStr(this.animal.data_nascimento),
@@ -159,6 +171,7 @@ export class CadastroAnimalComponent implements OnInit, OnDestroy {
     }
   }
 
+  // Abre modal para novo cadastro de Inseminação
   includeInseminacao(): void {
     const ref = this.dialogService.open(CadastroInseminacaoComponent, {
       data: {
@@ -173,6 +186,7 @@ export class CadastroAnimalComponent implements OnInit, OnDestroy {
     });
   }
 
+  // Abre modal para novo cadastro de Parto
   includeParto(): void {
     const ref = this.dialogService.open(CadastroPartoComponent, {
       data: {
@@ -187,6 +201,7 @@ export class CadastroAnimalComponent implements OnInit, OnDestroy {
     });
   }
 
+  // Abre modal para novo cadastro de Vacinação
   includeVacinacao(): void {
     const ref = this.dialogService.open(CadastroVacinacaoComponent, {
       data: {
@@ -201,6 +216,7 @@ export class CadastroAnimalComponent implements OnInit, OnDestroy {
     });
   }
 
+  // Abre modal para novo cadastro de Ocorrência
   includeOcorrencia(): void {
     const ref = this.dialogService.open(CadastroOcorrenciaComponent, {
       data: {
@@ -215,6 +231,7 @@ export class CadastroAnimalComponent implements OnInit, OnDestroy {
     });
   }
 
+  // Salva formulário
   submit(): void {
     if(!this.form.valid) {
       this._messageService.add({severity:'warn', detail: messages.REQUIRED});
@@ -224,7 +241,7 @@ export class CadastroAnimalComponent implements OnInit, OnDestroy {
     let formValues = this.form.getRawValue();
     let params = { 
       ...formValues,
-      data_nascimento: this.changed ? formValues.data_nascimento : strToDate(formValues.data_nascimento),
+      data_nascimento: this.changed ? formValues.data_nascimento : strToDate(formValues.data_nascimento), // Trata data de string para Date
       rebanho: booleanToNumber(!!formValues.rebanho),
       registrado: formValues.matriz ? 1 : 0,
       producao: booleanToNumber(!!formValues.producao),
@@ -235,6 +252,7 @@ export class CadastroAnimalComponent implements OnInit, OnDestroy {
     
     if(this.state.element?.id) {
       this.animal.id = this.state.element.id;
+      // Chama serviço para atualizar cadastro de animal (PATCH)
       this._animaisService.updateAnimal(this.state.element.id, params).pipe(takeUntil(this.ngUnsubscribe)).subscribe(res => {
         this._messageService.add({severity:'success', detail: res.message});
         this.editMode = false;
@@ -245,6 +263,7 @@ export class CadastroAnimalComponent implements OnInit, OnDestroy {
       })
     }
     else {
+      // Chama serviço para cadastrar animal (POST)
       this._animaisService.saveAnimal(params).pipe(takeUntil(this.ngUnsubscribe)).subscribe(res => {
         this._messageService.add({severity:'success', detail: res.message});
         this.animal = res.data.rows[0];
@@ -256,13 +275,15 @@ export class CadastroAnimalComponent implements OnInit, OnDestroy {
       })
     }
   }
-  
+
+  // Fecha inscrições em Observables
   onSubscriptionsDestroy(ngUnsubscribe: Subject<any>): void {
     ngUnsubscribe.next(true);
 	  ngUnsubscribe.complete();
 	  ngUnsubscribe.unsubscribe();
 	}
 
+  // Ciclo de vida do Angular responsável por destuir o componente
 	ngOnDestroy(): void {
 	  this.onSubscriptionsDestroy(this.ngUnsubscribe);
 	}
