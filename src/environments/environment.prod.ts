@@ -1,5 +1,4 @@
 export const environment = {
-  // api: `https://cadastro-bovinos.herokuapp.com/`,
-  api: `https://jealous-raincoat-newt.cyclic.app/`,
+  api: `https://api.cadastrobovinos.website/`,
   production: true
 };
