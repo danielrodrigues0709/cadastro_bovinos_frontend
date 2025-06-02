@@ -82,20 +82,20 @@ export class CadastroUsuarioComponent implements OnInit, OnDestroy {
     }
     let formValue = this.form.getRawValue();
     
-    this._usuariosService.saveUsuario(formValue).pipe(takeUntil(this.ngUnsubscribe)).subscribe(res => {
-      this._usuariosService.getUsuario(formValue.username, formValue.senha).pipe(takeUntil(this.ngUnsubscribe)).subscribe(res => {
-        // this._authService.logIn(res); // Retirado pois monta página de login dentro da home
-        this._messageService.add({severity:'success', detail: "Usuário criado com sucesso!"});
-        // TODO Alterar msg para res.message
-        this.ref.close(true);
-      },
-      err => {
-        this._messageService.add({severity:'error', detail: err.error.message});
-      })
-    },
-    err => {
-      this._messageService.add({severity:'error', detail: err.error.message});
+    this._usuariosService.saveUsuario(formValue)
+    .catch((err) => {
+      console.log(err);
+      
+      this._messageService.add({severity:'error', detail: err.message});
+      throw err;
     })
+    .then((data) => {
+      console.log(data);
+      
+      this._messageService.add({severity:'success', detail: "Usuário criado com sucesso!"});
+      this.ref.close(true);
+      
+    });
   }
   
   onSubscriptionsDestroy(ngUnsubscribe: Subject<any>): void {

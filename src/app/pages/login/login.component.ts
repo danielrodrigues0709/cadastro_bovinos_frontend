@@ -21,7 +21,6 @@ export class LoginComponent implements OnInit, OnDestroy {
   
   form!: FormGroup;
   ngUnsubscribe: Subject<any> = new Subject<any>();
-  recover_password: string = environment.api;
 
   constructor(
     private _fb: FormBuilder,
