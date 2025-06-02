@@ -10,9 +10,10 @@ import { messages } from 'src/app/utils/enums';
 import { findSpecialCharacters, snakeCase, validateFormFields } from 'src/app/utils/utils';
 
 @Component({
-  selector: 'app-cadastro-usuario',
-  templateUrl: './cadastro-usuario.component.html',
-  styleUrls: ['./cadastro-usuario.component.scss']
+    selector: 'app-cadastro-usuario',
+    templateUrl: './cadastro-usuario.component.html',
+    styleUrls: ['./cadastro-usuario.component.scss'],
+    standalone: false
 })
 export class CadastroUsuarioComponent implements OnInit, OnDestroy {
 

@@ -6,9 +6,10 @@ import { Animal } from 'src/app/interfaces/animal';
 import { AnimaisService } from 'src/app/services/animais.service';
 
 @Component({
-  selector: 'app-family-tree',
-  templateUrl: './family-tree.component.html',
-  styleUrls: ['./family-tree.component.scss']
+    selector: 'app-family-tree',
+    templateUrl: './family-tree.component.html',
+    styleUrls: ['./family-tree.component.scss'],
+    standalone: false
 })
 export class FamilyTreeComponent implements OnInit {
 

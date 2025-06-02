@@ -11,9 +11,10 @@ import { messages, rebanho } from 'src/app/utils/enums';
 import { booleanToNumber, dateToStr, numberToBoolean, strToDate, validateFormFields } from 'src/app/utils/utils';
 
 @Component({
-  selector: 'app-cadastro-ocorrencia',
-  templateUrl: './cadastro-ocorrencia.component.html',
-  styleUrls: ['./cadastro-ocorrencia.component.scss']
+    selector: 'app-cadastro-ocorrencia',
+    templateUrl: './cadastro-ocorrencia.component.html',
+    styleUrls: ['./cadastro-ocorrencia.component.scss'],
+    standalone: false
 })
 export class CadastroOcorrenciaComponent implements OnInit, OnDestroy {
 

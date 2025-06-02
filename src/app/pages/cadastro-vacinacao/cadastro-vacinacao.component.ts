@@ -11,9 +11,10 @@ import { messages, rebanho } from 'src/app/utils/enums';
 import { dateToStr, strToDate, validateFormFields } from 'src/app/utils/utils';
 
 @Component({
-  selector: 'app-cadastro-vacinacao',
-  templateUrl: './cadastro-vacinacao.component.html',
-  styleUrls: ['./cadastro-vacinacao.component.scss']
+    selector: 'app-cadastro-vacinacao',
+    templateUrl: './cadastro-vacinacao.component.html',
+    styleUrls: ['./cadastro-vacinacao.component.scss'],
+    standalone: false
 })
 export class CadastroVacinacaoComponent implements OnInit, OnDestroy {
 

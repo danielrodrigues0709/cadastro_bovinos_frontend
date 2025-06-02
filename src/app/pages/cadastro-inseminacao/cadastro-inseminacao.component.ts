@@ -11,9 +11,10 @@ import { messages, rebanho, sexo } from 'src/app/utils/enums';
 import { dateToStr, strToDate, validateFormFields } from 'src/app/utils/utils';
 
 @Component({
-  selector: 'app-cadastro-inseminacao',
-  templateUrl: './cadastro-inseminacao.component.html',
-  styleUrls: ['./cadastro-inseminacao.component.scss']
+    selector: 'app-cadastro-inseminacao',
+    templateUrl: './cadastro-inseminacao.component.html',
+    styleUrls: ['./cadastro-inseminacao.component.scss'],
+    standalone: false
 })
 export class CadastroInseminacaoComponent implements OnInit, OnDestroy {
 

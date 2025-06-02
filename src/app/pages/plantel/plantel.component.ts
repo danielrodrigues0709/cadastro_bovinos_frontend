@@ -10,10 +10,11 @@ import { MessageService } from 'primeng/api';
 import { Subject, takeUntil } from 'rxjs';
 
 @Component({
-  selector: 'app-plantel',
-  templateUrl: './plantel.component.html',
-  styleUrls: ['./plantel.component.scss'],
-  providers: [DialogService, ConfirmationService, MessageService]
+    selector: 'app-plantel',
+    templateUrl: './plantel.component.html',
+    styleUrls: ['./plantel.component.scss'],
+    providers: [DialogService, ConfirmationService, MessageService],
+    standalone: false
 })
 export class PlantelComponent implements OnInit, OnDestroy {
 

@@ -9,9 +9,10 @@ import { messages } from 'src/app/utils/enums';
 import { validateFormFields } from 'src/app/utils/utils';
 
 @Component({
-  selector: 'app-cadastro-vacina',
-  templateUrl: './cadastro-vacina.component.html',
-  styleUrls: ['./cadastro-vacina.component.scss']
+    selector: 'app-cadastro-vacina',
+    templateUrl: './cadastro-vacina.component.html',
+    styleUrls: ['./cadastro-vacina.component.scss'],
+    standalone: false
 })
 export class CadastroVacinaComponent implements OnInit, OnDestroy {
 

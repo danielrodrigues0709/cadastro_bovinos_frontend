@@ -19,10 +19,11 @@ import { Subject, takeUntil } from 'rxjs';
 import { FamilyTreeComponent } from '../family-tree/family-tree.component';
 
 @Component({
-  selector: 'app-cadastro-animal',
-  templateUrl: './cadastro-animal.component.html',
-  styleUrls: ['./cadastro-animal.component.scss'],
-  providers: [DialogService, MessageService]
+    selector: 'app-cadastro-animal',
+    templateUrl: './cadastro-animal.component.html',
+    styleUrls: ['./cadastro-animal.component.scss'],
+    providers: [DialogService, MessageService],
+    standalone: false
 })
 export class CadastroAnimalComponent implements OnInit, OnDestroy {
 

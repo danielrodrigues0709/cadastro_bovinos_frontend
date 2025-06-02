@@ -8,10 +8,11 @@ import { EdicaoUsuarioComponent } from './pages/edicao-usuario/edicao-usuario.co
 import { AuthService } from './services/auth.service';
 
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss'],
-  providers: [DialogService, MessageService]
+    selector: 'app-root',
+    templateUrl: './app.component.html',
+    styleUrls: ['./app.component.scss'],
+    providers: [DialogService, MessageService],
+    standalone: false
 })
 export class AppComponent {
 

@@ -12,10 +12,11 @@ import { vacinaVermifugo } from 'src/app/utils/enums';
 import { CadastroVacinacaoComponent } from '../cadastro-vacinacao/cadastro-vacinacao.component';
 
 @Component({
-  selector: 'app-vacinacoes',
-  templateUrl: './vacinacoes.component.html',
-  styleUrls: ['./vacinacoes.component.scss'],
-  providers: [DialogService, ConfirmationService, MessageService]
+    selector: 'app-vacinacoes',
+    templateUrl: './vacinacoes.component.html',
+    styleUrls: ['./vacinacoes.component.scss'],
+    providers: [DialogService, ConfirmationService, MessageService],
+    standalone: false
 })
 export class VacinacoesComponent implements OnInit, OnDestroy {
 

@@ -9,10 +9,11 @@ import { PartosService } from 'src/app/services/partos.service';
 import { CadastroPartoComponent } from '../cadastro-parto/cadastro-parto.component';
 
 @Component({
-  selector: 'app-partos',
-  templateUrl: './partos.component.html',
-  styleUrls: ['./partos.component.scss'],
-  providers: [DialogService, ConfirmationService, MessageService]
+    selector: 'app-partos',
+    templateUrl: './partos.component.html',
+    styleUrls: ['./partos.component.scss'],
+    providers: [DialogService, ConfirmationService, MessageService],
+    standalone: false
 })
 export class PartosComponent implements OnInit, OnDestroy {
 

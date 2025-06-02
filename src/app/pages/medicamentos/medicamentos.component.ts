@@ -8,10 +8,11 @@ import { MedicamentosService } from 'src/app/services/medicamentos.service';
 import { CadastroMedicamentoComponent } from '../cadastro-medicamento/cadastro-medicamento.component';
 
 @Component({
-  selector: 'app-medicamentos',
-  templateUrl: './medicamentos.component.html',
-  styleUrls: ['./medicamentos.component.scss'],
-  providers: [DialogService, ConfirmationService, MessageService]
+    selector: 'app-medicamentos',
+    templateUrl: './medicamentos.component.html',
+    styleUrls: ['./medicamentos.component.scss'],
+    providers: [DialogService, ConfirmationService, MessageService],
+    standalone: false
 })
 export class MedicamentosComponent implements OnInit, OnDestroy {
 

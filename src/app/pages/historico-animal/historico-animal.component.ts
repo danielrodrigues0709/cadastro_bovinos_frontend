@@ -21,10 +21,11 @@ import { CadastroPartoComponent } from '../cadastro-parto/cadastro-parto.compone
 import { CadastroVacinacaoComponent } from '../cadastro-vacinacao/cadastro-vacinacao.component';
 
 @Component({
-  selector: 'app-historico-animal',
-  templateUrl: './historico-animal.component.html',
-  styleUrls: ['./historico-animal.component.scss'],
-  providers: [DialogService, ConfirmationService, MessageService]
+    selector: 'app-historico-animal',
+    templateUrl: './historico-animal.component.html',
+    styleUrls: ['./historico-animal.component.scss'],
+    providers: [DialogService, ConfirmationService, MessageService],
+    standalone: false
 })
 export class HistoricoAnimalComponent implements OnInit, OnDestroy {
 

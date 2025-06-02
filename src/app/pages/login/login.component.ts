@@ -12,10 +12,11 @@ import { environment } from 'src/environments/environment';
 import { CadastroUsuarioComponent } from '../cadastro-usuario/cadastro-usuario.component';
 
 @Component({
-  selector: 'app-login',
-  templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss'],
-  providers: [DialogService, MessageService]
+    selector: 'app-login',
+    templateUrl: './login.component.html',
+    styleUrls: ['./login.component.scss'],
+    providers: [DialogService, MessageService],
+    standalone: false
 })
 export class LoginComponent implements OnInit, OnDestroy {
   

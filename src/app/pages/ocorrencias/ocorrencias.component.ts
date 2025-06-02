@@ -10,10 +10,11 @@ import { OcorrenciasService } from 'src/app/services/ocorrencias.service';
 import { CadastroOcorrenciaComponent } from '../cadastro-ocorrencia/cadastro-ocorrencia.component';
 
 @Component({
-  selector: 'app-ocorrencias',
-  templateUrl: './ocorrencias.component.html',
-  styleUrls: ['./ocorrencias.component.scss'],
-  providers: [DialogService, ConfirmationService, MessageService]
+    selector: 'app-ocorrencias',
+    templateUrl: './ocorrencias.component.html',
+    styleUrls: ['./ocorrencias.component.scss'],
+    providers: [DialogService, ConfirmationService, MessageService],
+    standalone: false
 })
 export class OcorrenciasComponent implements OnInit, OnDestroy {
 

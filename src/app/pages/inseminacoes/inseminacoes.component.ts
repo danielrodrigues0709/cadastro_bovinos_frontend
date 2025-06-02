@@ -9,10 +9,11 @@ import { InseminacoesService } from 'src/app/services/inseminacoes.service';
 import { CadastroInseminacaoComponent } from '../cadastro-inseminacao/cadastro-inseminacao.component';
 
 @Component({
-  selector: 'app-inseminacoes',
-  templateUrl: './inseminacoes.component.html',
-  styleUrls: ['./inseminacoes.component.scss'],
-  providers: [DialogService, ConfirmationService, MessageService]
+    selector: 'app-inseminacoes',
+    templateUrl: './inseminacoes.component.html',
+    styleUrls: ['./inseminacoes.component.scss'],
+    providers: [DialogService, ConfirmationService, MessageService],
+    standalone: false
 })
 export class InseminacoesComponent implements OnInit, OnDestroy {
 

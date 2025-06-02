@@ -11,9 +11,10 @@ import { messages, rebanho, sexo } from 'src/app/utils/enums';
 import { dateToStr, strToDate, validateFormFields } from 'src/app/utils/utils';
 
 @Component({
-  selector: 'app-cadastro-parto',
-  templateUrl: './cadastro-parto.component.html',
-  styleUrls: ['./cadastro-parto.component.scss']
+    selector: 'app-cadastro-parto',
+    templateUrl: './cadastro-parto.component.html',
+    styleUrls: ['./cadastro-parto.component.scss'],
+    standalone: false
 })
 export class CadastroPartoComponent implements OnInit, OnDestroy {
 

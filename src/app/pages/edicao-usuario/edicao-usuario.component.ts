@@ -10,9 +10,10 @@ import { messages } from 'src/app/utils/enums';
 import { findSpecialCharacters, snakeCase, validateFormFields } from 'src/app/utils/utils';
 
 @Component({
-  selector: 'app-edicao-usuario',
-  templateUrl: './edicao-usuario.component.html',
-  styleUrls: ['./edicao-usuario.component.scss']
+    selector: 'app-edicao-usuario',
+    templateUrl: './edicao-usuario.component.html',
+    styleUrls: ['./edicao-usuario.component.scss'],
+    standalone: false
 })
 export class EdicaoUsuarioComponent implements OnInit {
 
