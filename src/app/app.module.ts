@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, LOCALE_ID } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { HttpClientModule } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MegaMenuModule } from 'primeng/megamenu';
 import { ButtonModule } from 'primeng/button';
@@ -46,54 +46,47 @@ import { PartosComponent } from './pages/partos/partos.component';
 import { FamilyTreeComponent } from './pages/family-tree/family-tree.component';
 import { EdicaoUsuarioComponent } from './pages/edicao-usuario/edicao-usuario.component';
 
-@NgModule({
-  declarations: [
-    AppComponent,
-    MedicamentosComponent,
-    PlantelComponent,
-    VacinasComponent,
-    OcorrenciasComponent,
-    CadastroOcorrenciaComponent,
-    CadastroAnimalComponent,
-    CadastroVacinaComponent,
-    CadastroMedicamentoComponent,
-    CadastroInseminacaoComponent,
-    CadastroVacinacaoComponent,
-    CadastroPartoComponent,
-    CadastroUsuarioComponent,
-    LoginComponent,
-    HistoricoAnimalComponent,
-    VacinacoesComponent,
-    InseminacoesComponent,
-    PartosComponent,
-    FamilyTreeComponent,
-    EdicaoUsuarioComponent
-  ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    BrowserAnimationsModule,
-    ReactiveFormsModule,
-    HttpClientModule,
-    MegaMenuModule,
-    ButtonModule,
-    CardModule,
-    TableModule,
-    TabViewModule,
-    DynamicDialogModule,
-    InputTextModule,
-    SelectButtonModule,
-    InputSwitchModule,
-    CalendarModule,
-    ConfirmDialogModule,
-    ToastModule,
-    AutoCompleteModule,
-    InputTextareaModule,
-    OrganizationChartModule,
-    MenubarModule,
-    InputMaskModule
-  ],
-  providers: [{ provide: LOCALE_ID, useValue: 'pt-BR' }],
-  bootstrap: [AppComponent]
-})
+@NgModule({ declarations: [
+        AppComponent,
+        MedicamentosComponent,
+        PlantelComponent,
+        VacinasComponent,
+        OcorrenciasComponent,
+        CadastroOcorrenciaComponent,
+        CadastroAnimalComponent,
+        CadastroVacinaComponent,
+        CadastroMedicamentoComponent,
+        CadastroInseminacaoComponent,
+        CadastroVacinacaoComponent,
+        CadastroPartoComponent,
+        CadastroUsuarioComponent,
+        LoginComponent,
+        HistoricoAnimalComponent,
+        VacinacoesComponent,
+        InseminacoesComponent,
+        PartosComponent,
+        FamilyTreeComponent,
+        EdicaoUsuarioComponent
+    ],
+    bootstrap: [AppComponent], imports: [BrowserModule,
+        AppRoutingModule,
+        BrowserAnimationsModule,
+        ReactiveFormsModule,
+        MegaMenuModule,
+        ButtonModule,
+        CardModule,
+        TableModule,
+        TabViewModule,
+        DynamicDialogModule,
+        InputTextModule,
+        SelectButtonModule,
+        InputSwitchModule,
+        CalendarModule,
+        ConfirmDialogModule,
+        ToastModule,
+        AutoCompleteModule,
+        InputTextareaModule,
+        OrganizationChartModule,
+        MenubarModule,
+        InputMaskModule], providers: [{ provide: LOCALE_ID, useValue: 'pt-BR' }, provideHttpClient(withInterceptorsFromDi())] })
 export class AppModule { }
