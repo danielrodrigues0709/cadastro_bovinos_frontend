@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { Subject, takeUntil } from 'rxjs';
@@ -17,13 +17,13 @@ import { findSpecialCharacters, snakeCase, validateFormFields } from 'src/app/ut
 export class CadastroUsuarioComponent implements OnInit, OnDestroy {
 
   editMode!: boolean;
-  form!: FormGroup;
+  form!: UntypedFormGroup;
   ngUnsubscribe: Subject<any> = new Subject<any>();
 
   constructor(
     public ref: DynamicDialogRef,
     public config: DynamicDialogConfig,
-    private _fb: FormBuilder,
+    private _fb: UntypedFormBuilder,
     private _messageService: MessageService,
     private _usuariosService: UsuariosService,
     private _authService: AuthService

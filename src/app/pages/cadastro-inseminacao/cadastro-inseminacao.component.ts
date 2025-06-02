@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { Subject, takeUntil } from 'rxjs';
@@ -20,7 +20,7 @@ export class CadastroInseminacaoComponent implements OnInit, OnDestroy {
   inseminacao!: Inseminacao;
   animal!: Animal;
   editMode!: boolean;
-  form!: FormGroup;
+  form!: UntypedFormGroup;
   animaisOptions: any[] = [];
   reprodutoresOptions: any[] = [];
   changedIns: boolean = false;
@@ -30,7 +30,7 @@ export class CadastroInseminacaoComponent implements OnInit, OnDestroy {
   constructor(
     public ref: DynamicDialogRef,
     public config: DynamicDialogConfig,
-    private _fb: FormBuilder,
+    private _fb: UntypedFormBuilder,
     private _inseminacoesService: InseminacoesService,
     private _animaisService: AnimaisService,
     private _messageService: MessageService

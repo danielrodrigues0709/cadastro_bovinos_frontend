@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { Subject, Subscription, takeUntil } from 'rxjs';
@@ -19,7 +19,7 @@ export class CadastroVacinacaoComponent implements OnInit, OnDestroy {
 
   vacinacao_vermifugacao!: VacinacaoVermifugacao;
   editMode!: boolean;
-  form!: FormGroup;
+  form!: UntypedFormGroup;
   tipoOptions: any[] = [{label: 'Vacinação', value: 0}, {label: 'Vermifugação', value: 1}];
   tipo!: number;
   total!: string | null;
@@ -32,7 +32,7 @@ export class CadastroVacinacaoComponent implements OnInit, OnDestroy {
   constructor(
     public ref: DynamicDialogRef,
     public config: DynamicDialogConfig,
-    private _fb: FormBuilder,
+    private _fb: UntypedFormBuilder,
     private _vacinacoesService: VacinacoesService,
     private _animalService: AnimaisService,
     private _vacinasService: VacinasService,

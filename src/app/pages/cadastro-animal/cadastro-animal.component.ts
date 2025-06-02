@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
 import { Animal } from 'src/app/interfaces/animal';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { booleanToNumber, dateToStr, numberToBoolean, strToDate, validateFormFields } from 'src/app/utils/utils';
 import { AnimaisService } from 'src/app/services/animais.service';
 import { MessageService } from 'primeng/api';
@@ -30,7 +30,7 @@ export class CadastroAnimalComponent implements OnInit, OnDestroy {
   title: string = '';
   animal: Animal;
   editMode: boolean;
-  form!: FormGroup;
+  form!: UntypedFormGroup;
   maesOptions: any[] = [];
   reprodutoresOptions: any[] = [];
   sexo: any[] = [{label: 'Fêmea', value: 0}, {label: 'Macho', value: 1}];
@@ -39,7 +39,7 @@ export class CadastroAnimalComponent implements OnInit, OnDestroy {
 
   constructor(
     private _location: Location,
-    private _fb: FormBuilder,
+    private _fb: UntypedFormBuilder,
     private _animaisService: AnimaisService,
     private _messageService: MessageService,
     public dialogService: DialogService,

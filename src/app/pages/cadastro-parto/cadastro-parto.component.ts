@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { Subject, takeUntil } from 'rxjs';
@@ -20,7 +20,7 @@ export class CadastroPartoComponent implements OnInit, OnDestroy {
   parto!: Parto;
   animal!: Animal;
   editMode!: boolean;
-  form!: FormGroup;
+  form!: UntypedFormGroup;
   maesOptions: any[] = [];
   reprodutoresOptions: any[] = [];
   sexo: any[] = [{label: 'Fêmea', value: 0}, {label: 'Macho', value: 1}];
@@ -31,7 +31,7 @@ export class CadastroPartoComponent implements OnInit, OnDestroy {
   constructor(
     public ref: DynamicDialogRef,
     public config: DynamicDialogConfig,
-    private _fb: FormBuilder,
+    private _fb: UntypedFormBuilder,
     private _partoService: PartosService,
     private _animaisService: AnimaisService,
     private _messageService: MessageService

@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { Subject, takeUntil } from 'rxjs';
@@ -17,13 +17,13 @@ export class CadastroMedicamentoComponent implements OnInit, OnDestroy {
 
   medicamento!: Medicamento;
   editMode!: boolean;
-  form!: FormGroup;
+  form!: UntypedFormGroup;
   ngUnsubscribe: Subject<any> = new Subject<any>();
 
   constructor(
     public ref: DynamicDialogRef,
     public config: DynamicDialogConfig,
-    private _fb: FormBuilder,
+    private _fb: UntypedFormBuilder,
     private _medicamentoService: MedicamentosService,
     private _messageService: MessageService
   ) {

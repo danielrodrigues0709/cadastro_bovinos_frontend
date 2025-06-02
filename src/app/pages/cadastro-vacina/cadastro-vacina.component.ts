@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { Subject, takeUntil } from 'rxjs';
@@ -17,14 +17,14 @@ export class CadastroVacinaComponent implements OnInit, OnDestroy {
 
   vacina_vermifugo!: VacinaVermifugo;
   editMode!: boolean;
-  form!: FormGroup;
+  form!: UntypedFormGroup;
   tipo: any[] = [{label: 'Vacina', value: 0}, {label: 'Vermífugo', value: 1}];
   ngUnsubscribe: Subject<any> = new Subject<any>();
 
   constructor(
     public ref: DynamicDialogRef,
     public config: DynamicDialogConfig,
-    private _fb: FormBuilder,
+    private _fb: UntypedFormBuilder,
     private _vacinasService: VacinasService,
     private _messageService: MessageService
   ) {

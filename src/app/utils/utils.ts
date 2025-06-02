@@ -1,5 +1,5 @@
 import { formatDate } from "@angular/common";
-import { FormGroup } from "@angular/forms";
+import { UntypedFormGroup } from "@angular/forms";
 
 export function booleanToNumber(param: boolean): number {
     let number = param === true ? 1 : 0;
@@ -19,7 +19,7 @@ export function strToDate(dateStr: string): Date {
     return new Date(Number(dateSplit[2]), Number(dateSplit[1])-1, Number(dateSplit[0]));
 }
 
-export function validateFormFields(form: FormGroup): void {
+export function validateFormFields(form: UntypedFormGroup): void {
     Object.keys(form.controls).forEach(field => {
         const control = form.get(field);
         control?.markAsDirty();

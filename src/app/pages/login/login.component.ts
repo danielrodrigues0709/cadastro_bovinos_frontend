@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { DialogService } from 'primeng/dynamicdialog';
@@ -19,12 +19,12 @@ import { CadastroUsuarioComponent } from '../cadastro-usuario/cadastro-usuario.c
 })
 export class LoginComponent implements OnInit, OnDestroy {
   
-  form!: FormGroup;
+  form!: UntypedFormGroup;
   ngUnsubscribe: Subject<any> = new Subject<any>();
   recover_password: string = environment.api;
 
   constructor(
-    private _fb: FormBuilder,
+    private _fb: UntypedFormBuilder,
     private _usuariosService: UsuariosService,
     private _authService: AuthService,
     public dialogService: DialogService,
