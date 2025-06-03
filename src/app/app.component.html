@@ -7,13 +7,13 @@
     <div class="menubar-card">
         <div class="header">
             <div class="button-toggle">
-                <button pButton
+                <p-button
                     (click)="toggle = !toggle"
                     class="p-button-rounded p-button-text"
                     icon="pi pi-bars"
                     [pTooltip]="toggle ? 'Esconder menu lateral' : 'Exibir menu lateral'"
                     tooltipPosition="right">
-                </button>
+                </p-button>
             </div>
             <div class="user-info">
                 <h3>{{ userName }}</h3>

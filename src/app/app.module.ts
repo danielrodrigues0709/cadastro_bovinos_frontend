@@ -10,18 +10,20 @@ import { TableModule } from 'primeng/table';
 import { TabViewModule } from 'primeng/tabview';
 import { DynamicDialogModule } from 'primeng/dynamicdialog';
 import { InputSwitchModule } from 'primeng/inputswitch';
-import { CalendarModule } from 'primeng/calendar';
 import { InputTextModule } from 'primeng/inputtext';
 import { SelectButtonModule } from 'primeng/selectbutton';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ToastModule } from 'primeng/toast';
 import { AutoCompleteModule } from 'primeng/autocomplete';
-import { InputTextareaModule } from 'primeng/inputtextarea';
+import { TextareaModule } from 'primeng/textarea';
 import { registerLocaleData } from '@angular/common';
 import { OrganizationChartModule } from 'primeng/organizationchart';
 import { MenubarModule } from 'primeng/menubar';
 import { InputMaskModule } from 'primeng/inputmask';
 import localeBr from '@angular/common/locales/pt';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+import { providePrimeNG } from 'primeng/config';
+import Aura from '@primeng/themes/aura';
 registerLocaleData(localeBr);
 
 import { AppRoutingModule } from './app-routing.module';
@@ -45,6 +47,8 @@ import { InseminacoesComponent } from './pages/inseminacoes/inseminacoes.compone
 import { PartosComponent } from './pages/partos/partos.component';
 import { FamilyTreeComponent } from './pages/family-tree/family-tree.component';
 import { EdicaoUsuarioComponent } from './pages/edicao-usuario/edicao-usuario.component';
+import { DatePickerModule } from 'primeng/datepicker';
+import { TooltipModule } from 'primeng/tooltip';
 
 @NgModule({ declarations: [
         AppComponent,
@@ -68,7 +72,9 @@ import { EdicaoUsuarioComponent } from './pages/edicao-usuario/edicao-usuario.co
         FamilyTreeComponent,
         EdicaoUsuarioComponent
     ],
-    bootstrap: [AppComponent], imports: [BrowserModule,
+    bootstrap: [AppComponent],
+    imports: [
+        BrowserModule,
         AppRoutingModule,
         BrowserAnimationsModule,
         ReactiveFormsModule,
@@ -81,12 +87,24 @@ import { EdicaoUsuarioComponent } from './pages/edicao-usuario/edicao-usuario.co
         InputTextModule,
         SelectButtonModule,
         InputSwitchModule,
-        CalendarModule,
+        DatePickerModule,
         ConfirmDialogModule,
         ToastModule,
         AutoCompleteModule,
-        InputTextareaModule,
+        TextareaModule,
         OrganizationChartModule,
         MenubarModule,
-        InputMaskModule], providers: [{ provide: LOCALE_ID, useValue: 'pt-BR' }, provideHttpClient(withInterceptorsFromDi())] })
+        InputMaskModule,
+        TooltipModule
+    ],
+    providers: [
+        { provide: LOCALE_ID, useValue: 'pt-BR' },
+        provideHttpClient(withInterceptorsFromDi()),
+        provideAnimationsAsync(),
+            providePrimeNG({
+                theme: {
+                    preset: Aura
+                }
+            })
+    ] })
 export class AppModule { }

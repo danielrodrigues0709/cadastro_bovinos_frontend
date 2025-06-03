@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { MegaMenuItem, MenuItem, MessageService, PrimeNGConfig } from 'primeng/api';
+import { MegaMenuItem, MenuItem, MessageService } from 'primeng/api';
 import { DialogService } from 'primeng/dynamicdialog';
 import { Subject, takeUntil } from 'rxjs';
 import { Usuario } from './interfaces/usuario';
@@ -28,7 +28,6 @@ export class AppComponent {
   ngUnsubscribe: Subject<any> = new Subject<any>();
 
   constructor(
-    private config: PrimeNGConfig,
     public dialogService: DialogService,
     private _authService: AuthService,
     public router: Router,
@@ -41,17 +40,6 @@ export class AppComponent {
   }
 
   ngOnInit() {
-    this.config.setTranslation({
-      firstDayOfWeek: 0,
-      dayNames: ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'],
-      dayNamesShort: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
-      dayNamesMin: ['Do', 'Se', 'Te', 'Qu', 'Qu', 'Se', 'Sa'],
-      monthNames: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'],
-      monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
-      today: 'Hoje',
-      clear: 'Limpar'
-    });
-
     this.items = [
       {label: 'Plantel', icon: 'pi pi-fw pi-angle-right', routerLink: 'animais'},
       {label: 'Medicamentos', icon: 'pi pi-fw pi-angle-right', routerLink: 'medicamentos'},

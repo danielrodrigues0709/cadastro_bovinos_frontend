@@ -1,12 +1,12 @@
 <form [formGroup]="form" (ngSubmit)="submit()">
     <div class="p-fluid grid formgrid">
         <div class="p-float-label field col-4">
-            <p-calendar id="data_inseminacao" [showIcon]="true"  formControlName="data_inseminacao" appendTo='body' dateFormat="dd/mm/yy" (onSelect)="changedIns = true"></p-calendar>
+            <p-datepicker id="data_inseminacao" [showIcon]="true"  formControlName="data_inseminacao" appendTo='body' dateFormat="dd/mm/yy" (onSelect)="changedIns = true"/>
             <label for="data_inseminacao">Data Inseminação</label>
         </div>
         
         <div class="p-float-label field col-4">
-            <p-calendar id="data_previsao_parto" [showIcon]="true"  formControlName="data_previsao_parto" appendTo='body' dateFormat="dd/mm/yy" (onSelect)="changedPrev = true"></p-calendar>
+            <p-datepicker id="data_previsao_parto" [showIcon]="true"  formControlName="data_previsao_parto" appendTo='body' dateFormat="dd/mm/yy" (onSelect)="changedPrev = true"/>
             <label for="data_previsao_parto">Data Previsão Parto</label>
         </div>
 
