@@ -45,6 +45,8 @@ import { InseminacoesComponent } from './pages/inseminacoes/inseminacoes.compone
 import { PartosComponent } from './pages/partos/partos.component';
 import { FamilyTreeComponent } from './pages/family-tree/family-tree.component';
 import { EdicaoUsuarioComponent } from './pages/edicao-usuario/edicao-usuario.component';
+import { AuthComponent } from './pages/auth/auth.component';
+import { AccountComponent } from './pages/account/account.component';
 
 @NgModule({
   declarations: [
@@ -67,7 +69,9 @@ import { EdicaoUsuarioComponent } from './pages/edicao-usuario/edicao-usuario.co
     InseminacoesComponent,
     PartosComponent,
     FamilyTreeComponent,
-    EdicaoUsuarioComponent
+    EdicaoUsuarioComponent,
+    AuthComponent,
+    AccountComponent
   ],
   imports: [
     BrowserModule,
