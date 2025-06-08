@@ -5,6 +5,7 @@ import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { Subject, takeUntil } from 'rxjs';
 import { Usuario } from 'src/app/interfaces/usuario';
 import { AuthService } from 'src/app/services/auth.service';
+import { SupabaseService } from 'src/app/services/supabase.service';
 import { UsuariosService } from 'src/app/services/usuarios.service';
 import { messages } from 'src/app/utils/enums';
 import { findSpecialCharacters, snakeCase, validateFormFields } from 'src/app/utils/utils';
@@ -25,8 +26,8 @@ export class CadastroUsuarioComponent implements OnInit, OnDestroy {
     public config: DynamicDialogConfig,
     private _fb: FormBuilder,
     private _messageService: MessageService,
-    private _usuariosService: UsuariosService,
-    private _authService: AuthService
+    private _authService: AuthService,
+    private _supabaseService: SupabaseService,
   ) {
     this.createform();
   }
@@ -81,21 +82,20 @@ export class CadastroUsuarioComponent implements OnInit, OnDestroy {
       return;
     }
     let formValue = this.form.getRawValue();
+
+    console.log(formValue);
     
-    this._usuariosService.saveUsuario(formValue).pipe(takeUntil(this.ngUnsubscribe)).subscribe(res => {
-      this._usuariosService.getUsuario(formValue.username, formValue.senha).pipe(takeUntil(this.ngUnsubscribe)).subscribe(res => {
-        // this._authService.logIn(res); // Retirado pois monta página de login dentro da home
-        this._messageService.add({severity:'success', detail: "Usuário criado com sucesso!"});
-        // TODO Alterar msg para res.message
-        this.ref.close(true);
-      },
-      err => {
-        this._messageService.add({severity:'error', detail: err.error.message});
-      })
-    },
-    err => {
-      this._messageService.add({severity:'error', detail: err.error.message});
-    })
+    
+    this._supabaseService.signUp(formValue)
+    .then(({ data, error }) => {
+      if (error) {
+        this._messageService.add({severity:'error', detail: "Erro ao criar usuário."});
+        return;
+      }
+      console.log(data);
+      this._messageService.add({severity:'success', detail: "Verifique seu email para confirmação de novo usuário."});
+      this.ref.close(true);
+    });
   }
   
   onSubscriptionsDestroy(ngUnsubscribe: Subject<any>): void {

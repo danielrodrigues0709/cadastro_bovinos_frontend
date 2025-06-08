@@ -10,7 +10,7 @@ export class AnimaisService {
 
   headers: HttpHeaders;
   schema!: string;
-  userStr = localStorage.getItem('user');
+  userStr = localStorage.getItem('userId');
   @Output() animaisUpdated: EventEmitter<any> = new EventEmitter<any>();
 
   constructor(private http: HttpClient) {

@@ -5,11 +5,11 @@ import { MessageService } from 'primeng/api';
 import { DialogService } from 'primeng/dynamicdialog';
 import { Subject, takeUntil } from 'rxjs';
 import { AuthService } from 'src/app/services/auth.service';
-import { UsuariosService } from 'src/app/services/usuarios.service';
 import { messages } from 'src/app/utils/enums';
 import { validateFormFields } from 'src/app/utils/utils';
 import { environment } from 'src/environments/environment';
 import { CadastroUsuarioComponent } from '../cadastro-usuario/cadastro-usuario.component';
+import { SupabaseService } from 'src/app/services/supabase.service';
 
 @Component({
   selector: 'app-login',
@@ -25,7 +25,7 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   constructor(
     private _fb: FormBuilder,
-    private _usuariosService: UsuariosService,
+    private _supabaseService: SupabaseService,
     private _authService: AuthService,
     public dialogService: DialogService,
     private _messageService: MessageService,
@@ -39,7 +39,7 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   createform(): void {
     this.form = this._fb.group({
-      username: ['', Validators.required],
+      email: ['', Validators.required],
       password: ['', Validators.required],
     })
   }
@@ -59,13 +59,14 @@ export class LoginComponent implements OnInit, OnDestroy {
       return;
     }
     let formValues = this.form.getRawValue();
-    this._usuariosService.getUsuario(formValues.username, formValues.password).pipe(takeUntil(this.ngUnsubscribe)).subscribe((res: string) => {
-      this._authService.logIn(res);
+    this._supabaseService.signIn(formValues.email, formValues.password).then(({ data, error }) => {
+      if (error) {
+        this._messageService.add({severity:'error', detail: "Credenciais inválidas"});
+        return;
+      }
+      this._authService.logIn(data);
       this.router.navigate(['home']);
-    },
-    err => {
-      this._messageService.add({severity:'error', detail: err.error.message});
-    })
+    });
   }
   
   onSubscriptionsDestroy(ngUnsubscribe: Subject<any>): void {

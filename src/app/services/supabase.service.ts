@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { AuthChangeEvent, AuthSession, createClient, Session, SupabaseClient, User } from '@supabase/supabase-js';
+import { AuthChangeEvent, AuthSession, createClient, Session, SupabaseClient } from '@supabase/supabase-js';
 import { environment } from 'src/environments/environment';
+import { Usuario } from '../interfaces/usuario';
 
 export interface Profile {
   id?: string;
@@ -27,7 +28,7 @@ export class SupabaseService {
     return this._session;
   }
 
-  profile(user: User) {
+  profile(user: Usuario) {
     return this.supabase.from('profiles').select(`username, website, avatar_url`).eq('id', user.id).single();
   }
 
@@ -35,8 +36,15 @@ export class SupabaseService {
     return this.supabase.auth.onAuthStateChange(callback);
   }
 
-  signIn(email: string) {
-    return this.supabase.auth.signInWithOtp({ email });
+  signIn(email: string, password: string) {
+    return this.supabase.auth.signInWithPassword({ email, password});
+  }
+
+  async signUp(data: Usuario) {
+    return await this.supabase.auth.signUp({
+          email: data.email,
+          password: data.senha
+        });
   }
 
   signOut() {

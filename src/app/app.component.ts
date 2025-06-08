@@ -23,7 +23,7 @@ export class AppComponent {
   tokenStr = localStorage.getItem('token');
   userName!: string;
   user!: Usuario;
-  userStr = localStorage.getItem('user');
+  userStr = localStorage.getItem('userId');
   ngUnsubscribe: Subject<any> = new Subject<any>();
 
   constructor(

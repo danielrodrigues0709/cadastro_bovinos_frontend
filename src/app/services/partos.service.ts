@@ -10,7 +10,7 @@ export class PartosService {
 
   headers: HttpHeaders;
   schema!: string;
-  userStr = localStorage.getItem('user');
+  userStr = localStorage.getItem('userId');
   @Output() partosUpdated: EventEmitter<any> = new EventEmitter<any>();
 
   constructor(private http: HttpClient) {

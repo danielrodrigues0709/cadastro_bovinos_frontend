@@ -10,7 +10,7 @@ export class MedicamentosService {
 
   headers: HttpHeaders;
   schema!: string;
-  userStr = localStorage.getItem('user');
+  userStr = localStorage.getItem('userId');
   @Output() medicamentosUpdated: EventEmitter<any> = new EventEmitter<any>();
 
   constructor(private http: HttpClient) {

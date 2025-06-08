@@ -10,11 +10,10 @@ export class AuthService {
 
   constructor() { }
 
-  logIn(token: string): void {
-    let parsedToken = JSON.parse(atob(token.split('.')[1]));
-    localStorage.setItem('token', token);
-    localStorage.setItem('user', JSON.stringify(parsedToken.usuario));
-    this.user.emit(parsedToken.usuario);
+  logIn(data: any): void {
+    localStorage.setItem('token', data?.session?.access_token);
+    localStorage.setItem('userId', data?.session?.user.id);
+    this.user.emit(data?.session?.access_token);
     this.loggedIn.emit(true);
   }
 

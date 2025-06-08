@@ -10,7 +10,7 @@ export class VacinacoesService {
 
   headers: HttpHeaders;
   schema!: string;
-  userStr = localStorage.getItem('user');
+  userStr = localStorage.getItem('userId');
   @Output() vacinacoesUpdated: EventEmitter<any> = new EventEmitter<any>();
 
   constructor(private http: HttpClient) {
