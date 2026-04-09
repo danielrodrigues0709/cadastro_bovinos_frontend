@@ -2,22 +2,21 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
-import { Subject, takeUntil } from 'rxjs';
-import { Usuario } from 'src/app/interfaces/usuario';
-import { AuthService } from 'src/app/services/auth.service';
-import { UsuariosService } from 'src/app/services/usuarios.service';
+import { Subject } from 'rxjs';
+import { SupabaseService } from 'src/app/services/supabase.service';
 import { messages } from 'src/app/utils/enums';
-import { findSpecialCharacters, snakeCase, validateFormFields } from 'src/app/utils/utils';
+import { validateFormFields } from 'src/app/utils/utils';
 
 @Component({
   selector: 'app-cadastro-usuario',
   templateUrl: './cadastro-usuario.component.html',
-  styleUrls: ['./cadastro-usuario.component.scss']
+  styleUrls: ['./cadastro-usuario.component.scss'],
+  providers: [MessageService]
 })
 export class CadastroUsuarioComponent implements OnInit, OnDestroy {
 
-  editMode!: boolean;
   form!: FormGroup;
+  loading: boolean = false;
   ngUnsubscribe: Subject<any> = new Subject<any>();
 
   constructor(
@@ -25,87 +24,105 @@ export class CadastroUsuarioComponent implements OnInit, OnDestroy {
     public config: DynamicDialogConfig,
     private _fb: FormBuilder,
     private _messageService: MessageService,
-    private _usuariosService: UsuariosService,
-    private _authService: AuthService
+    private _supabase: SupabaseService,
   ) {
-    this.createform();
+    this.createForm();
   }
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
-  createform(): void {
+  createForm(): void {
     this.form = this._fb.group({
       nome_usuario: ['', Validators.required],
-      username: ['', Validators.required],
-      email: ['', [Validators.required, Validators.email]],
-      telefone: [''],
-      senha: ['', Validators.required],
-      conf_senha: ['', Validators.required],
-    })
-  }
-
-  setUsername(event: any): void {
-    let value = event.target.value;
-    this.form.get('username')?.patchValue(snakeCase(value));
-  }
-
-  edit(): void {
-    this.editMode = true;
-    this.form.enable();
-    this.form.controls['username'].disable();
-    this.form.controls['email'].disable();
+      email:        ['', [Validators.required, Validators.email]],
+      telefone:     [''],
+      senha:        ['', [Validators.required, Validators.minLength(6)]],
+      conf_senha:   ['', Validators.required],
+    });
   }
 
   cancel(): void {
     this.ref.close(false);
   }
 
-  submit(): void {
-    if(findSpecialCharacters(this.form.controls['username'].value)) {
-      this._messageService.add({severity:'warn', detail: messages.USERNAME});
+  async submit(): Promise<void> {
+    const senha     = this.form.controls['senha'].value;
+    const conf_senha = this.form.controls['conf_senha'].value;
+
+    // Validações — mesma ordem do original
+    if (senha !== conf_senha) {
+      this._messageService.add({ severity: 'warn', detail: messages.PASSWORD });
       return;
     }
-    else if(!this.form.controls['email'].disabled && !this.form.controls['email'].valid) {
-      this._messageService.add({severity:'warn', detail: messages.EMAIL});
+
+    if (!this.form.valid) {
+      this._messageService.add({ severity: 'warn', detail: messages.REQUIRED });
       validateFormFields(this.form);
       return;
     }
-    else if(this.form.controls['senha'].value != this.form.controls['conf_senha'].value) {
-      this._messageService.add({severity:'warn', detail: messages.PASSWORD});
+
+    this.loading = true;
+    const { nome_usuario, email, telefone, senha: password } = this.form.getRawValue();
+
+    // Passo 1: cria o usuário no Supabase Auth
+    const { data, error: signUpError } = await this._supabase.client.auth.signUp({
+      email,
+      password,
+      options: {
+        data: {
+          full_name: nome_usuario,  // vai para auth.users e pode popular profiles via trigger
+          phone: telefone,
+        }
+      }
+    });
+
+    if (signUpError) {
+      this.loading = false;
+      this._messageService.add({
+        severity: 'error',
+        detail: this.translateError(signUpError.message)
+      });
       return;
     }
-    else if(!this.form.valid) {
-      this._messageService.add({severity:'warn', detail: messages.REQUIRED});
-      validateFormFields(this.form);
-      return;
+
+    // Passo 2: salva dados complementares na tabela profiles
+    // (caso não use trigger automático no Supabase)
+    if (data.user) {
+      const { error: profileError } = await this._supabase.client
+        .from('profiles')
+        .upsert({
+          id:        data.user.id,
+          full_name: nome_usuario,
+          email:     email,
+          phone:     telefone,
+          role:      'viewer', // role padrão para novos usuários
+        });
+
+      if (profileError) {
+        this.loading = false;
+        this._messageService.add({ severity: 'error', detail: profileError.message });
+        return;
+      }
     }
-    let formValue = this.form.getRawValue();
-    
-    this._usuariosService.saveUsuario(formValue).pipe(takeUntil(this.ngUnsubscribe)).subscribe(res => {
-      this._usuariosService.getUsuario(formValue.username, formValue.senha).pipe(takeUntil(this.ngUnsubscribe)).subscribe(res => {
-        // this._authService.logIn(res); // Retirado pois monta página de login dentro da home
-        this._messageService.add({severity:'success', detail: "Usuário criado com sucesso!"});
-        // TODO Alterar msg para res.message
-        this.ref.close(true);
-      },
-      err => {
-        this._messageService.add({severity:'error', detail: err.error.message});
-      })
-    },
-    err => {
-      this._messageService.add({severity:'error', detail: err.error.message});
-    })
+
+    this.loading = false;
+    this._messageService.add({ severity: 'success', detail: 'Usuário criado com sucesso!' });
+    this.ref.close(true);
   }
-  
-  onSubscriptionsDestroy(ngUnsubscribe: Subject<any>): void {
-    ngUnsubscribe.next(true);
-	  ngUnsubscribe.complete();
-	  ngUnsubscribe.unsubscribe();
-	}
 
-	ngOnDestroy(): void {
-	  this.onSubscriptionsDestroy(this.ngUnsubscribe);
-	}
+  // Traduz erros do Supabase para pt-BR
+  private translateError(message: string): string {
+    const errors: Record<string, string> = {
+      'User already registered':          'E-mail já cadastrado.',
+      'Password should be at least 6 characters': 'A senha deve ter pelo menos 6 caracteres.',
+      'Unable to validate email address: invalid format': 'E-mail inválido.',
+    };
+    return errors[message] ?? 'Erro ao cadastrar usuário. Tente novamente.';
+  }
 
+  ngOnDestroy(): void {
+    this.ngUnsubscribe.next(true);
+    this.ngUnsubscribe.complete();
+    this.ngUnsubscribe.unsubscribe();
+  }
 }

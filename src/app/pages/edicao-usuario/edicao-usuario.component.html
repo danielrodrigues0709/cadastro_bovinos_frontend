@@ -1,73 +1,138 @@
+<!-- ─────────────────────────────────────────────
+     FORMULÁRIO: DADOS DO USUÁRIO
+───────────────────────────────────────────── -->
 <form [formGroup]="formUser" (ngSubmit)="submitFormUser()">
     <div class="p-fluid grid formgrid">
+
+        <!-- Nome completo -->
         <div class="p-float-label field col-6">
-            <input id="nome_usuario" type="text" pInputText formControlName="nome_usuario" (keyup)="setUsername($event)">
+            <input id="nome_usuario" type="text" pInputText
+                   formControlName="nome_usuario">
             <label for="nome_usuario">Nome Usuário</label>
         </div>
-        
+
+        <!-- E-mail: desabilitado em modo edição por segurança (Supabase exige confirmação) -->
         <div class="p-float-label field col-6">
-            <input id="username" type="text" pInputText formControlName="username">
-            <label for="username">Nome Conta Usuário</label>
-        </div>
-        
-        <div class="p-float-label field col-4">
-            <input id="email" type="email" pInputText formControlName="email">
+            <input id="email" type="email" pInputText
+                   formControlName="email">
             <label for="email">E-mail</label>
         </div>
-        
-        <div class="p-float-label field col-4">
-            <p-inputMask  id="telefone" formControlName="telefone" mask="99 99999-9999"></p-inputMask>
+
+        <!-- Telefone: idêntico ao original -->
+        <div class="p-float-label field col-6">
+            <p-inputMask id="telefone"
+                         formControlName="telefone"
+                         mask="99 99999-9999">
+            </p-inputMask>
             <label for="telefone">Telefone</label>
         </div>
-        
-        <div class="p-float-label field col-4">
-            <input id="senha1" type="password" pInputText formControlName="senha">
-            <label for="senha1">Senha</label>
-        </div>
+
     </div>
 
     <div class="modal-buttons-bar">
         <div class="buttons">
-            <button *ngIf="editModeUser" pButton type="submit" label="Salvar" class="p-button-raised"></button>
-            <button *ngIf="!editModeUser" pButton type="button" (click)="editUser()" label="Editar" class="p-button-raised"></button>
+            <button *ngIf="editModeUser"
+                    pButton
+                    type="submit"
+                    label="Salvar"
+                    class="p-button-raised"
+                    [loading]="loadingUser">
+            </button>
 
-            <button *ngIf="editModeUser" pButton type="button" (click)="cancel(true)" label="Cancelar" class="p-button-outlined"></button>
+            <button *ngIf="!editModeUser"
+                    pButton
+                    type="button"
+                    (click)="editUser()"
+                    label="Editar"
+                    class="p-button-raised">
+            </button>
+
+            <button *ngIf="editModeUser"
+                    pButton
+                    type="button"
+                    (click)="cancel(true)"
+                    label="Cancelar"
+                    class="p-button-outlined"
+                    [disabled]="loadingUser">
+            </button>
         </div>
     </div>
 </form>
 
+<!-- ─────────────────────────────────────────────
+     FORMULÁRIO: ALTERAR SENHA
+───────────────────────────────────────────── -->
 <form [formGroup]="formPassword" (ngSubmit)="submitFormPassword()">
     <h3>Alterar senha</h3>
-    
+
     <div class="p-fluid grid formgrid">
+
         <div class="p-float-label field col-4">
-            <input id="senha_atual" type="password" pInputText formControlName="senha_atual">
+            <input id="senha_atual" type="password" pInputText
+                   formControlName="senha_atual"
+                   autocomplete="current-password">
             <label for="senha_atual">Senha Atual</label>
         </div>
 
         <div class="p-float-label field col-4">
-            <input id="senha" type="password" pInputText formControlName="senha">
+            <input id="senha" type="password" pInputText
+                   formControlName="senha"
+                   autocomplete="new-password">
             <label for="senha">Nova Senha</label>
         </div>
 
         <div class="p-float-label field col-4">
-            <input id="conf_senha" type="password" pInputText formControlName="conf_senha">
+            <input id="conf_senha" type="password" pInputText
+                   formControlName="conf_senha"
+                   autocomplete="new-password">
             <label for="conf_senha">Confirmação de Senha</label>
         </div>
+
     </div>
 
     <div class="modal-buttons-bar">
         <div class="buttons">
-            <button *ngIf="editModePassword" pButton type="submit" label="Salvar" class="p-button-raised"></button>
-            <button *ngIf="!editModePassword" pButton type="button" (click)="editPassword()" label="Editar" class="p-button-raised"></button>
+            <button *ngIf="editModePassword"
+                    pButton
+                    type="submit"
+                    label="Salvar"
+                    class="p-button-raised"
+                    [loading]="loadingPassword">
+            </button>
 
-            <button *ngIf="editModePassword" pButton type="button" (click)="cancel(false)" label="Cancelar" class="p-button-outlined"></button>
+            <button *ngIf="!editModePassword"
+                    pButton
+                    type="button"
+                    (click)="editPassword()"
+                    label="Editar"
+                    class="p-button-raised">
+            </button>
+
+            <button *ngIf="editModePassword"
+                    pButton
+                    type="button"
+                    (click)="cancel(false)"
+                    label="Cancelar"
+                    class="p-button-outlined"
+                    [disabled]="loadingPassword">
+            </button>
         </div>
     </div>
 </form>
 
+<!-- ─────────────────────────────────────────────
+     BOTÃO VOLTAR (idêntico ao original)
+───────────────────────────────────────────── -->
 <div class="modal-buttons-bar">
     <div class="buttons">
-        <button pButton type="button" (click)="goBack()" label="Voltar" class="p-button-outlined"  [disabled]="editModeUser || editModePassword"></button>
+        <button pButton
+                type="button"
+                (click)="goBack()"
+                label="Voltar"
+                class="p-button-outlined"
+                [disabled]="editModeUser || editModePassword || loadingUser || loadingPassword">
+        </button>
     </div>
 </div>
+
+<p-toast></p-toast>

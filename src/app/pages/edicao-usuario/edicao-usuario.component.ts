@@ -2,25 +2,28 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
-import { Subject, takeUntil } from 'rxjs';
+import { Subject } from 'rxjs';
 import { Usuario } from 'src/app/interfaces/usuario';
 import { AuthService } from 'src/app/services/auth.service';
-import { UsuariosService } from 'src/app/services/usuarios.service';
+import { SupabaseService } from 'src/app/services/supabase.service';
 import { messages } from 'src/app/utils/enums';
 import { findSpecialCharacters, snakeCase, validateFormFields } from 'src/app/utils/utils';
 
 @Component({
   selector: 'app-edicao-usuario',
   templateUrl: './edicao-usuario.component.html',
-  styleUrls: ['./edicao-usuario.component.scss']
+  styleUrls: ['./edicao-usuario.component.scss'],
+  providers: [MessageService]
 })
-export class EdicaoUsuarioComponent implements OnInit {
+export class EdicaoUsuarioComponent implements OnInit, OnDestroy {
 
   usuario!: Usuario;
   editModeUser!: boolean;
   editModePassword!: boolean;
   formUser!: FormGroup;
   formPassword!: FormGroup;
+  loadingUser: boolean = false;
+  loadingPassword: boolean = false;
   ngUnsubscribe: Subject<any> = new Subject<any>();
 
   constructor(
@@ -28,63 +31,59 @@ export class EdicaoUsuarioComponent implements OnInit {
     public config: DynamicDialogConfig,
     private _fb: FormBuilder,
     private _messageService: MessageService,
-    private _usuariosService: UsuariosService,
+    private _supabase: SupabaseService,
     private _authService: AuthService
   ) {
     this.usuario = this.config.data;
-    this.editModeUser = this.usuario.id ? false : true;
 
-    this.createform();
+    // Se já tem usuário logado, começa em modo leitura
+    this.editModeUser = this.usuario?.id ? false : true;
+
+    this.createForm();
   }
 
   ngOnInit(): void {
     this.setFormValues(this.usuario);
-    if(this.usuario.id) {
+
+    if (this.usuario?.id) {
       this.formUser.disable();
       this.formPassword.disable();
-    }
-    else {
+    } else {
       this.formUser.enable();
       this.formPassword.enable();
     }
   }
 
-  createform(): void {
+  createForm(): void {
+    // Formulário de dados pessoais
+    // Removido campo 'senha' — autenticação agora é 100% Supabase Auth
     this.formUser = this._fb.group({
       nome_usuario: ['', Validators.required],
-      username: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       telefone: [''],
-      senha: ['', Validators.required],
-    })
+    });
 
+    // Formulário de troca de senha
     this.formPassword = this._fb.group({
       senha_atual: ['', Validators.required],
-      senha: ['', Validators.required],
-      conf_senha: ['', Validators.required]
-    })
+      senha: ['', [Validators.required, Validators.minLength(6)]],
+      conf_senha: ['', Validators.required],
+    });
   }
 
   setFormValues(element: any): void {
     this.formUser.patchValue({
       nome_usuario: element?.nome_usuario,
-      username: element?.username,
       email: element?.email,
-      telefone: element?.telefone
-    })
-  }
-
-  setUsername(event: any): void {
-    if(!this.usuario.id) {
-      let value = event.target.value;
-      this.formUser.get('username')?.patchValue(snakeCase(value));
-    }
+      telefone: element?.telefone,
+    });
   }
 
   editUser(): void {
     this.editModeUser = true;
     this.formUser.enable();
-    this.formUser.controls['username'].disable();
+    // E-mail só pode ser editado se o usuário confirmar via Supabase
+    // por segurança, deixamos desabilitado por padrão
     this.formUser.controls['email'].disable();
   }
 
@@ -94,12 +93,12 @@ export class EdicaoUsuarioComponent implements OnInit {
   }
 
   cancel(user: boolean): void {
-    if(user) {
+    if (user) {
       this.setFormValues(this.usuario);
       this.editModeUser = false;
       this.formUser.disable();
-    }
-    else {
+    } else {
+      this.formPassword.reset();
       this.editModePassword = false;
       this.formPassword.disable();
     }
@@ -109,76 +108,106 @@ export class EdicaoUsuarioComponent implements OnInit {
     this.ref.close(false);
   }
 
-  submitFormUser(): void {
-    if(findSpecialCharacters(this.formUser.controls['username'].value)) {
-      this._messageService.add({severity:'warn', detail: messages.USERNAME});
-      return;
-    }
-    else if(!this.formUser.controls['email'].disabled && !this.formUser.controls['email'].valid) {
-      this._messageService.add({severity:'warn', detail: messages.EMAIL});
+  // ─────────────────────────────────────────────
+  // SUBMIT: atualizar dados do perfil
+  // ─────────────────────────────────────────────
+  async submitFormUser(): Promise<void> {
+    if (!this.formUser.valid) {
+      this._messageService.add({ severity: 'warn', detail: messages.REQUIRED });
       validateFormFields(this.formUser);
       return;
     }
-    else if(!this.formUser.valid) {
-      this._messageService.add({severity:'warn', detail: messages.REQUIRED});
-      validateFormFields(this.formUser);
-      return;
-    }
-    let formValue = this.formUser.getRawValue();
 
-    this._usuariosService.getUsuario(formValue.username, formValue.senha).pipe(takeUntil(this.ngUnsubscribe)).subscribe(() => {
-      this._usuariosService.updateUsuario(this.usuario.id, formValue).pipe(takeUntil(this.ngUnsubscribe)).subscribe(res => {
-        this._authService.updateUserData(res.data.rows[0]);
-        this._messageService.add({severity:'success', detail: res.message});
-        this.ref.close(true);
-      },
-      err => {
-        this._messageService.add({severity:'error', detail: err.error.message});
+    this.loadingUser = true;
+    const formValue = this.formUser.getRawValue();
+
+    // Atualiza na tabela profiles (full_name, phone)
+    const { error } = await this._supabase.client
+      .from('profiles')
+      .update({
+        full_name: formValue.nome_usuario,
+        phone: formValue.telefone,
       })
-    },
-    err => {
-      this._messageService.add({severity:'error', detail: 'Senha inválida!'});
-    });
+      .eq('id', this.usuario.id);
+
+    this.loadingUser = false;
+
+    if (error) {
+      console.log(error);
+      
+      this._messageService.add({ severity: 'error', detail: error.message });
+      return;
+    }
+
+    // Atualiza o BehaviorSubject do AuthService
+    const usuarioAtualizado: Usuario = {
+      ...this.usuario,
+      nome_usuario: formValue.nome_usuario,
+    };
+    this._authService.user.next(usuarioAtualizado);
+
+    this._messageService.add({ severity: 'success', detail: 'Dados atualizados com sucesso!' });
+    this.editModeUser = false;
+    this.formUser.disable();
+    this.ref.close(true);
   }
 
-  submitFormPassword(): void {
-    if(this.formPassword.controls['senha'].value != this.formPassword.controls['conf_senha'].value) {
-      this._messageService.add({severity:'warn', detail: messages.PASSWORD});
+  // ─────────────────────────────────────────────
+  // SUBMIT: troca de senha
+  // Supabase não expõe verificação de senha atual
+  // via client, então reautenticamos o usuário
+  // antes de trocar
+  // ─────────────────────────────────────────────
+  async submitFormPassword(): Promise<void> {
+    const { senha, conf_senha, senha_atual } = this.formPassword.getRawValue();
+
+    if (senha !== conf_senha) {
+      this._messageService.add({ severity: 'warn', detail: messages.PASSWORD });
       return;
     }
-    else if(!this.formPassword.valid) {
-      this._messageService.add({severity:'warn', detail: messages.REQUIRED});
+
+    if (!this.formPassword.valid) {
+      this._messageService.add({ severity: 'warn', detail: messages.REQUIRED });
       validateFormFields(this.formPassword);
       return;
     }
-    let formValue = this.formPassword.getRawValue();
-    let user = {
-      ...this.usuario,
-      senha: formValue.senha
-    }
-    
-    this._usuariosService.getUsuario(this.usuario.username, formValue.senha_atual).pipe(takeUntil(this.ngUnsubscribe)).subscribe(res1 => {
-      this._usuariosService.updateUsuario(this.usuario.id, user).pipe(takeUntil(this.ngUnsubscribe)).subscribe(res2 => {
-        this._messageService.add({severity:'success', detail: res2.message});
-        this.ref.close(true);
-      },
-      err => {
-        this._messageService.add({severity:'error', detail: err.error.message});
-      })
-    },
-    err => {
-      this._messageService.add({severity:'error', detail: 'Senha inválida!'});
+
+    this.loadingPassword = true;
+
+    // Passo 1: reautentica com a senha atual para validá-la
+    const { error: authError } = await this._supabase.client.auth.signInWithPassword({
+      email: this.usuario.email,
+      password: senha_atual,
     });
+
+    if (authError) {
+      this.loadingPassword = false;
+      this._messageService.add({ severity: 'error', detail: 'Senha atual incorreta!' });
+      return;
+    }
+
+    // Passo 2: atualiza para a nova senha
+    const { error: updateError } = await this._supabase.client.auth.updateUser({
+      password: senha,
+    });
+
+    this.loadingPassword = false;
+
+    if (updateError) {
+      this._messageService.add({ severity: 'error', detail: updateError.message });
+      return;
+    }
+
+    this._messageService.add({ severity: 'success', detail: 'Senha alterada com sucesso!' });
+    this.formPassword.reset();
+    this.editModePassword = false;
+    this.formPassword.disable();
+    this.ref.close(true);
   }
-  
-  onSubscriptionsDestroy(ngUnsubscribe: Subject<any>): void {
-    ngUnsubscribe.next(true);
-	  ngUnsubscribe.complete();
-	  ngUnsubscribe.unsubscribe();
-	}
 
-	ngOnDestroy(): void {
-	  this.onSubscriptionsDestroy(this.ngUnsubscribe);
-	}
-
+  ngOnDestroy(): void {
+    this.ngUnsubscribe.next(true);
+    this.ngUnsubscribe.complete();
+    this.ngUnsubscribe.unsubscribe();
+  }
 }

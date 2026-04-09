@@ -1,6 +1,8 @@
-import { Component } from '@angular/core';
+// src/app/app.component.ts
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { MegaMenuItem, MenuItem, MessageService, PrimeNGConfig } from 'primeng/api';
+import { MegaMenuItem, PrimeNGConfig } from 'primeng/api';
+import { MessageService } from 'primeng/api';
 import { DialogService } from 'primeng/dynamicdialog';
 import { Subject, takeUntil } from 'rxjs';
 import { Usuario } from './interfaces/usuario';
@@ -13,17 +15,14 @@ import { AuthService } from './services/auth.service';
   styleUrls: ['./app.component.scss'],
   providers: [DialogService, MessageService]
 })
-export class AppComponent {
+export class AppComponent implements OnInit, OnDestroy {
 
-  title = 'frontend';
+  title = 'agro-frontend';
   items: MegaMenuItem[] = [];
-  userOptions: MenuItem[] = [];
   loggedIn!: boolean;
   toggle: boolean = true;
-  tokenStr = localStorage.getItem('token');
   userName!: string;
   user!: Usuario;
-  userStr = localStorage.getItem('user');
   ngUnsubscribe: Subject<any> = new Subject<any>();
 
   constructor(
@@ -31,74 +30,68 @@ export class AppComponent {
     public dialogService: DialogService,
     private _authService: AuthService,
     public router: Router,
-  ) {
-    if(this.tokenStr && this.userStr) {
-      this.loggedIn = this.tokenStr ? true : false;
-      this.user = JSON.parse(this.userStr);
-      this.userName = this.user.nome_usuario;
-    }
-  }
+  ) {}
 
-  ngOnInit() {
+  ngOnInit(): void {
+    // Tradução PrimeNG — idêntico ao original
     this.config.setTranslation({
       firstDayOfWeek: 0,
       dayNames: ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'],
       dayNamesShort: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
       dayNamesMin: ['Do', 'Se', 'Te', 'Qu', 'Qu', 'Se', 'Sa'],
-      monthNames: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'],
-      monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+      monthNames: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
+                   'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'],
+      monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun',
+                        'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
       today: 'Hoje',
       clear: 'Limpar'
     });
 
+    // Menu — idêntico ao original
     this.items = [
-      {label: 'Plantel', icon: 'pi pi-fw pi-angle-right', routerLink: 'animais'},
-      {label: 'Medicamentos', icon: 'pi pi-fw pi-angle-right', routerLink: 'medicamentos'},
-      {label: 'Vacinas/Vermífugos', icon: 'pi pi-fw pi-angle-right', routerLink: 'vacinas'},
-      {label: 'Vacinações/Vermifugações', icon: 'pi pi-fw pi-angle-right', routerLink: 'vacinacoes'},
-      {label: 'Inseminações', icon: 'pi pi-fw pi-angle-right', routerLink: 'inseminacoes'},
-      {label: 'Partos', icon: 'pi pi-fw pi-angle-right', routerLink: 'partos'},
-      {label: 'Ocorrências', icon: 'pi pi-fw pi-angle-right', routerLink: 'ocorrencias'},
+      { label: 'Plantel',                   icon: 'pi pi-fw pi-angle-right', routerLink: 'animais' },
+      { label: 'Medicamentos',              icon: 'pi pi-fw pi-angle-right', routerLink: 'medicamentos' },
+      { label: 'Vacinas/Vermífugos',        icon: 'pi pi-fw pi-angle-right', routerLink: 'vacinas' },
+      { label: 'Vacinações/Vermifugações',  icon: 'pi pi-fw pi-angle-right', routerLink: 'vacinacoes' },
+      { label: 'Inseminações',              icon: 'pi pi-fw pi-angle-right', routerLink: 'inseminacoes' },
+      { label: 'Partos',                    icon: 'pi pi-fw pi-angle-right', routerLink: 'partos' },
+      { label: 'Ocorrências',               icon: 'pi pi-fw pi-angle-right', routerLink: 'ocorrencias' },
     ];
-    this.updateUser();
-    this.isLoggedIn();
+
+    this.listenToAuth();
   }
 
-  isLoggedIn(): void {
-    this._authService.loggedIn.pipe(takeUntil(this.ngUnsubscribe)).subscribe((res: boolean) => {
-      this.loggedIn = res;
-    });
-  }
+  // Unifica os dois subscribes do original em um só
+  private listenToAuth(): void {
+    this._authService.loggedIn
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(loggedIn => this.loggedIn = loggedIn);
 
-  updateUser(): void {
-    this._authService.user.pipe(takeUntil(this.ngUnsubscribe)).subscribe((res: Usuario) => {
-      this.user = res;
-      this.userName = res?.nome_usuario;
-      this.loggedIn = res ? true: false;
-    });
+    this._authService.user
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((res: Usuario) => {
+        this.user = res;
+        this.userName = res?.nome_usuario;
+      });
   }
 
   myAccont(): void {
-    const ref = this.dialogService.open(EdicaoUsuarioComponent, {
+    // Idêntico ao original
+    this.dialogService.open(EdicaoUsuarioComponent, {
       data: this.user,
-      header: `Editar Dados Usuário`,
+      header: 'Editar Dados Usuário',
       width: '80%'
     });
   }
 
-  logOut(): void {
-    this._authService.logOut();
-    this.router.navigate(['login']);
-    
+  async logOut(): Promise<void> {
+    await this._authService.logOut();
+    // navegação já feita dentro do AuthService
   }
-  
-  onSubscriptionsDestroy(ngUnsubscribe: Subject<any>): void {
-    ngUnsubscribe.next(true);
-	  ngUnsubscribe.complete();
-	  ngUnsubscribe.unsubscribe();
-	}
 
-	ngOnDestroy(): void {
-	  this.onSubscriptionsDestroy(this.ngUnsubscribe);
-	}
+  ngOnDestroy(): void {
+    this.ngUnsubscribe.next(true);
+    this.ngUnsubscribe.complete();
+    this.ngUnsubscribe.unsubscribe();
+  }
 }

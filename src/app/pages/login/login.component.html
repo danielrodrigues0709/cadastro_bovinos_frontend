@@ -3,22 +3,41 @@
         <p-card class="card">
             <form [formGroup]="form" (ngSubmit)="submit()">
                 <div class="formgrid">
+
+                    <!-- username agora é e-mail -->
                     <div class="p-float-label field col-12">
-                        <input id="username" pInputText type="text" formControlName="username">
-                        <label for="username">E-mail ou Nome de Usuário</label>
+                        <input id="username" pInputText type="email"
+                               formControlName="username" autocomplete="email">
+                        <label for="username">E-mail</label>
                     </div>
 
                     <div class="p-float-label field col-12">
-                        <input id="password" pInputText type="password" formControlName="password">
+                        <input id="password" pInputText type="password"
+                               formControlName="password" autocomplete="current-password">
                         <label for="password">Senha</label>
                     </div>
+
                 </div>
-                
+
                 <div class="buttons">
-                    <button pButton type="submit" label="Login" class="p-button submit"></button>
-                    <button pButton type="button" (click)="cadastrar()" label="Não tenho cadastro" class="p-button-outlined"></button>
+                    <!-- Loading spinner enquanto aguarda Supabase -->
+                    <button pButton type="submit" label="Login"
+                            class="p-button submit"
+                            [loading]="loading">
+                    </button>
+
+                    <button pButton type="button"
+                            (click)="cadastrar()"
+                            label="Não tenho cadastro"
+                            class="p-button-outlined">
+                    </button>
+
                     <br>
-                    <a href='{{recover_password}}recover-password' target="_blank">Esqueci minha senha</a>
+
+                    <!-- Supabase tem rota própria de recuperação de senha -->
+                    <a [href]="recover_password" target="_blank">
+                        Esqueci minha senha
+                    </a>
                 </div>
             </form>
         </p-card>
@@ -27,6 +46,6 @@
     <div class="img">
         <img src="../assets/fazenda.jpg" alt="fazenda" class="image">
     </div>
-    
+
     <p-toast></p-toast>
 </div>
